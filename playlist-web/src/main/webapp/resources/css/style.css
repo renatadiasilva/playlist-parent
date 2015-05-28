@@ -1,0 +1,299 @@
+@charset "UTF-8";
+
+html {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	background-image: url("../images/urf.jpg");
+	background-size:cover;
+}
+
+.header {
+	position:absolute;
+	display:inline-block;
+	height:100px;
+	width: 100%;
+	vertical-align: middle;
+	background-color: rgb(0, 128, 0);
+}
+
+.header .logo {
+	position:absolute;
+	height:auto;
+	top:10px;
+	left:10px;
+}
+
+.header .logo #img {
+	position: absolute;
+	vertical-align: middle;
+}
+
+.header .title {
+	position:absolute;
+	line-height:100px;
+	width: 100%;
+	height: 100px;
+	color: white;
+	text-align:center;
+	font: bold;
+	font-family: cursive;
+	font-size: xx-large;
+}
+
+.menu, .menu ul, .menu li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  font-weight: normal;
+  text-decoration: none;
+  line-height: 1;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  position: relative;
+}
+
+.menu {
+  position:absolute;
+  top:125px;
+  width: 150px;
+  height:  475px;
+  vertical-align: middle;
+}
+
+.menu a {
+  line-height: 1.3;
+  padding: 6px 15px;
+  border: 1px solid black;
+  background: rgb(0, 128, 0);
+  text-decoration: none;
+}
+
+.menu a:hover { 
+    background-color: yellow;
+	color: black;
+}
+
+.menu , .menu ul , .menu li , .menu a {
+  font-size: 13px;
+  display: block;
+  color: white;
+}
+
+.menu ul {
+	left:10px;
+	width: 150px;
+	height:auto;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.menu ul ul {
+  font-size: 13px;
+  display: none; 
+  color: white;
+}
+
+.menu li:hover > ul {
+  display: block;
+}
+
+.menu ul.parent_hover {
+  display: block;
+}
+
+.contentTitle {
+	color: rgb(0, 128, 0);
+	text-align:center;
+	font: bold;
+	font-family: cursive;
+	font-size: large;
+}
+
+.content {
+	position: absolute;
+	top: 125px;	
+	right: 25px;
+	width: 65%;
+	height: 475px;	
+}	
+
+.footer {
+	position:absolute;
+	line-height:50px;
+	right:0px;
+	bottom:0px;
+	width: 100%;
+	height: 50px;
+	color: white;
+	text-align:center;
+	font: bold;
+	font-family: cursive;
+	font-size: medium;
+	background-color: rgb(0, 128, 0);
+	vertical-align: middle;
+}
+
+.myImg {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+	border-width: thin;
+	border-color: black;
+	border-style: solid;
+	margin-top: 45px;
+}
+
+.myChronics {
+	position: absolute;
+	margin-top: 225px;
+	margin-left: 925px;
+}
+
+.textChronicle {
+	position: absolute;
+}
+
+.captionPhoto {
+	padding-top:15px;
+	margin-bottom: 5px;
+	text-align: center;
+	font-family:cursive;;
+	color: rgb(0, 128, 0);
+	font-size: 10pt; 
+	font-weight: bold;
+}
+
+.phrase {
+	width: 100%;
+	text-align: center;
+	font-family:cursive;;
+	color: gray;
+	font-size: 10pt; 
+	font-weight: bold;
+}
+
+#imgCampoJogos {
+	position:absolute;
+	margin-top:40px;
+	margin-left:50px;
+	border: 1px solid green;
+}
+
+#textCampoJogos {
+	position:absolute;
+	display:block;
+	margin-top:135px;
+	margin-left:485px;
+	font-family:cursive;;
+	color:  rgb(0, 128, 0);
+	font-size: 10pt; 
+}
+
+#imgLocal {
+	position: absolute;
+	margin-top: 40px;
+	margin-left: 710px;
+}
+
+#contentCampoJogos {
+	background: white;
+	height: 100%;
+}
+
+.contentScroll {
+	overflow: scroll;
+}
+
+.urf {
+	color:rgb(0, 128, 0);
+}
+
+.team {
+	text-align: left;
+}
+
+.team_urf {
+	color: yellow;
+}
+
+.myText {
+	text-align: justify;
+	font-family: Arial, Helvetica, sans-serif;
+	padding:20px;
+}
+
+#txtUrf {
+	margin-top: 40px;
+}
+
+.txtContactos {
+	position:absolute;
+	display:block;
+	text-align:center;
+	width:97%;
+	margin-top:90px;
+}
+
+#myLinks1 {
+	position:absolute;
+	display:block;
+	text-align:center;
+	margin-left:150px;
+	margin-top:90px;
+}
+
+#myLinks2 {
+	position:absolute;
+	display:block;
+	text-align:center;
+	margin-left:650px;
+	margin-top:90px;
+}
+
+
+table {
+	margin-top:20px;
+	margin-right: auto;
+	margin-left: auto;
+	color: #333;
+	font-family: Helvetica, Arial, sans-serif;
+	width: 640px; 
+	border-collapse: collapse;
+	border-spacing: 0; 
+	border-width: medium;
+	border-color: rgb(0, 128, 0);
+	border-style: solid;
+}
+
+td, th { 
+	border: 1px solid transparent;
+	height: 30px; 
+	transition: all 0.3s;
+}
+
+th {
+	background: #383838;
+	font-weight: bold;
+	background: #8b8b8b;
+}
+
+td {
+	background: #FAFAFA;
+	text-align: center;
+}
+
+tr:nth-child(even) td { background: #666 }
+tr:nth-child(odd) td { background: green; }
+
+.loginerror {
+	color: red;
+}
+
+.loginheader {
+	font-size: xx-large;
+}

@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Playlists Manager</title>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="../templates/commonLayout.xhtml">
+
+		<ui:define name="content">
+
+			<div class="contentTitle">Index</div>
+
+			<br /><br />
+
+			<div class="myText" id="txtUrf">
+				<p>Start adding songs and create your own playlists!!!</p>
+				<br />
+				<p>Take a look at the menu and choose what you want to do do
+					next!!!</p>
+			</div>
+			
+	    	<div id="audioContainer">
+				<audio src="../resources/audio/audio1.mp3" type="audio/mpeg" loop="loop" autoplay="autoplay" controls="controls" />
+			</div>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>

@@ -41,3 +41,12 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# from tutorial Maven
+.settings/
+*.classpath
+*.project
+target/
+.idea/
+*.iml
+atlassian-ide-plugin.xml
