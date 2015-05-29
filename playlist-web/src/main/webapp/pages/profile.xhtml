@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+
+	<ui:composition template="../templates/commonLayout.xhtml">
+
+		<ui:define name="content">
+
+			<div class="contentTitle">Edit Profile</div>
+
+			<div class="profile">
+				<h:form id="loginForm">
+					<h:panelGroup>
+						<h:panelGrid columns="1">
+
+							<h:outputLabel value="Email" class="loginlabel" />
+							<h:inputText value="#{activeUserMB.email}" required="true"
+								requiredMessage="Empty email!" id="email" class="logintext" />
+							<h:message for="email" class="loginlabel" errorClass="loginerror" />
+
+							<h:outputLabel value="Password" class="loginlabel" />
+							<h:inputSecret value="#{activeUserMB.email}" required="true"
+								requiredMessage="Empty password!" id="password" class="logintext" />
+							<h:message for="password" class="loginlabel" errorClass="loginerror" />
+
+							<h:outputLabel value="Name" class="loginlabel" />
+							<h:inputText value="#{activeUserMB.email}" required="true"
+								requiredMessage="Empty Name!" id="name" class="logintext" />
+							<h:message for="name" class="loginlabel" errorClass="loginerror" />
+
+							<h:commandButton value="Change data" action="#{activeUserMB.changeData}"
+								class="loginbutton" />
+								
+							<h:commandButton value="Remove user" action="#{activeUserMB.remove}"
+								class="loginbutton" />								
+
+							<h:messages globalOnly="true" class="loginlabel" />
+						</h:panelGrid>
+					</h:panelGroup>
+				</h:form>
+			</div>
+			<br />
+			<br />
+
+			<h:dataTable value="#{playlistsManagerMB.getUsers()}" var="user">
+				<h:column>#{user.name}</h:column>
+				<h:column>#{user.email}</h:column>
+			</h:dataTable>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>
