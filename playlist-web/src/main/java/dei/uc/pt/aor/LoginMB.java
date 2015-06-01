@@ -35,7 +35,7 @@ public class LoginMB implements Serializable {
 		if (u != null) {
 			if (u.getPassword().equals(epw.encrypt(password))) {
 				manager.setName(u.getName());
-				aUser.setCurrentUser(u);
+				aUser.setName(u.getName());
 				aUser.setEmail(email);
 				aUser.startSession();
 				return "/pages/index?faces-redirect=true";}

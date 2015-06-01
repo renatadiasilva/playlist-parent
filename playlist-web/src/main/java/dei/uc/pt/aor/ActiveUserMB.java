@@ -16,7 +16,6 @@ public class ActiveUserMB implements Serializable {
 	private String name;
 	private String password;
 	private String repeatedPassword;
-	private User currentUser;
 	private boolean newUser;
 	private HttpSession uSession;
 
@@ -47,14 +46,6 @@ public class ActiveUserMB implements Serializable {
 		this.newUser = newUser;
 	}
 	
-	public User getCurrentUser() {
-		return currentUser;
-	}
-
-	public void setCurrentUser(User u) {
-		this.currentUser = u;
-	}
-
 	public void startSession(){
 		uSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		uSession.setAttribute("email", email);
@@ -66,7 +57,7 @@ public class ActiveUserMB implements Serializable {
 	}
 	
 	public String greetingName() {
-		String[] a = currentUser.getName().split(" ");
+		String[] a = name.split(" ");
 		return a[0];
 	}
 

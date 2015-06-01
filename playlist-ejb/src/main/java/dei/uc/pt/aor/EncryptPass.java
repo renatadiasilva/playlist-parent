@@ -13,7 +13,9 @@ public class EncryptPass {
         if (null == password) {
             return null;
         }
+        
         MessageDigest digest;
+        
         try {
             digest = MessageDigest.getInstance("MD5");
             digest.update(password.getBytes(), 0, password.length());

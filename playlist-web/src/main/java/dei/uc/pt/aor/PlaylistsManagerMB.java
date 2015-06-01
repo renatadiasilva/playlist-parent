@@ -30,9 +30,6 @@ public class PlaylistsManagerMB implements Serializable {
 	@EJB
 	private UserFacade userFacade;
 
-	@Inject
-	ActiveUserMB auser;
-	
 	private String name;
 	private String password;
 	private String repeatedPassword;
@@ -64,14 +61,6 @@ public class PlaylistsManagerMB implements Serializable {
 		return song;
 	}
 
-	public ActiveUserMB getAuser() {
-		return auser;
-	}
-
-	public void setAuser(ActiveUserMB auser) {
-		this.auser = auser;
-	}
-
 	public void setSonglist(Song song) {
 		this.song = song;
 	}
@@ -100,13 +89,13 @@ public class PlaylistsManagerMB implements Serializable {
 		return "profile";
 	}
 
-	public String updateProfile(String email) {
+	public String updateProfile(ActiveUserMB auser) {
 
-		User u = findUserByEmail(email);
+		User u = findUserByEmail(auser.getEmail());
 		
-		//encrypted
 		try {
 			u.setName(name);
+			auser.setName(name);
 			userFacade.update(u);
 			operation = "User Name Update";
 			return "operationOK?faces-redirect=true";
