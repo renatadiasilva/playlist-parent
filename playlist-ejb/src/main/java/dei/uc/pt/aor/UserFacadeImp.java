@@ -30,6 +30,7 @@ public class UserFacadeImp implements UserFacade {
 		//check if u has a valid email (not here): u.getPassword().contains("@")
 	}
 	
+	// tirar??
 	public List<User> getUsers() {
 		log.info("Creating Query for all users.");
 		return userDAO.findAll();
@@ -62,6 +63,14 @@ public class UserFacadeImp implements UserFacade {
 		if (hasError){
 			throw new IllegalArgumentException("The user is missing data. Check the name and password, they should have value.");
 		}
+	}
+	
+	public void delete(User u) {
+		log.info("Removing account for user with email {}.",u.getEmail());
+		
+		//remover playlists e songs (verificar se apaga tb da table PL_SNGS)
+		// usar id=8
+		userDAO.delete(u);
 	}
 
 }

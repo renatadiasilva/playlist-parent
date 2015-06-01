@@ -37,6 +37,7 @@ public class LoginMB implements Serializable {
 				manager.setName(u.getName());
 				aUser.setName(u.getName());
 				aUser.setEmail(email);
+				aUser.setCurrentUser(u);
 				aUser.startSession();
 				return "/pages/index?faces-redirect=true";}
 			else {
@@ -50,9 +51,14 @@ public class LoginMB implements Serializable {
 		}
 	}
 	
-	public String doLogout(){
+	public String doLogout() {
 		aUser.endSession();
 		return "/login?faces-redirect=true";
+	}
+	
+	public String removeUser(ActiveUserMB auser) {
+		manager.removeUser(auser);
+		return doLogout();
 	}
 	
 	public String getName() {

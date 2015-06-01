@@ -7,7 +7,6 @@ import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.Serializable;
@@ -77,8 +76,14 @@ public class PlaylistsManagerMB implements Serializable {
 //		entitiesEJB.populate();
 //	}
 	
+	// tirar
 	public List<Playlist> getAllPlaylists() {
 		return playlistFacade.findAll();
+	}
+
+	public List<Playlist> playlistsOfUser(ActiveUserMB auser) {
+		
+		return playlistFacade.playlistsOfUser(auser.getCurrentUser());
 	}
 
 	public String updatePlaylistStart() {
@@ -91,7 +96,7 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public String updateProfile(ActiveUserMB auser) {
 
-		User u = findUserByEmail(auser.getEmail());
+		User u = auser.getCurrentUser();
 		
 		try {
 			u.setName(name);
@@ -105,7 +110,19 @@ public class PlaylistsManagerMB implements Serializable {
 		}
 
 	}
-
+	
+	public boolean removeUser(ActiveUserMB auser) {
+		
+		try {
+			userFacade.delete(auser.getCurrentUser());
+			return true;
+		} catch (EJBException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting user."));
+			return false;
+		}
+		
+	}
+	
 	public String updatePass(String email, String pass) {
 	
 		User u = findUserByEmail(email);
@@ -145,11 +162,15 @@ public class PlaylistsManagerMB implements Serializable {
 		
 	}
 	
+	public Song getSong() {
+		return song;
+	}
+
 	public String deletePlaylistEnd(){
 		
 		try {
 			playlistFacade.delete(playlist);
-			return "listAllPlaylists";
+			return "listMyPlaylists";
 		} catch (EJBException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting playlist."));
 			return null;
@@ -157,14 +178,17 @@ public class PlaylistsManagerMB implements Serializable {
 		
 	}
 	
-	public String listAllPlaylists(){
-		return "listAllPlaylists";
+	public String listMyPlaylists(){
+		return "listMyPlaylists";
 	}
 	
-	// confirmar páginas para redirecionar!!!
-
 	public List<Song> getAllSongs() {
 		return songFacade.findAll();
+	}
+	
+	public List<Song> songsOfUser(ActiveUserMB auser) {
+		
+		return songFacade.songsOfUser(auser.getCurrentUser());
 	}
 
 	public String updateSongStart() {
@@ -173,7 +197,7 @@ public class PlaylistsManagerMB implements Serializable {
 	
 	public String updateSongEnd() {
 		
-		try {
+		try {			
 			songFacade.update(song);
 			operation = "Song update";
 			return "operationOK?faces-redirect=true"; // voltar para trás???
@@ -183,14 +207,17 @@ public class PlaylistsManagerMB implements Serializable {
 		}
 		
 	}
-	
-	//apagar e pronto?
-		
+
+	// não apagar da base de dados mas sim mudar o owner para admin
 	public String deleteSongEnd(){
 		
 		try {
+			User admin = findUserByEmail("admin@admin.com");
+			
+			song.setOwner(admin);
+			songFacade.update(song);
 			songFacade.delete(song);
-			return "listAllSongs";
+			return "listMySongs";
 		} catch (EJBException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting song."));
 			return null;
@@ -202,8 +229,12 @@ public class PlaylistsManagerMB implements Serializable {
 		return "changePass";
 	}
 	
-	public String listAllSongs(){
-		return "listAllSongs";
+	public String remove() {
+		return "confirmRemoval";
+	}
+	
+	public String listMySongs(){
+		return "listMySongs";
 	}
 	
 	public void addUser(User user) {

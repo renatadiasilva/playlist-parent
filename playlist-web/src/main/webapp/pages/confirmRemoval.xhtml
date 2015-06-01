@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+
+	<ui:composition template="../templates/commonLayout.xhtml">
+
+		<ui:define name="content">
+
+			<br /><br />
+
+			<h:form>
+			<h:panelGrid columns="1">
+				<h:column>Are you sure you want to remove your account?</h:column>
+				<h:column>Pressing "Yes, I sure!" will be definitive.</h:column>
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+						<h:commandButton action="#{loginMB.removeUser(activeUserMB)}"
+							value="Yes, I'm sure!">
+						</h:commandButton>
+						<h:commandButton action="#{playlistsManagerMB.goToProfile()}"
+							value="Cancel" />
+					</h:panelGrid>
+			</h:form>
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>

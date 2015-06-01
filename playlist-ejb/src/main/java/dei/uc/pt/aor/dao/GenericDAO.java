@@ -42,8 +42,6 @@ public abstract class GenericDAO<T> {
 		return em.find(entityClass, entityID);
 	}
 	
-	// Using the unchecked because JPA does not have a
-	// em.getCriteriaBuilder().createQuery()<T> method
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<T> findAll() {
 		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -51,8 +49,6 @@ public abstract class GenericDAO<T> {
 		return em.createQuery(cq).getResultList();
 	}
 	
-	//tirei log4j.properties para usar System.out.println
-
 	@SuppressWarnings("unchecked")
 	protected T findOneResult(String namedQuery, Map<String, Object> parameters) {
 		T result = null;
@@ -81,7 +77,6 @@ public abstract class GenericDAO<T> {
 		try {
 			Query query = em.createNamedQuery(namedQuery);
 
-			// Method that will populate parameters if they are passed not null and empty
 			if (parameters != null && !parameters.isEmpty()) {
 				populateQueryParameters(query, parameters);
 			}

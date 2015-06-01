@@ -15,6 +15,7 @@ public class ActiveUserMB implements Serializable {
 	private String email;
 	private String name;
 	private String password;
+	private User currentUser;
 	private String repeatedPassword;
 	private boolean newUser;
 	private HttpSession uSession;
@@ -83,6 +84,14 @@ public class ActiveUserMB implements Serializable {
 
 	public void setRepeatedPassword(String repeatedPassword) {
 		this.repeatedPassword = repeatedPassword;
+	}
+
+	public User getCurrentUser() {
+		return currentUser;
+	}
+
+	public void setCurrentUser(User currentUser) {
+		this.currentUser = currentUser;
 	}
 
 }

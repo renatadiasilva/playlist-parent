@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "songs")
+@NamedQueries({
+	@NamedQuery(name="Song.songsOfUser", query="select s from Song s where s.owner = :ownerId"),
+})
 public class Song implements Serializable {
 	
 	private static final long serialVersionUID = -846738109409670761L;
@@ -41,7 +44,7 @@ public class Song implements Serializable {
 	@JoinColumn(name = "owner_id")
 	private User owner;
 	
-	@ManyToMany (mappedBy="songs")
+	@ManyToMany(mappedBy="songs")
 	private List<Playlist> playlists;
 
 	public Song() {

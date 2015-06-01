@@ -10,5 +10,6 @@ public interface UserFacade {
 	public List<User> getUsers();
 	public List<User> usersWithNameStartingBy(String exp);
 	public User update(User u);
+	public void delete(User u);
 
 }

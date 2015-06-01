@@ -12,8 +12,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
 	@NamedQuery(name="User.findUserByEmail", query="select u from User u where u.email = :email"),
 	@NamedQuery(name="User.findUserStartingBy", query="select u from User u where u.name like :exp")
-//    @NamedQuery(name = "Account.findByEmailPass", query = "SELECT a FROM Account a WHERE a.email = :email AND a.password = :password")
- }) 
+}) 
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -3895128862200329846L;

@@ -11,12 +11,12 @@
 
 		<ui:define name="content">
 
-			<div class="contentTitle">List All Playlists</div>
+			<div class="contentTitle">List All My Playlists</div>
 
 			<br />
 			<br />
 			<h:form>
-				<h:dataTable value="#{playlistsManagerMB.allPlaylists}"
+				<h:dataTable value="#{playlistsManagerMB.playlistsOfUser(activeUserMB)}"
 					var="playlist">
 					<h:column>
 						<f:facet name="header">

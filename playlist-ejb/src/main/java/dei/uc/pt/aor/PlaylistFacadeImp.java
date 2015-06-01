@@ -19,31 +19,31 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 	@EJB
 	private PlaylistDAO playlistDAO;
 	
-	@Override
 	public void save(Playlist playlist) {
 		isPlaylistWithAllData(playlist);
 		playlistDAO.save(playlist);
 	}
 	
-	@Override
 	public Playlist update(Playlist playlist) {
 		isPlaylistWithAllData(playlist);
 		return playlistDAO.update(playlist);
 	}
 	
-	@Override
 	public void delete(Playlist playlist) {
 		playlistDAO.delete(playlist);
 	}
 	
-	@Override
 	public Playlist find(int entityID) {
 		return playlistDAO.find(entityID);
 	}
 	
-	@Override
+	//Não é necessária
 	public List<Playlist> findAll() {
 		return playlistDAO.findAll();
+	}
+	
+	public List<Playlist> playlistsOfUser(User u) {
+		return playlistDAO.playlistsOfUser(u);
 	}
 	
 	private void isPlaylistWithAllData(Playlist playlist) {

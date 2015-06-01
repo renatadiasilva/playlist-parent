@@ -16,7 +16,7 @@
 			<br /><br />
 
 			<h:form>
-				<h:dataTable value="#{playlistsManagerMB.allSongs}"
+				<h:dataTable value="#{playlistsManagerMB.songsOfUser(activeUserMB)}"
 					var="song">
 					<h:column>
 						<f:facet name="header">
@@ -47,17 +47,15 @@
 						#{song.releaseYear}
 					</h:column>
 					<h:column>
-						<f:facet name="header">
-							Added by
-						</f:facet>
-				
-						#{song.owner.name}
-					</h:column>
-					<h:column>
 						<h:panelGrid columns="2">
 							<h:inputHidden value="#{song.id}" />
-							<h:commandButton action="#{playlistsManagerMB.addToPlaylist()}"
-								value="Add to Playlist">
+							<h:commandButton action="#{playlistsManagerMB.updateSongStart()}"
+								value="Update">
+								<f:setPropertyActionListener
+									target="#{playlistsManagerMB.song}" value="#{song}" />
+							</h:commandButton>
+							<h:commandButton action="#{playlistsManagerMB.deleteSongEnd()}"
+								value="Delete">
 								<f:setPropertyActionListener
 									target="#{playlistsManagerMB.song}" value="#{song}" />
 							</h:commandButton>

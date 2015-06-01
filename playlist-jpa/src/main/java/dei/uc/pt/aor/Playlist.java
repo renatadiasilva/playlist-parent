@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "playlists")
+@NamedQueries({
+	@NamedQuery(name="Playlist.playlistOfUser", query="select p from Playlist p where p.owner = :ownerId"),
+})
 public class Playlist implements Serializable {
 
 	private static final long serialVersionUID = -341288742583267978L;

@@ -19,31 +19,30 @@ public class SongFacadeImp implements SongFacade {
 	@EJB
 	private SongDAO songDAO;
 	
-	@Override
 	public void save(Song song) {
 		isSongWithAllData(song);
 		songDAO.save(song);
 	}
 	
-	@Override
 	public Song update(Song song) {
 		isSongWithAllData(song);
 		return songDAO.update(song);
 	}
 	
-	@Override
 	public void delete(Song song) {
 		songDAO.delete(song);
 	}
 	
-	@Override
 	public Song find(int entityID) {
 		return songDAO.find(entityID);
 	}
 	
-	@Override
 	public List<Song> findAll() {
 		return songDAO.findAll();
+	}
+
+	public List<Song> songsOfUser(User u) {
+		return songDAO.songsOfUser(u);
 	}
 	
 	private void isSongWithAllData(Song song) {
