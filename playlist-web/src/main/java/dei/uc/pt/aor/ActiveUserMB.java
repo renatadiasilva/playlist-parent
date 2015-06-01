@@ -13,6 +13,9 @@ public class ActiveUserMB implements Serializable {
 
 	private static final long serialVersionUID = 1429959255702576110L;
 	private String email;
+	private String name;
+	private String password;
+	private String repeatedPassword;
 	private User currentUser;
 	private boolean newUser;
 	private HttpSession uSession;
@@ -53,19 +56,42 @@ public class ActiveUserMB implements Serializable {
 	}
 
 	public void startSession(){
-		uSession = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		uSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		uSession.setAttribute("email", email);
 	}
 	
 	public void endSession(){
-		if(uSession!=null)
-			uSession.invalidate();
+		if (uSession != null) uSession.invalidate();
 		email = null;
 	}
 	
 	public String greetingName() {
 		String[] a = currentUser.getName().split(" ");
 		return a[0];
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRepeatedPassword() {
+		return repeatedPassword;
+	}
+
+	public void setRepeatedPassword(String repeatedPassword) {
+		this.repeatedPassword = repeatedPassword;
 	}
 
 }

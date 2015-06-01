@@ -9,12 +9,15 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
-// @NamedQueries
+@NamedQueries({
+	@NamedQuery(name="User.findUserByEmail", query="select u from User u where u.email = :email"),
+	@NamedQuery(name="User.findUserStartingBy", query="select u from User u where u.name like :exp")
+//    @NamedQuery(name = "Account.findByEmailPass", query = "SELECT a FROM Account a WHERE a.email = :email AND a.password = :password")
+ }) 
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -3895128862200329846L;
 
-	// @Size??
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", nullable = false, unique = true)
@@ -42,7 +45,7 @@ public class User implements Serializable {
 
 	public User() {
 	}
-
+	
 	public User(String name, String password, String email) {
 		this.name = name;
 		this.password = password;
@@ -75,6 +78,19 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	// tirar dp
+	public String getPassword() {
+		return password;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public List<Playlist> getPlaylists() {

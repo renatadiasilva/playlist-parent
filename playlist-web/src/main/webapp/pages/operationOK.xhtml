@@ -10,15 +10,13 @@
 
 		<ui:define name="content">
 
-			<div class="contentTitle">List All Users</div>
-
 			<br /><br />
 
-			<h:dataTable value="#{playlistsManagerMB.users}" var="user">
-				<h:column>#{user.name}</h:column>
-				<h:column>#{user.email}</h:column>
-			</h:dataTable>
-
+			<h:form>
+			<h:panelGrid columns="1">
+				<h:column>Operation Complete: #{playlistsManagerMB.operation}</h:column>
+			</h:panelGrid>
+			</h:form>
 		</ui:define>
 
 	</ui:composition>

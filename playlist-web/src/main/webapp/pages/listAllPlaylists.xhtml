@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+
+	<ui:composition template="../templates/commonLayout.xhtml">
+
+		<ui:define name="content">
+
+			<div class="contentTitle">List All Playlists</div>
+
+			<br />
+			<br />
+			<h:form>
+				<h:dataTable value="#{playlistsManagerMB.allPlaylists}"
+					var="playlist">
+					<h:column>
+						<f:facet name="header">
+							Playlist Name
+						</f:facet>
+				
+						#{playlist.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							Date of Creation
+						</f:facet>
+				
+						#{playlist.dateOfCriation}
+					</h:column>
+					<h:column>
+						<h:panelGrid columns="2">
+							<h:inputHidden value="#{playlist.id}" />
+							<h:commandButton action="#{playlistsManagerMB.updatePlaylistStart()}"
+								value="View/Update">
+								<f:setPropertyActionListener
+									target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
+							</h:commandButton>
+							<h:commandButton action="#{playlistsManagerMB.deletePlaylistEnd()}"
+								value="Delete">
+								<f:setPropertyActionListener
+									target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
+							</h:commandButton>
+						</h:panelGrid>
+					</h:column>
+				</h:dataTable>
+			</h:form>
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>

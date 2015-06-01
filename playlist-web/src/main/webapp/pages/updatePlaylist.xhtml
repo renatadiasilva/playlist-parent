@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+
+	<ui:composition template="../templates/commonLayout.xhtml">
+
+		<ui:define name="content">
+
+			<div class="contentTitle">Updating Playlist #{playlistsManagerMB.playlist.name}</div>
+
+			<br />
+			<br />
+			<h:form>
+				<h:inputHidden value="#{playlistsManagerMB.playlist.id}" />
+				<h:panelGrid columns="2" >
+					<h:outputLabel for="playlistName" value="Name" />
+					<h:inputText id="playlistName" value="#{playlistsManagerMB.playlist.name}" required="true"
+						requiredMessage="Empty name!" />
+				<h:messages />
+				</h:panelGrid>
+				<h3>List of Songs</h3>
+				<h:dataTable value="#{playlistsManagerMB.playlist.songs}"
+					var="song">
+					<h:column>
+						<f:facet name="header">
+							Title
+						</f:facet>
+				
+						#{song.title}
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							Artist
+						</f:facet>
+				
+						#{song.artist}
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							Album
+						</f:facet>
+				
+						#{song.album}
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							Release Year
+						</f:facet>
+				
+						#{song.releaseYear}
+					</h:column>
+					<h:column>
+						<h:panelGrid columns="2">
+							<h:inputHidden value="#{song.id}" />
+							<h:commandButton action="#{playlistsManagerMB.updateSongStart()}"
+								value="Update">
+								<f:setPropertyActionListener
+									target="#{playlistsManagerMB.song}" value="#{song}" />
+							</h:commandButton>
+							<h:commandButton action="#{playlistsManagerMB.deleteSonglistEnd()}"
+								value="Delete">
+								<f:setPropertyActionListener
+									target="#{playlistsManagerMB.song}" value="#{song}" />
+							</h:commandButton>
+						</h:panelGrid>
+					</h:column>
+				</h:dataTable>
+				<h:panelGrid columns="2">
+					<h:commandButton action="#{playlistsManagerMB.updatePlaylistEnd()}"
+						value="Update" />
+					<h:commandButton action="#{playlistsManagerMB.listAllPlaylists()}"
+						value="Cancel" immediate="true" />
+				</h:panelGrid>
+				<br />
+			</h:form>
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>

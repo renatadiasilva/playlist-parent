@@ -1,19 +1,26 @@
 package dei.uc.pt.aor;
 
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@Named
-@RequestScoped
-public class RegisterMB {
+import java.io.Serializable;
 
+@Named
+@SessionScoped
+public class RegisterMB implements Serializable {
+
+	private static final long serialVersionUID = -2624145242993606181L;
 	private String email;
 	private String password;
 	private String repeatedPassword;
 	private String name;
+	
+	@EJB
+	private EncryptPass epw;
 	
 	@Inject
 	private PlaylistsManagerMB manager;
@@ -28,21 +35,20 @@ public class RegisterMB {
 
 	}
 
-	public void singUp() {
+	public void newUser() {
 
-		this.name = login.getName();
-		this.email = login.getEmail();
-		this.password = login.getPassword();
+		name = login.getName();
+		email = login.getEmail();
+		password = login.getPassword();
 		
 		if (password.equals(repeatedPassword)) {
-			/* utilizador registado com sucesso */
-			User u = new User(name, password, email);
-			if (manager.checkUserEmail(email)) {
+
+			if (manager.findUserByEmail(email) == null) {
+				User u = new User(name, epw.encrypt(password), email);
 				manager.addUser(u); 
 				aUser.changeToLogin();
-			} else {  // user já existe
+			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("This email already exists!"));
-				//limpar campos?
 			}
 				
 		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Passwords don't match."));

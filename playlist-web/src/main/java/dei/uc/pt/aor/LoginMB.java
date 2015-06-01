@@ -1,18 +1,25 @@
 package dei.uc.pt.aor;
 
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import java.io.Serializable;
+
 @Named
-@RequestScoped
-public class LoginMB {
+@SessionScoped
+public class LoginMB implements Serializable {
 	
+	private static final long serialVersionUID = -5381236051617076780L;
 	private String email;
 	private String name;
 	private String password;
+	
+	@EJB
+	private EncryptPass epw;
 	
 	@Inject
 	private PlaylistsManagerMB manager;
@@ -24,14 +31,21 @@ public class LoginMB {
 	}
 		
 	public String doLogin() {
-		User u = manager.userLogin(email, password);
+		User u = manager.findUserByEmail(email);
 		if (u != null) {
-			aUser.setCurrentUser(u);
-			aUser.setEmail(email);
-			aUser.startSession();
-			return "/pages/index?faces-redirect=true";
+			if (u.getPassword().equals(epw.encrypt(password))) {
+				manager.setName(u.getName());
+				aUser.setCurrentUser(u);
+				aUser.setEmail(email);
+				aUser.startSession();
+				return "/pages/index?faces-redirect=true";}
+			else {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Login failure: Wrong password."));
+				return "login";
+			}
+				
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Login failure: Wrong email or password."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Login failure: Wrong email."));
 			return "login";
 		}
 	}

@@ -16,11 +16,7 @@ import javax.servlet.http.HttpSession;
 @WebFilter(urlPatterns = { "/pages/*" })
 public class LoginFilter implements Filter {
 
-	public LoginFilter() {
-
-	}
-
-	public void init(FilterConfig filterConfig) throws ServletException {
+	public void destroy() {
 
 	}
 
@@ -39,7 +35,7 @@ public class LoginFilter implements Filter {
 
 	}
 
-	public void destroy() {
+	public void init(FilterConfig filterConfig) throws ServletException {
 
 	}
 
