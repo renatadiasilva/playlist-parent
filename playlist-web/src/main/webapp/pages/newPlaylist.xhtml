@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+
+	<ui:composition template="../templates/commonLayout.xhtml">
+		<ui:define name="content">
+			<div class="contentTitle">Creating new playlist for User
+				  #{activeUserMB.email}</div>
+
+			<div class="profile">
+				<h:form id="loginForm">
+					<h:panelGroup>
+						<h:panelGrid columns="1">
+							<h:outputLabel value="Name" />
+							<h:inputText value="#{newPlaylistMB.name}" required="true"
+								requiredMessage="Empty name!" id="name" />
+							<h:message for="name" class="loginlabel" errorClass="loginerror" />
+						</h:panelGrid>
+						<h:panelGrid columns="2">
+							<h:column>
+							<h:dataTable value="#{newPlaylistMB.tracks}" var="song">
+								<h:column>
+								<f:facet name="header">
+									Title
+								</f:facet>
+				
+								#{song.title}
+								</h:column>
+								<h:column>
+								<f:facet name="header">
+									Artist
+								</f:facet>
+				
+								#{song.artist}
+								</h:column>
+								<h:column>
+								<f:facet name="header">
+									Album
+								</f:facet>
+				
+								#{song.album}
+								</h:column>
+								<h:column>
+								<f:facet name="header">
+									Release Year
+								</f:facet>
+				
+								#{song.releaseYear}
+								</h:column>
+								<h:column>
+								<f:facet name="header">
+									Added by
+								</f:facet>
+				
+								#{song.owner.name}
+								</h:column>
+								<h:column>
+								<h:panelGrid columns="2">
+									<h:commandButton action="#{newPlaylistMB.removeSongFromPlaylist()}"
+										value="x" immediate="true">
+										<f:setPropertyActionListener
+											target="#{newPlaylistMB.song}" value="#{song}" />
+									</h:commandButton>
+								</h:panelGrid>
+								</h:column>
+							</h:dataTable>
+							</h:column>
+							<h:column>
+							<h:dataTable value="#{playlistsManagerMB.allSongs}" var="song">
+								<h:column>
+								<f:facet name="header">
+									Title
+								</f:facet>
+				
+								#{song.title}
+								</h:column>
+								<h:column>
+								<f:facet name="header">
+									Artist
+								</f:facet>
+				
+								#{song.artist}
+								</h:column>
+								<h:column>
+								<f:facet name="header">
+									Album
+								</f:facet>
+				
+								#{song.album}
+								</h:column>
+								<h:column>
+								<f:facet name="header">
+									Release Year
+								</f:facet>
+				
+								#{song.releaseYear}
+								</h:column>
+								<h:column>
+								<f:facet name="header">
+									Added by
+								</f:facet>
+				
+								#{song.owner.name}
+								</h:column>
+								<h:column>
+								<h:panelGrid columns="2">
+									<h:commandButton action="#{newPlaylistMB.addSongToPlaylist()}"
+										value="Add" immediate="true">
+										<f:setPropertyActionListener
+											target="#{newPlaylistMB.song}" value="#{song}" />
+									</h:commandButton>
+								</h:panelGrid>
+								</h:column>
+							</h:dataTable>
+							</h:column>
+						</h:panelGrid>
+					</h:panelGroup>
+
+					<h:panelGrid columns="2">
+						<h:commandButton
+							action="#{newPlaylistMB.addPlaylist(activeUserMB)}"
+							value="Create Playlist" />
+						<h:commandButton action="#{newPlaylistMB.myPlaylists()}"
+							value="Cancel" immediate="true" />
+					</h:panelGrid>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

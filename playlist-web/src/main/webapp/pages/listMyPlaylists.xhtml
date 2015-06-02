@@ -16,11 +16,17 @@
 			<br />
 			<br />
 			<h:form>
+				<h:panelGrid columns="1">
+					<h:commandButton
+						action="#{newPlaylistMB.newPlaylist()}"
+						value="New Playlist">
+					</h:commandButton>
+				</h:panelGrid>
 				<h:dataTable value="#{playlistsManagerMB.playlistsOfUser(activeUserMB)}"
 					var="playlist">
 					<h:column>
 						<f:facet name="header">
-							Playlist Name
+							Name
 						</f:facet>
 				
 						#{playlist.name}
@@ -33,8 +39,14 @@
 						#{playlist.dateOfCriation}
 					</h:column>
 					<h:column>
+						<f:facet name="header">
+							Size
+						</f:facet>
+				
+						#{playlist.size}
+					</h:column>
+					<h:column>
 						<h:panelGrid columns="2">
-							<h:inputHidden value="#{playlist.id}" />
 							<h:commandButton action="#{playlistsManagerMB.updatePlaylistStart()}"
 								value="View/Update">
 								<f:setPropertyActionListener

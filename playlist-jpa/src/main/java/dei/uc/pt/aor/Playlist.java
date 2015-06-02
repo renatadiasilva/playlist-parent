@@ -11,9 +11,28 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "playlists")
 @NamedQueries({
-	@NamedQuery(name="Playlist.playlistOfUser", query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.name DESC"),
+	@NamedQuery(name="Playlist.playlistOfUserByNameAsc",
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.name"),
+	@NamedQuery(name="Playlist.playlistOfUserByDateAsc",
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.dateOfCriation"),
+	@NamedQuery(name="Playlist.playlistOfUserByNameDesc",
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.name DESC"),
+	@NamedQuery(name="Playlist.playlistOfUserByDateDesc",
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.dateOfCriation DESC"),
+//	@NamedQuery(name="Playlist.playlistOfUserBySizeAsc", 
+//			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size"),
+//	@NamedQuery(name="Playlist.playlistOfUserBySizeDesc", 
+//			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size DESC"),
 })
 public class Playlist implements Serializable {
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
 
 	private static final long serialVersionUID = -341288742583267978L;
 
@@ -30,6 +49,10 @@ public class Playlist implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date_of_creation", nullable = false)
 	private Date dateOfCriation;
+	
+	@NotNull
+	@Column(name = "size", nullable = false)
+	private int size = 0;
 	
 	@ManyToOne
 	@JoinColumn(name = "owner_id")

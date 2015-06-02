@@ -9,7 +9,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "songs")
 @NamedQueries({
-	@NamedQuery(name="Song.songsOfUser", query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title DESC"),
+	@NamedQuery(name="Song.allSongs", query="SELECT s FROM Song s ORDER BY s.title"),
+	@NamedQuery(name="Song.songsOfUser", query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title"),
 })
 public class Song implements Serializable {
 	
@@ -37,8 +38,8 @@ public class Song implements Serializable {
 	private int releaseYear;
 	
 	@NotNull
-	@Column(name = "path_upload", nullable = false)
-	private String pathUpload;
+	@Column(name = "path_file", nullable = false)
+	private String pathFile;
 	
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
@@ -48,15 +49,17 @@ public class Song implements Serializable {
 	private List<Playlist> playlists;
 
 	public Song() {
+		//change pathFile
+		pathFile = "../resources/audio/audio1.mp3";  
 	}
 
 	public Song(String title, String artist, String album, int releaseYear,
-			String pathUpload, User owner) {
+			String path, User owner) {
 		this.title = title;
 		this.artist = artist;
 		this.album = album;
 		this.releaseYear = releaseYear;
-		this.pathUpload = pathUpload;
+		this.pathFile = path;
 		this.owner = owner;
 	}
 
@@ -100,12 +103,12 @@ public class Song implements Serializable {
 		this.releaseYear = releaseYear;
 	}
 
-	public String getPathUpload() {
-		return pathUpload;
+	public String getPathFile() {
+		return pathFile;
 	}
 
-	public void setPathUpload(String pathUpload) {
-		this.pathUpload = pathUpload;
+	public void setPathFile(String path) {
+		this.pathFile = path;
 	}
 
 	public User getOwner() {

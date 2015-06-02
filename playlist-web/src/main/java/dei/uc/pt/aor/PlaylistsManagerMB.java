@@ -39,7 +39,10 @@ public class PlaylistsManagerMB implements Serializable {
 	
 	private Song song;
 	
+	private boolean play;
+	
 	public PlaylistsManagerMB() {
+		setPlay(false);
 	}
 	
 	public Playlist getPlaylist() {
@@ -87,11 +90,11 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public String updatePlaylistStart() {
-		return "updatePlaylist";
+		return "updatePlaylist?faces-redirect=true";
 	}
 	
 	public String goToProfile() {
-		return "profile";
+		return "profile?faces-redirect=true";
 	}
 
 	public String updateProfile(ActiveUserMB auser) {
@@ -147,21 +150,19 @@ public class PlaylistsManagerMB implements Serializable {
 		}	
 
 	}
-
 	
 	public String updatePlaylistEnd() {
 		
 		try {
 			playlistFacade.update(playlist);
-			operation = "Playlist update";
-			return "operationOK?faces-redirect=true"; // voltar para trás???
+			return "listMyPlaylists";
 		} catch (EJBException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error. Check if the name is empty."));
 			return null;
 		}
 		
 	}
-	
+		
 	public Song getSong() {
 		return song;
 	}
@@ -170,7 +171,7 @@ public class PlaylistsManagerMB implements Serializable {
 		
 		try {
 			playlistFacade.delete(playlist);
-			return "listMyPlaylists";
+			return "listMyPlaylists?faces-redirect=true";
 		} catch (EJBException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting playlist."));
 			return null;
@@ -179,7 +180,19 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String listMyPlaylists(){
-		return "listMyPlaylists";
+		return "listMyPlaylists?faces-redirect=true";
+	}
+
+	public void addPlaylist(Playlist p) {
+		playlistFacade.save(p);
+	}
+	
+	public void setPlaylist(Playlist playlist) {
+		this.playlist = playlist;
+	}
+
+	public void addSong(Song s) {
+		songFacade.save(s);
 	}
 	
 	public List<Song> getAllSongs() {
@@ -192,15 +205,14 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public String updateSongStart() {
-		return "updateSong";
+		return "updateSong?faces-redirect=true";
 	}
 	
 	public String updateSongEnd() {
 		
 		try {			
 			songFacade.update(song);
-			operation = "Song update";
-			return "operationOK?faces-redirect=true"; // voltar para trás???
+			return "listMySongs?faces-redirect=true";
 		} catch (EJBException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error. Check if the name is empty."));
 			return null;
@@ -209,32 +221,35 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	// não apagar da base de dados mas sim mudar o owner para admin
-	public String deleteSongEnd(){
+	public String deleteSongEnd(ActiveUserMB auser) {
 		
-		try {
-			User admin = findUserByEmail("admin@admin.com");
-			
-			song.setOwner(admin);
-			songFacade.update(song);
+		if (auser.isAdmin()) {
 			songFacade.delete(song);
 			return "listMySongs";
-		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting song."));
-			return null;
-		}
-		
+		} else { 
+			try {
+				User admin = findUserByEmail("admin@admin.com");
+
+				song.setOwner(admin);
+				songFacade.update(song);
+				return "listMySongs";
+			} catch (EJBException e) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting song."));
+				return null;
+			}
+		} 
 	}
 	
 	public String changePass() {
-		return "changePass";
+		return "changePass?faces-redirect=true";
 	}
 	
 	public String remove() {
-		return "confirmRemoval";
+		return "confirmRemoval?faces-redirect=true";
 	}
 	
 	public String listMySongs(){
-		return "listMySongs";
+		return "listMySongs?faces-redirect=true";
 	}
 	
 	public void addUser(User user) {
@@ -278,6 +293,36 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public void setOperation(String operation) {
 		this.operation = operation;
+	}
+
+	public boolean isPlay() {
+		return play;
+	}
+
+	public void setPlay(boolean play) {
+		this.play = play;
+	}
+	
+	public void start() {
+		play = true;
+	}
+
+	public void stop() {
+		play = false;
+	}
+	
+	public String path() {
+//		return "../resources/audio/audio1.mp3";
+		if (playlist != null) {
+			System.out.println(playlist);
+//			List<Song> ls = playlist.getSongs();
+//			if (ls != null) {
+//				Song s = ls.get(0);
+//				if  (s != null) return playlist.getSongs().get(0).getPathFile();
+//			}	
+		}
+		
+		return "";
 	}
 
 }

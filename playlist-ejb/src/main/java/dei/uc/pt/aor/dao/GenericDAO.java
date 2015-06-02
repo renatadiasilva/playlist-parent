@@ -10,8 +10,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
-import dei.uc.pt.aor.User;
-
 public abstract class GenericDAO<T> {
 	
 	@PersistenceContext(unitName = "Entities")
@@ -48,6 +46,7 @@ public abstract class GenericDAO<T> {
 		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
 		cq.select(cq.from(entityClass));
 		return em.createQuery(cq).getResultList();
+//		cq.orderBy(em.getCriteriaBuilder().asc(cq.from(entityClass).get(Pet_.birthday));
 	}
 	
 	@SuppressWarnings("unchecked")

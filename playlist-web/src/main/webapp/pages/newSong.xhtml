@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+
+	<ui:composition template="../templates/commonLayout.xhtml">
+
+		<ui:define name="content">
+
+			<div class="contentTitle">Creating new song for User #{activeUserMB.email} </div>
+
+			<div class="profile">
+				<h:form id="loginForm">
+					<h:panelGroup>
+						<h:panelGrid columns="1">
+
+							<h:outputLabel value="Title" />
+							<h:inputText value="#{newSongMB.title}" required="true"
+								requiredMessage="Empty title!" id="title" />
+							<h:message for="title" class="loginlabel"
+								errorClass="loginerror" />
+
+							<h:outputLabel value="Artist"  />
+							<h:inputText value="#{newSongMB.artist}" required="true"
+								requiredMessage="Empty artists!" id="artist" />
+							<h:message for="artist" class="loginlabel"
+								errorClass="loginerror" />
+
+							<h:outputLabel value="Album" />
+							<h:inputText value="#{newSongMB.album}" required="true"
+							 	requiredMessage="Empty album!" id="album" />
+							<h:message for="album" class="loginlabel"
+								errorClass="loginerror" />
+
+							<h:outputLabel value="Release Year" />
+							<h:inputText value="#{newSongMB.releaseYear}" required="true"
+							 	requiredMessage="Empty release year!" id="release" />
+							<h:message for="release" class="loginlabel"
+								errorClass="loginerror" />
+
+							<h:messages globalOnly="true" class="loginlabel" />
+						</h:panelGrid>
+					</h:panelGroup>
+
+					<h:panelGrid columns="2">
+						<h:commandButton action="#{newSongMB.addSong(activeUserMB)}"
+							value="Add song" />
+						<h:commandButton action="#{newSongMB.mySongs()}"
+							value="Cancel" immediate="true" />
+					</h:panelGrid>
+				</h:form>
+			</div>
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>

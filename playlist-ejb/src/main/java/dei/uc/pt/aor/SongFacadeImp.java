@@ -64,7 +64,7 @@ public class SongFacadeImp implements SongFacade {
 			hasError = true;
 		}
 
-		if (song.getPathUpload() == null || "".equals(song.getPathUpload().trim())){
+		if (song.getPathFile() == null || "".equals(song.getPathFile().trim())){
 			hasError = true;
 		}
 

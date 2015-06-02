@@ -11,13 +11,12 @@
 
 		<ui:define name="content">
 
-			<div class="contentTitle">List All My Songs</div>
+			<div class="contentTitle">List All Songs</div>
 
 			<br /><br />
 
 			<h:form>
-				<h:dataTable value="#{playlistsManagerMB.allSongs}"
-					var="song">
+				<h:dataTable value="#{playlistsManagerMB.allSongs}" var="song">
 					<h:column>
 						<f:facet name="header">
 							Title
@@ -25,45 +24,45 @@
 				
 						#{song.title}
 					</h:column>
-					<h:column>
-						<f:facet name="header">
+						<h:column>
+							<f:facet name="header">
 							Artist
 						</f:facet>
 				
 						#{song.artist}
 					</h:column>
-					<h:column>
-						<f:facet name="header">
+						<h:column>
+							<f:facet name="header">
 							Album
 						</f:facet>
 				
 						#{song.album}
 					</h:column>
-					<h:column>
-						<f:facet name="header">
+						<h:column>
+							<f:facet name="header">
 							Release Year
 						</f:facet>
 				
 						#{song.releaseYear}
 					</h:column>
-					<h:column>
-						<f:facet name="header">
+						<h:column>
+							<f:facet name="header">
 							Added by
 						</f:facet>
 				
 						#{song.owner.name}
 					</h:column>
-					<h:column>
-						<h:panelGrid columns="2">
-							<h:inputHidden value="#{song.id}" />
-							<h:commandButton action="#{playlistsManagerMB.addToPlaylist()}"
-								value="Add to Playlist">
-								<f:setPropertyActionListener
-									target="#{playlistsManagerMB.song}" value="#{song}" />
-							</h:commandButton>
-						</h:panelGrid>
-					</h:column>
-				</h:dataTable>
+						<h:column>
+							<h:panelGrid columns="2">
+								<h:inputHidden value="#{song.id}" />
+								<h:commandButton action="#{newPlaylistMB.addSongToPlaylist()}"
+									value="Add to Playlist">
+									<f:setPropertyActionListener
+										target="#{newPlaylistMB.song}" value="#{song}" />
+								</h:commandButton>
+							</h:panelGrid>
+						</h:column>
+					</h:dataTable>
 			</h:form>
 		</ui:define>
 
