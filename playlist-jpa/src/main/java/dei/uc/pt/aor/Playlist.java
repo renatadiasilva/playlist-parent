@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "playlists")
 @NamedQueries({
-	@NamedQuery(name="Playlist.playlistOfUser", query="select p from Playlist p where p.owner = :ownerId"),
+	@NamedQuery(name="Playlist.playlistOfUser", query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.name DESC"),
 })
 public class Playlist implements Serializable {
 

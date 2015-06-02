@@ -44,6 +44,7 @@ public abstract class GenericDAO<T> {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<T> findAll() {
+		// order by???
 		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
 		cq.select(cq.from(entityClass));
 		return em.createQuery(cq).getResultList();

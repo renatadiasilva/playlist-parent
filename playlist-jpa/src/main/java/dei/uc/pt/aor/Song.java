@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "songs")
 @NamedQueries({
-	@NamedQuery(name="Song.songsOfUser", query="select s from Song s where s.owner = :ownerId"),
+	@NamedQuery(name="Song.songsOfUser", query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title DESC"),
 })
 public class Song implements Serializable {
 	

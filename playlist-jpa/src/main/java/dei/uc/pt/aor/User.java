@@ -10,8 +10,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 @NamedQueries({
-	@NamedQuery(name="User.findUserByEmail", query="select u from User u where u.email = :email"),
-	@NamedQuery(name="User.findUserStartingBy", query="select u from User u where u.name like :exp")
+	@NamedQuery(name="User.findUserByEmail", query="SELECT u FROM User u WHERE u.email = :email"),
+	@NamedQuery(name="User.findUserStartingBy", query="SELECT u FROM User u WHERE u.name like :exp")
 }) 
 public class User implements Serializable {
 

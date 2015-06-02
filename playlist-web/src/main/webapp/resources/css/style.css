@@ -256,7 +256,7 @@ body {
 }
 
 
-table {
+#loginForm:table {
 	margin-top:20px;
 	margin-right: auto;
 	margin-left: auto;
@@ -270,25 +270,25 @@ table {
 	border-style: solid;
 }
 
-td, th { 
+#loginForm:td, #loginForm:th { 
 	border: 1px solid transparent;
 	height: 30px; 
 	transition: all 0.3s;
 }
 
-th {
+#loginForm:th {
 	background: #383838;
 	font-weight: bold;
 	background: #8b8b8b;
 }
 
-td {
+#loginForm:td {
 	background: #FAFAFA;
 	text-align: center;
 }
 
-tr:nth-child(even) td { background: #666 }
-tr:nth-child(odd) td { background: green; }
+#loginForm:tr:nth-child(even) td { background: #666 }
+#loginForm:tr:nth-child(odd) td { background: green; }
 
 .loginerror {
 	color: red;
