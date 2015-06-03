@@ -39,7 +39,6 @@ public class NewPlaylistMB implements Serializable {
 		for (Song s : tracks) {
 			playlist.addSong(s);
 		}
-		playlist.setSize(tracks.size());
 		manager.addPlaylist(playlist);
 		return "listMyPlaylists?faces-redirect=true";
 //		ver para onde voltar dp do operation OK

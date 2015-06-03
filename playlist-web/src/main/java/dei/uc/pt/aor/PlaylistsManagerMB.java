@@ -56,17 +56,6 @@ public class PlaylistsManagerMB implements Serializable {
 		this.song = song;
 	}
 	
-	public Song getSonglist() {
-		if(song == null){
-			song = new Song();
-		}
-		return song;
-	}
-
-	public void setSonglist(Song song) {
-		this.song = song;
-	}
-
 	public String getRepeatedPassword() {
 		return repeatedPassword;
 	}
@@ -75,10 +64,6 @@ public class PlaylistsManagerMB implements Serializable {
 		this.repeatedPassword = repeatedPassword;
 	}
 
-//	public void populate(){
-//		entitiesEJB.populate();
-//	}
-	
 	// tirar
 	public List<Playlist> getAllPlaylists() {
 		return playlistFacade.findAll();
@@ -190,6 +175,17 @@ public class PlaylistsManagerMB implements Serializable {
 	public void setPlaylist(Playlist playlist) {
 		this.playlist = playlist;
 	}
+	
+	public String removeSongFromPlaylist() {
+		playlistFacade.removeSongFromPlaylist(playlist, song);
+		return "updatePlaylist";
+	}
+	
+	public String addSongToPlaylist() {
+		playlistFacade.addSongToPlaylist(playlist, song);
+		return "updatePlaylist";
+	}
+	
 
 	public void addSong(Song s) {
 		songFacade.save(s);
@@ -311,17 +307,18 @@ public class PlaylistsManagerMB implements Serializable {
 		play = false;
 	}
 	
+	public List<Song> getSongs() {
+		return playlistFacade.getSongs(playlist);
+	}
+	
+	// change to loop
 	public String path() {
-//		return "../resources/audio/audio1.mp3";
-		if (playlist != null) {
-			System.out.println(playlist);
-//			List<Song> ls = playlist.getSongs();
-//			if (ls != null) {
-//				Song s = ls.get(0);
-//				if  (s != null) return playlist.getSongs().get(0).getPathFile();
-//			}	
-		}
-		
+		List<Song> ls = getSongs();
+		if (ls != null) {
+			Song s = ls.get(ls.size()-1);
+			if  (s != null) return s.getPathFile();
+		}	
+
 		return "";
 	}
 

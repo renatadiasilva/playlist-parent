@@ -46,6 +46,18 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 		return playlistDAO.playlistsOfUser(u);
 	}
 	
+	public List<Song> getSongs(Playlist p) {
+		return playlistDAO.getSongs(p);
+	}
+	
+	public void removeSongFromPlaylist(Playlist p, Song s) {
+		playlistDAO.removeSong(p,s);
+	}
+
+	public void addSongToPlaylist(Playlist p, Song s) {
+		playlistDAO.addSong(p,s);
+	}
+
 	private void isPlaylistWithAllData(Playlist playlist) {
 		boolean hasError = false;
 		if(playlist == null){

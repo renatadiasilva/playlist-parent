@@ -13,7 +13,8 @@ import javax.persistence.criteria.CriteriaQuery;
 public abstract class GenericDAO<T> {
 	
 	@PersistenceContext(unitName = "Entities")
-	private EntityManager em;
+	//private?
+	protected EntityManager em;
 
 	//logger??
 	

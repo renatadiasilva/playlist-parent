@@ -4,12 +4,12 @@ import java.util.List;
 
 public interface UserFacade {
 
-	public User findUserByEmail(String email);
-	public void addUser(User u);
+	public abstract User findUserByEmail(String email);
+	public abstract void addUser(User u);
 	//tirar?
-	public List<User> getUsers();
-	public List<User> usersWithNameStartingBy(String exp);
-	public User update(User u);
-	public void delete(User u);
+	public abstract List<User> getUsers();
+	public abstract List<User> usersWithNameStartingBy(String exp);
+	public abstract User update(User u);
+	public abstract void delete(User u);
 
 }

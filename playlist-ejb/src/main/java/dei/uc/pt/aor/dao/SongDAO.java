@@ -26,5 +26,5 @@ public class SongDAO extends GenericDAO<Song> {
 		parameters.put("ownerId", u);
 		return super.findSomeResults("Song.songsOfUser", parameters);
 	}
-
+	
 }

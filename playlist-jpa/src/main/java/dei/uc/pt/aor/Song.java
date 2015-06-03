@@ -9,8 +9,10 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "songs")
 @NamedQueries({
-	@NamedQuery(name="Song.allSongs", query="SELECT s FROM Song s ORDER BY s.title"),
-	@NamedQuery(name="Song.songsOfUser", query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title"),
+	@NamedQuery(name="Song.allSongs",
+			query="SELECT s FROM Song s ORDER BY s.title"),
+	@NamedQuery(name="Song.songsOfUser",
+			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title"),
 })
 public class Song implements Serializable {
 	
@@ -50,7 +52,8 @@ public class Song implements Serializable {
 
 	public Song() {
 		//change pathFile
-		pathFile = "../resources/audio/audio1.mp3";  
+//		pathFile = "../resources/audio/audio1.mp3";
+		pathFile = "../resources/audio/Amy_Winehouse_Back_To_Black.mp3";
 	}
 
 	public Song(String title, String artist, String album, int releaseYear,

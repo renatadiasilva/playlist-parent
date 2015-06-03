@@ -18,11 +18,13 @@ public class ActiveUserMB implements Serializable {
 	private User currentUser;
 	private String repeatedPassword;
 	private boolean newUser;
+	private boolean admin;
 	private HttpSession uSession;
 
 	public ActiveUserMB() {
 		email = null;
 		newUser = false;
+		setAdmin(false);
 	}
 	
 	public void changeToLogin() {
@@ -47,7 +49,9 @@ public class ActiveUserMB implements Serializable {
 		this.newUser = newUser;
 	}
 	
-	public void startSession(){
+	public void startSession() {
+		if (email.equals("admin@admin.com")) setAdmin(true);
+		else setAdmin(false);
 		uSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		uSession.setAttribute("email", email);
 	}
@@ -92,6 +96,14 @@ public class ActiveUserMB implements Serializable {
 
 	public void setCurrentUser(User currentUser) {
 		this.currentUser = currentUser;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 }
