@@ -1,12 +1,13 @@
 package dei.uc.pt.aor;
 
 import javax.enterprise.context.RequestScoped;
-//import javax.faces.application.FacesMessage;
-//import javax.faces.context.FacesContext;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 @Named
 @RequestScoped
@@ -21,25 +22,31 @@ public class NewSongMB implements Serializable {
 	@Inject
 	private PlaylistsManagerMB manager;
 	
-	@Inject
-	ActiveUserMB aUser;
-
 	public NewSongMB() {
 
 	}
 	
-	public String addSong(ActiveUserMB auser) {
+	public String addSong(ActiveUserMB auser, UploadFile uf) {
 
-//		ver se ja existe song 
-//		validaçao mais para o ano.
-//		criar o path
-		Song song = new Song(title, artist, album, Integer.parseInt(releaseYear), "C", auser.getCurrentUser());
-		manager.addSong(song);
-		return "listMySongs?faces-redirect=true";
-// ver mais redirect				
-//		ver para onde voltar dp do operation OK
-//		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("erros!!!!"));
-//		return "newSong";
+		if (releaseYear.matches("^\\d+$")) {
+			
+			int y = Integer.parseInt(releaseYear);
+			
+			if ( (y >= 1900) && (y <= Calendar.getInstance().get(Calendar.YEAR))) {
+			
+				Song song = new Song(title, artist, album, Integer.parseInt(releaseYear), "C", auser.getCurrentUser());
+				manager.addSong(song);
+
+				if (uf.upload(song.getId())) {
+					song.setPathFile(uf.getPath());
+					return manager.updateFilePath(song);
+				} else return manager.deleteNewSong(song);
+				
+			} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Release Year non valid!!"));
+
+		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Release Year is not an integer number!!"));
+		
+		return null;
 
 	}
 	
@@ -87,5 +94,5 @@ public class NewSongMB implements Serializable {
 	public void setTitle(String email) {
 		this.title = email;
 	}
-
+	
 }

@@ -44,11 +44,12 @@ public class LoginMB implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Login failure: Wrong password."));
 				return "login";
 			}
-				
+
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Login failure: Wrong email."));
 			return "login";
 		}
+
 	}
 	
 	public String doLogout() {
@@ -56,6 +57,7 @@ public class LoginMB implements Serializable {
 		return "/login?faces-redirect=true";
 	}
 	
+	// apagar referências todas primeiro
 	public String removeUser(ActiveUserMB auser) {
 		manager.removeUser(auser);
 		return doLogout();

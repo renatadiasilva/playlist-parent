@@ -68,7 +68,6 @@ public class SongFacadeImp implements SongFacade {
 			hasError = true;
 		}
 
-		// > 1900?
 		if (song.getReleaseYear() <= 0) {
 			hasError = true;
 		}

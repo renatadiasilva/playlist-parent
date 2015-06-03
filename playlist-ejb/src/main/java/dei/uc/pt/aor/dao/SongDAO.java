@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.ejb.Stateless;
 
-import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.Song;
 import dei.uc.pt.aor.User;
 

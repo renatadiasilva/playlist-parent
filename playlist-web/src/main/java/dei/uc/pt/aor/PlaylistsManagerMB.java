@@ -78,6 +78,10 @@ public class PlaylistsManagerMB implements Serializable {
 		return "updatePlaylist?faces-redirect=true";
 	}
 	
+	public String viewPlaylistStart() {
+		return "viewPlaylist?faces-redirect=true";
+	}	
+	
 	public String goToProfile() {
 		return "profile?faces-redirect=true";
 	}
@@ -93,7 +97,7 @@ public class PlaylistsManagerMB implements Serializable {
 			operation = "User Name Update";
 			return "operationOK?faces-redirect=true";
 		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error: Check if the name is empty."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating the name."));
 			return "profile";
 		}
 
@@ -123,14 +127,14 @@ public class PlaylistsManagerMB implements Serializable {
 					operation = "User Password Update";
 					return "operationOK?faces-redirect=true";
 				} catch (EJBException e) {
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error: Check if data is empty."));
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating password."));
 					return "changePass";
 				} 
 			} else {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error: Wrong old password."));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Wrong old password."));
 				return "changePass";			}
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error: Passwords don't match."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Passwords don't match."));
 			return "changePass";
 		}	
 
@@ -140,9 +144,10 @@ public class PlaylistsManagerMB implements Serializable {
 		
 		try {
 			playlistFacade.update(playlist);
+			play = false;
 			return "listMyPlaylists";
 		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error. Check if the name is empty."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating playlist."));
 			return null;
 		}
 		
@@ -165,6 +170,7 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String listMyPlaylists(){
+		play = false;
 		return "listMyPlaylists?faces-redirect=true";
 	}
 
@@ -204,19 +210,40 @@ public class PlaylistsManagerMB implements Serializable {
 		return "updateSong?faces-redirect=true";
 	}
 	
+	public String updateFilePath(Song s) {
+		
+		try {			
+			songFacade.update(s);
+			return "listMySongs?faces-redirect=true";
+		} catch (EJBException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating song path file."));
+			return null;
+		}
+
+	}
+
 	public String updateSongEnd() {
 		
 		try {			
 			songFacade.update(song);
 			return "listMySongs?faces-redirect=true";
 		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error. Check if the name is empty."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating song."));
 			return null;
 		}
 		
 	}
+	
+	public String deleteNewSong(Song s) {
+		try {
+			songFacade.delete(s); 
+		} catch (EJBException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting new song"));
+		}
+		return null;
+	
+	}
 
-	// não apagar da base de dados mas sim mudar o owner para admin
 	public String deleteSongEnd(ActiveUserMB auser) {
 		
 		if (auser.isAdmin()) {
@@ -250,7 +277,6 @@ public class PlaylistsManagerMB implements Serializable {
 	
 	public void addUser(User user) {
 		userFacade.addUser(user);
-//		entitiesEJB.addUser(user);
 	}
 	
 	public User findUserByEmail(String email) {
@@ -259,12 +285,10 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public List<User> getUsers() {
 		return userFacade.getUsers();
-//		return entitiesEJB.getUsers();
 	}
 	
 	public List<User> getUsersStartingBy(String exp) {
 		return userFacade.usersWithNameStartingBy(exp);
-//		return entitiesEJB.usersWithNameStartingBy(exp);
 	}
 
 	public String getName() {
@@ -303,22 +327,13 @@ public class PlaylistsManagerMB implements Serializable {
 		play = true;
 	}
 
-	public void stop() {
-		play = false;
-	}
-	
 	public List<Song> getSongs() {
 		return playlistFacade.getSongs(playlist);
 	}
 	
 	// change to loop
 	public String path() {
-		List<Song> ls = getSongs();
-		if (ls != null) {
-			Song s = ls.get(ls.size()-1);
-			if  (s != null) return s.getPathFile();
-		}	
-
+		if (song != null) return song.getPathFile();
 		return "";
 	}
 

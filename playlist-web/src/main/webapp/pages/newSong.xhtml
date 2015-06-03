@@ -14,7 +14,7 @@
 			<div class="contentTitle">Creating new song for User #{activeUserMB.email} </div>
 
 			<div class="profile">
-				<h:form id="loginForm">
+				<h:form id="loginForm" enctype="multipart/form-data">
 					<h:panelGroup>
 						<h:panelGrid columns="1">
 
@@ -45,14 +45,18 @@
 							<h:messages globalOnly="true" class="loginlabel" />
 						</h:panelGrid>
 					</h:panelGroup>
-
+					<br />
+	       			<h:inputFile value="#{uploadFile.file}" required="true" />
+					<br />
+					<br />
 					<h:panelGrid columns="2">
-						<h:commandButton action="#{newSongMB.addSong(activeUserMB)}"
+						<h:commandButton action="#{newSongMB.addSong(activeUserMB,uploadFile)}"
 							value="Add song" />
 						<h:commandButton action="#{newSongMB.mySongs()}"
 							value="Cancel" immediate="true" />
 					</h:panelGrid>
-				</h:form>
+					
+ 				</h:form>
 			</div>
 		</ui:define>
 

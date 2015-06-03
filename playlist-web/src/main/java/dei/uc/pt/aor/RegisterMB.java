@@ -40,21 +40,25 @@ public class RegisterMB implements Serializable {
 		name = login.getName();
 		email = login.getEmail();
 		password = login.getPassword();
-		
-		if (password.equals(repeatedPassword)) {
 
-			if (manager.findUserByEmail(email) == null) {
-				User u = new User(name, epw.encrypt(password), email);
-				manager.addUser(u); 
-				aUser.changeToLogin();
-			} else {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("This email already exists!"));
-			}
-				
-		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Passwords don't match."));
+		if (email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+			if (password.equals(repeatedPassword)) {
 
+				if (manager.findUserByEmail(email) == null) {
+					User u = new User(name, epw.encrypt(password), email);
+					manager.addUser(u); 
+					aUser.changeToLogin();
+				} else {
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("This email already exists!"));
+				}
+
+			} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Passwords don't match!"));
+
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The email is not valid!"));
+		}
 	}
-	
+
 	/********* Getters e Setters ************/
 	public String getName() {
 		return name;

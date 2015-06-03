@@ -255,45 +255,15 @@ body {
 	margin-top:90px;
 }
 
-
-#loginForm:table {
-	margin-top:20px;
-	margin-right: auto;
-	margin-left: auto;
-	color: #333;
-	font-family: Helvetica, Arial, sans-serif;
-	width: 640px; 
-	border-collapse: collapse;
-	border-spacing: 0; 
-	border-width: medium;
-	border-color: rgb(0, 128, 0);
-	border-style: solid;
-}
-
-#loginForm:td, #loginForm:th { 
-	border: 1px solid transparent;
-	height: 30px; 
-	transition: all 0.3s;
-}
-
-#loginForm:th {
-	background: #383838;
-	font-weight: bold;
-	background: #8b8b8b;
-}
-
-#loginForm:td {
-	background: #FAFAFA;
-	text-align: center;
-}
-
-#loginForm:tr:nth-child(even) td { background: #666 }
-#loginForm:tr:nth-child(odd) td { background: green; }
-
 .loginerror {
 	color: red;
 }
 
 .loginheader {
 	font-size: xx-large;
+}
+
+.botoes {
+	width: 150px;
+	text-align: center;
 }

@@ -5,6 +5,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
+<h:head>
+	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+	<title>Playlists Manager</title>
+</h:head>
+
 <h:body>
 
 	<ui:composition template="../templates/commonLayout.xhtml">
@@ -21,36 +26,31 @@
 						<f:facet name="header">
 							Title
 						</f:facet>
-				
-						#{song.title}
+						<h:commandButton class="botoes" value="#{song.title}" />
 					</h:column>
 						<h:column>
 							<f:facet name="header">
 							Artist
 						</f:facet>
-				
-						#{song.artist}
+						<h:commandButton class="botoes" value="#{song.artist}" />
 					</h:column>
 						<h:column>
 							<f:facet name="header">
 							Album
 						</f:facet>
-				
-						#{song.album}
+						<h:commandButton class="botoes" value="#{song.album}" />
 					</h:column>
 						<h:column>
 							<f:facet name="header">
 							Release Year
 						</f:facet>
-				
-						#{song.releaseYear}
+						<h:commandButton class="botoes" value="#{song.releaseYear}" />
 					</h:column>
 						<h:column>
 							<f:facet name="header">
 							Added by
 						</f:facet>
-				
-						#{song.owner.name}
+						<h:commandButton class="botoes" value="#{song.owner.name}" />				
 					</h:column>
 						<h:column>
 							<h:panelGrid columns="2">

@@ -60,6 +60,7 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 
 	private void isPlaylistWithAllData(Playlist playlist) {
 		boolean hasError = false;
+		
 		if(playlist == null){
 			hasError = true;
 		}
@@ -67,7 +68,6 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 			hasError = true;
 		}
 		
-		//date of criation - today
 		if (hasError){
 			throw new IllegalArgumentException("The playlist is missing data. Check the name, it should have value.");
 		}

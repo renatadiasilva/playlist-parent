@@ -51,9 +51,6 @@ public class Song implements Serializable {
 	private List<Playlist> playlists;
 
 	public Song() {
-		//change pathFile
-//		pathFile = "../resources/audio/audio1.mp3";
-		pathFile = "../resources/audio/Amy_Winehouse_Back_To_Black.mp3";
 	}
 
 	public Song(String title, String artist, String album, int releaseYear,

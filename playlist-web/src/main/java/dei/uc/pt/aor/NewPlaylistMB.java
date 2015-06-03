@@ -33,15 +33,12 @@ public class NewPlaylistMB implements Serializable {
 	public String addPlaylist(ActiveUserMB auser) {
 
 //		ver se ja existe playlist c esse nome
-//		validaçao mais para o ano.
-//		criar o path
 		Playlist playlist = new Playlist(name, new Date(), auser.getCurrentUser());
 		for (Song s : tracks) {
 			playlist.addSong(s);
 		}
 		manager.addPlaylist(playlist);
 		return "listMyPlaylists?faces-redirect=true";
-//		ver para onde voltar dp do operation OK
 //		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("erros!!!!"));
 //		return "newSong";
 

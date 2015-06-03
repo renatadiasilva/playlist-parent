@@ -24,8 +24,8 @@ public class UserFacadeImp implements UserFacade {
 	}
 
 	public void addUser(User u) {
-		log.info("Adding user with email {} to DB.", u.getEmail());
-		log.debug("Trying to add user: {0} ({1}).", u.getEmail(), u.getName());
+		log.info("Adding user with email "+u.getEmail()+"to DB.");
+		log.debug("Trying to add user: "+u.getEmail()+" "+u.getName()+").");
 		userDAO.save(u);
 		//check if u has a valid email (not here): u.getPassword().contains("@")
 	}
@@ -51,15 +51,15 @@ public class UserFacadeImp implements UserFacade {
 	
 	private void isUserWithAllData(User u) {
 		boolean hasError = false;
+
 		if (u == null) {
 			hasError = true;
 		}
+
 		if (u.getName() == null || "".equals(u.getName().trim())){
 			hasError = true;
 		}
-//		if(playlist.getWeight() <= 0){ // email
-//			hasError = true;
-//		}
+
 		if (hasError){
 			throw new IllegalArgumentException("The user is missing data. Check the name and password, they should have value.");
 		}

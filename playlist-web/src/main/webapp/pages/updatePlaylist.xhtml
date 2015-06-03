@@ -59,7 +59,7 @@
 								#{song.owner.name}
 								</h:column>
 								<h:column>
-								<h:panelGrid columns="2">
+								<h:panelGrid columns="1">
 									<h:commandButton action="#{playlistsManagerMB.removeSongFromPlaylist()}"
 										value="x" immediate="true">
 										<f:setPropertyActionListener
@@ -108,7 +108,7 @@
 					#{song.owner.name}
 					</h:column>
 					<h:column>
-					<h:panelGrid columns="2">
+					<h:panelGrid columns="1">
 						<h:commandButton action="#{playlistsManagerMB.addSongToPlaylist()}"
 							value="Add">
 								<f:setPropertyActionListener
@@ -121,26 +121,14 @@
 				</h:panelGrid>
 				</h:panelGroup>
 
-				<h:panelGrid columns="4">
-					<h:commandButton action="#{playlistsManagerMB.start()}"
-						value="Play -- trocar?" />
-					<h:commandButton action="#{playlistsManagerMB.stop()}"
-						value="Stop" />
+				<h:panelGrid columns="2">
 					<h:commandButton action="#{playlistsManagerMB.updatePlaylistEnd()}"
-						value="Update -- ver?" >
+						value="Update" >
 						</h:commandButton>
 					<h:commandButton action="#{playlistsManagerMB.listMyPlaylists()}"
 						value="Cancel" immediate="true" />
 				</h:panelGrid>
-				<br />
-				<br />
-				<br />
-				<h:panelGrid class="audioContainer" rendered="#{playlistsManagerMB.play}">
-					<audio src="#{playlistsManagerMB.path()}" type="audio/mpeg" 
-					loop="loop" autoplay="autoplay" controls="controls" />
-				</h:panelGrid>
-				
-				
+								
 			</h:form>
 		</ui:define>
 

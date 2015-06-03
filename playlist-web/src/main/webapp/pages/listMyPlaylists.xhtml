@@ -46,9 +46,14 @@
 						#{playlist.size}
 					</h:column>
 					<h:column>
-						<h:panelGrid columns="2">
+						<h:panelGrid columns="3">
+							<h:commandButton action="#{playlistsManagerMB.viewPlaylistStart()}"
+								value="View">
+								<f:setPropertyActionListener
+									target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
+							</h:commandButton>
 							<h:commandButton action="#{playlistsManagerMB.updatePlaylistStart()}"
-								value="View/Update">
+								value="Update">
 								<f:setPropertyActionListener
 									target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
 							</h:commandButton>

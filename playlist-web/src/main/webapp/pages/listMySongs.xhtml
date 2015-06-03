@@ -53,16 +53,22 @@
 						#{song.releaseYear}
 					</h:column>
 					<h:column>
-						<h:panelGrid columns="2">
+						<h:panelGrid columns="3">
+							<h:commandButton action="#{playlistsManagerMB.start()}"
+								value="Play">
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
+									value="#{song}" />
+							</h:commandButton>
 							<h:commandButton action="#{playlistsManagerMB.updateSongStart()}"
 								value="Update">
-								<f:setPropertyActionListener
-									target="#{playlistsManagerMB.song}" value="#{song}" />
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
+									value="#{song}" />
 							</h:commandButton>
-							<h:commandButton action="#{playlistsManagerMB.deleteSongEnd(activeUserMB)}"
+							<h:commandButton
+								action="#{playlistsManagerMB.deleteSongEnd(activeUserMB)}"
 								value="Delete">
-								<f:setPropertyActionListener
-									target="#{playlistsManagerMB.song}" value="#{song}" />
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
+									value="#{song}" />
 							</h:commandButton>
 						</h:panelGrid>
 					</h:column>
