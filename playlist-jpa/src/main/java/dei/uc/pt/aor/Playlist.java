@@ -19,20 +19,17 @@ import javax.validation.constraints.NotNull;
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.name DESC"),
 	@NamedQuery(name="Playlist.playlistOfUserByDateDesc",
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.dateOfCriation DESC"),
-//	@NamedQuery(name="Playlist.playlistOfUserBySizeAsc", 
-//			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size"),
-//	@NamedQuery(name="Playlist.playlistOfUserBySizeDesc", 
-//			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size DESC"),
+	@NamedQuery(name="Playlist.playlistOfUserBySizeAsc", 
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size"),
+//			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY SIZE(p.songs)"),
+	@NamedQuery(name="Playlist.playlistOfUserBySizeDesc", 
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size DESC"),
+//			SELECT e FROM Employee ORDER BY SIZE(e.projects) DESC
+//			Using SIZE function, also selects the size (uses group by)
+//	@NamedQuery(name="Playlist.playlistOfUserBySizeDesc1", 
+//			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY SIZE(p.songs) DESC"),
 })
 public class Playlist implements Serializable {
-
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
 
 	private static final long serialVersionUID = -341288742583267978L;
 
@@ -52,7 +49,7 @@ public class Playlist implements Serializable {
 	
 	@NotNull
 	@Column(name = "size", nullable = false)
-	private int size = 0;
+	private int size;
 	
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
@@ -71,6 +68,7 @@ public class Playlist implements Serializable {
 		this.name = name;
 		this.dateOfCriation = dateOfCriation;
 		this.owner = owner;
+		this.size = 0;
 	}
 
 	public Long getId() {
@@ -103,6 +101,14 @@ public class Playlist implements Serializable {
 	public User getOwner() {
 		return owner;
 	}
+	
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
 
 	public List<Song> getSongs() {
 		return songs;
@@ -116,7 +122,12 @@ public class Playlist implements Serializable {
 
 		if (this.songs == null) this.songs = new ArrayList<Song>();
 		this.songs.add(s);
-		// não deixar adicionar se já lá está???
+		size++;
+	}
+	
+	public void removeSong(Song s) {
+		songs.remove(s);
+		size--;
 	}
 
 	@Override
