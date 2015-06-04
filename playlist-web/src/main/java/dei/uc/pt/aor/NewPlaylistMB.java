@@ -43,7 +43,7 @@ public class NewPlaylistMB implements Serializable {
 			manager.addPlaylist(playlist);
 			return "listMyPlaylists?faces-redirect=true";
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("There is already a playlist with that name"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("There is already a playlist with that name!"));
 			return null;
 		}
 
@@ -53,7 +53,6 @@ public class NewPlaylistMB implements Serializable {
 		return "listAllSongs?faces-redirect=true";		
 	}
 	
-//	n deixar adicionar se ja existe na playlist
 	public String addSongToPlaylist() {
 		if (!tracks.contains(song)) tracks.add(song);
 		return null;
@@ -64,12 +63,16 @@ public class NewPlaylistMB implements Serializable {
 		return "newPlaylist";
 	}
 	
-	public String myPlaylists() {
-		return "listMyPlaylists?faces-redirect=true";
+	public String newPlaylist() {
+		name = "";
+		manager.setNewP(true);
+		tracks = new ArrayList<Song>();
+		return "newPlaylist?faces-redirect=true";
 	}
 	
-	public String newPlaylist() {
-		return "newPlaylist?faces-redirect=true";
+	public List<Song> listSongs() {
+		if (manager.isNewP()) return tracks;
+		else return manager.getSongs();
 	}
 
 	/********* Getters e Setters ************/

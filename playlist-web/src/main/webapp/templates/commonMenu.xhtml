@@ -5,23 +5,37 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
+
 <h:body>
 	<ui:composition>
-		<h:form>
-			<h:commandButton value="Logout" styleClass="barlogoutbutton"
-				action="#{loginMB.doLogout}" />
-		</h:form>
-	
-		<div class="menu">
-			<ul>
-				<li><a href="../pages/index.xhtml"><span>Index</span></a></li>
-				<li><a href="../pages/profile.xhtml"><span>Edit Profile</span></a></li>
-				<li><a href="../pages/listMySongs.xhtml"><span>My Songs</span></a></li>
-				<li><a href="../pages/listMyPlaylists.xhtml"><span>My Playlists</span></a></li>
-				<li><a href="../pages/listAllSongs.xhtml"><span>List All Songs</span></a></li>
-				<li><a href="../pages/search.xhtml"><span>Search Songs</span></a></li>
-			</ul>
+
+		<div >
+			<h:form class="menuPrinc">
+				<table>
+					<h:commandButton value="My Playlists" class="buttonLogin"
+						action="listMyPlaylists?faces-redirect=true" />
+
+					<h:commandButton value="My Songs" class="buttonLogin"
+						action="listMySongs?faces-redirect=true" />
+
+					<h:commandButton value="All Songs" class="buttonLogin"
+						action="listAllSongs?faces-redirect=true" />
+
+					<h:commandButton value= "My Profile" class="buttonLogin"
+					action="profile?faces-redirect=true"/>
+
+					<h:commandButton value="Search Songs" class="buttonLogin"
+						action="search?faces-redirect=true" />
+
+				</table>
+			</h:form>
+
+			<h:form class="logout">
+				<h:commandButton value="Logout" class="buttonLogin"
+					action="#{loginMB.doLogout}" style="background: #4f4f4f;" />
+			</h:form>
 		</div>
+
 	</ui:composition>
 </h:body>
 

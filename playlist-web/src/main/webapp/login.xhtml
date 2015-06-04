@@ -5,77 +5,125 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html">
 
+
 <h:head>
-	<title>Playlists Manager - Login</title>
-	<link rel="stylesheet" type="text/css" href="resources/css/style.css" />
+
+	<h:outputStylesheet name="playlistCss.css" library="css" />
+	<h:outputStylesheet name="commonCss.css" library="css" />
+	<title>Playlist Manager</title>
+
 </h:head>
 
 <h:body>
-
-	<div class="login">
-		<h:form id="loginForm">
-			<h:panelGroup>
-				<h:panelGrid columns="1">
-				
-					<h:outputLabel value="Login" class="loginheader"
-						rendered="#{!activeUserMB.newUser}" />
-					<h:outputLabel value="New User" class="loginheader"
-						rendered="#{activeUserMB.newUser}" />
-				
-					<h:outputLabel value="Email" class="loginlabel" />
-					<h:inputText value="#{loginMB.email}" required="true"
-						requiredMessage="Empty email!"
-						id="email" class="logintext" />
-					<h:message for="email" class="loginlabel" errorClass="loginerror" />
-				
-					<h:outputLabel value="Password" class="loginlabel" />
-					<h:inputSecret value="#{loginMB.password}" required="true"
-						requiredMessage="Empty password!"
-						id="password" class="logintext" />
-					<h:message for="password" class="loginlabel" errorClass="loginerror" />
-				
-					<h:outputLabel value="Repeat Password" class="loginlabel"
-						rendered="#{activeUserMB.newUser}" />
-					<h:inputSecret value="#{registerMB.repeatedPassword}" required="true"
-						requiredMessage="Empty repeated password!"
-						id="repassword" class="logintext"
-						rendered="#{activeUserMB.newUser}" />
-					<h:message for="repassword" class="loginlabel" errorClass="loginerror" 
-						rendered="#{activeUserMB.newUser}" />
-
-					<h:outputLabel value="Name" class="loginlabel"
-						rendered="#{activeUserMB.newUser}" />
-					<h:inputText value="#{loginMB.name}" required="true"
-						requiredMessage="Empty Name!"
-						id="name" class="logintext" 
-						rendered="#{activeUserMB.newUser}" />
-					<h:message for="name" class="loginlabel" errorClass="loginerror"
-						rendered="#{activeUserMB.newUser}"  />
-
-
-					<h:commandButton value="OK" action="#{loginMB.doLogin}"
-						class="loginbutton" rendered="#{!activeUserMB.newUser}" />
-					
-					<h:commandButton value="OK" action="#{registerMB.newUser}"
-						class="loginbutton" rendered="#{activeUserMB.newUser}" />
-					
-					<h:commandButton value="New User" styleClass="loginbutton"
-						rendered="#{!activeUserMB.newUser}">
-						<f:ajax event="click" render="loginForm"
-							listener="#{activeUserMB.changeToNewUser}"></f:ajax>
-					</h:commandButton>
-					
-					<h:commandButton value="Go Back" class="loginbtn"
-						rendered="#{activeUserMB.newUser}">
-						<f:ajax event="click" render="loginForm"
-							listener="#{activeUserMB.changeToLogin}"></f:ajax>
-					</h:commandButton>
-					
-					<h:messages globalOnly="true" class="loginlabel" />
-				</h:panelGrid>
-			</h:panelGroup>
-		</h:form>
+	<div class="header1">
+			<h2 class="face">BEST PLAYLISTM EVER</h2>
 	</div>
 
+	<div id="login">
+		<h:form id="loginForm">
+
+			<table class="loginNewUser">
+
+				<tr>
+					<td><h:outputLabel class="fontLogin" value="Login"
+							rendered="#{!activeUserMB.newUser}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel class="fontNewUser" value="New User"
+							rendered="#{activeUserMB.newUser}" /></td>
+				</tr>
+
+				<tr>
+					<td><h:outputLabel value="Name" class="loginlabel"
+							rendered="#{activeUserMB.newUser}" /></td>
+				</tr>
+				<tr>
+					<td><h:inputText value="#{loginMB.name}" required="true"
+							requiredMessage="Empty Name!" id="name" class="logintext"
+							rendered="#{activeUserMB.newUser}" /></td>
+				</tr>
+				<tr>
+					<td><h:message   for="name" 
+							errorClass="loginerror" rendered="#{activeUserMB.newUser}" /></td>
+				</tr>
+
+				<tr>
+					<td style="padding-bottom: 5px;"><h:outputLabel value="Email"
+							class="loginlabel" /></td>
+				</tr>
+				<tr>
+					<td><h:inputText value="#{loginMB.email}" required="true"
+							requiredMessage="Empty email!" id="email" class="logintext" /></td>
+				</tr>
+				<tr>
+					<td><h:message     for="email" 
+							errorClass="loginerror" /></td>
+				</tr>
+
+				<tr>
+					<td style="padding-bottom: 5px;"><h:outputLabel
+							value="Password" class="loginlabel" /></td>
+				</tr>
+				<tr>
+					<td><h:inputSecret value="#{loginMB.password}" required="true"
+							requiredMessage="Empty password!" id="password" class="logintext" /></td>
+				</tr>
+				<tr>
+					<td><h:message    for="password" 
+							errorClass="loginerror" /></td>
+				</tr>
+
+				<tr>
+					<td><h:outputLabel value="Repeat Password" class="loginlabel"
+							rendered="#{activeUserMB.newUser}" /></td>
+				</tr>
+				<tr>
+					<td><h:inputSecret value="#{registerMB.repeatedPassword}"
+							required="true" requiredMessage="Empty repeated password!"
+							id="repassword" class="logintext"
+							rendered="#{activeUserMB.newUser}" /></td>
+				</tr>
+				<tr>
+					<td><h:message for="repassword"
+							errorClass="loginerror" rendered="#{activeUserMB.newUser}" /></td>
+				</tr>
+
+				<tr>
+					<td><h:commandButton value="OK" action="#{loginMB.doLogin}"
+							class="buttonLogin" rendered="#{!activeUserMB.newUser}" /></td>
+				</tr>
+				<tr>
+					<td><h:commandButton value="OK" action="#{registerMB.newUser}"
+							class="buttonLogin" rendered="#{activeUserMB.newUser}" /></td>
+				</tr>
+
+				<tr>
+					<td><h:commandButton value="New User" class="buttonLogin"
+							rendered="#{!activeUserMB.newUser}">
+							<f:ajax event="click" render="loginForm"
+								listener="#{activeUserMB.changeToNewUser}"></f:ajax>
+						</h:commandButton></td>
+				</tr>
+
+				<tr>
+					<td><h:commandButton value="Back" class="buttonLogin"
+							rendered="#{activeUserMB.newUser}">
+							<f:ajax event="click" render="loginForm"
+								listener="#{activeUserMB.changeToLogin}"></f:ajax>
+						</h:commandButton></td>
+				</tr>
+
+				<tr>
+					<td><h:messages globalOnly="true" class="generalError" /></td>
+				</tr>
+			</table>
+
+		</h:form> 
+	</div>
+	<div class="footer">
+		<script>
+				document.write(new Date().getFullYear()) + document.write("   -   Catarina Lapo &#38; Renata Silva");	
+			</script>
+	</div>
 </h:body>
 </html>

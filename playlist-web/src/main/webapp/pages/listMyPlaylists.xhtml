@@ -11,61 +11,66 @@
 
 		<ui:define name="content">
 
-			<div class="contentTitle">List All My Playlists</div>
+			<div>
+				<h3 class="titleMenu">My Playlists</h3>
+			</div>
 
-			<br />
-			<br />
-			<h:form>
-				<h:panelGrid columns="1">
-					<h:commandButton
-						action="#{newPlaylistMB.newPlaylist()}"
-						value="New Playlist">
+			<h:form class="talelaPlaylists">
+				<h:panelGrid class="my" columns="1">
+					<h:commandButton action="#{newPlaylistMB.newPlaylist()}"
+						value="New Playlist" class="buttonList">
 					</h:commandButton>
 				</h:panelGrid>
-				<h:dataTable value="#{playlistsManagerMB.playlistsOfUser(activeUserMB)}"
-					var="playlist">
+				<h:dataTable style="width:1000px" class="allSongs"
+					value="#{playlistsManagerMB.playlistsOfUser(activeUserMB)}"
+					var="playlist" styleClass="order-table"
+					captionClass="order-table-caption" headerClass="order-table-header"
+					rowClasses="order-table-row">
 					<h:column>
 						<f:facet name="header">
-							Name
+							<h:outputText value="Name" />
 						</f:facet>
-				
-						#{playlist.name}
+						<h:outputText value="#{playlist.name}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date of Creation" />
+						</f:facet>
+						<h:outputText value="#{playlist.dateOfCriation}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							Date of Creation
+							<h:outputText value="Nº Tracks" />
 						</f:facet>
-				
-						#{playlist.dateOfCriation}
+						<h:outputText value="#{playlist.size}" />
 					</h:column>
 					<h:column>
-						<f:facet name="header">
-							No. Tracks
-						</f:facet>
-				
-						#{playlist.size}
-					</h:column>
-					<h:column>
-						<h:panelGrid columns="3">
-							<h:commandButton action="#{playlistsManagerMB.viewPlaylistStart()}"
+						<h:panelGrid class="my" columns="3">
+							<h:commandButton class="buttonList"
+								action="#{playlistsManagerMB.viewPlaylistStart()}"
 								value="Play">
 								<f:setPropertyActionListener
 									target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
 							</h:commandButton>
-							<h:commandButton action="#{playlistsManagerMB.updatePlaylistStart()}"
+							<h:commandButton class="buttonList"
+								action="#{playlistsManagerMB.updatePlaylistStart()}"
 								value="Update">
 								<f:setPropertyActionListener
 									target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
 							</h:commandButton>
-							<h:commandButton action="#{playlistsManagerMB.deletePlaylistEnd()}"
+							<h:commandButton class="buttonList"
+								action="#{playlistsManagerMB.deletePlaylistStart()}"
 								value="Delete">
 								<f:setPropertyActionListener
 									target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
 							</h:commandButton>
 						</h:panelGrid>
 					</h:column>
+
 				</h:dataTable>
 			</h:form>
+			<br />
 		</ui:define>
 
 	</ui:composition>

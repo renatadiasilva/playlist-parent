@@ -9,129 +9,178 @@
 
 	<ui:composition template="../templates/commonLayout.xhtml">
 		<ui:define name="content">
-			<div class="contentTitle">Creating new playlist for User
-				  #{activeUserMB.email}</div>
 
 			<div class="profile">
-				<h:form id="loginForm">
-					<h:panelGroup>
-						<h:panelGrid columns="1">
-							<h:outputLabel value="Name" />
-							<h:inputText value="#{newPlaylistMB.name}" required="true"
-								requiredMessage="Empty name!" id="name" />
+				<h:panelGrid rendered="#{playlistsManagerMB.newP}">
+					<h3 class="titleMenu">Creating New Playlist</h3>
+				</h:panelGrid>
+				<h:panelGrid rendered="#{!playlistsManagerMB.newP}">
+					<h3 class="titleMenu">Updating Playlist #{playlistsManagerMB.playlist.name}</h3>
+				</h:panelGrid>
+				<h:form class="loginForm">
+					<h:panelGrid class="namePlaylist" columns="3">
+						<h:column>
+							<h:outputLabel value="Name" style="font-size:20px;margin-right:15px;"/>
+							<h:inputText rendered="#{playlistsManagerMB.newP}"
+								value="#{newPlaylistMB.name}" required="true"
+								requiredMessage="Empty name!" id="name" class="logintext" />
+							<h:inputText rendered="#{!playlistsManagerMB.newP}" 
+								value="#{playlistsManagerMB.playlistName}" required="true"
+								requiredMessage="Empty name!" id="playlistName" class="logintext" />
+						</h:column>
+						<h:column>
 							<h:message for="name" class="loginlabel" errorClass="loginerror" />
-							<h:messages globalOnly="true" class="loginlabel" />
-						</h:panelGrid>
-						<h:panelGrid columns="2">
-							<h:column>
-							Tracks to add
-							<h:dataTable value="#{newPlaylistMB.tracks}" var="song">
-								<h:column>
-								<f:facet name="header">
-									Title
-								</f:facet>
-				
-								#{song.title}
-								</h:column>
-								<h:column>
-								<f:facet name="header">
-									Artist
-								</f:facet>
-				
-								#{song.artist}
-								</h:column>
-								<h:column>
-								<f:facet name="header">
-									Album
-								</f:facet>
-				
-								#{song.album}
-								</h:column>
-								<h:column>
-								<f:facet name="header">
-									Release Year
-								</f:facet>
-				
-								#{song.releaseYear}
-								</h:column>
-								<h:column>
-								<f:facet name="header">
-									Added by
-								</f:facet>
-				
-								#{song.owner.name}
-								</h:column>
-								<h:column>
-								<h:panelGrid columns="2">
-									<h:commandButton action="#{newPlaylistMB.removeSongFromPlaylist()}"
-										value="x" immediate="true">
-										<f:setPropertyActionListener
-											target="#{newPlaylistMB.song}" value="#{song}" />
-									</h:commandButton>
-								</h:panelGrid>
-								</h:column>
-							</h:dataTable>
-							</h:column>
-							<h:column>
-							All songs
-							<h:dataTable value="#{playlistsManagerMB.allSongs}" var="song">
-								<h:column>
-								<f:facet name="header">
-									Title
-								</f:facet>
-				
-								#{song.title}
-								</h:column>
-								<h:column>
-								<f:facet name="header">
-									Artist
-								</f:facet>
-				
-								#{song.artist}
-								</h:column>
-								<h:column>
-								<f:facet name="header">
-									Album
-								</f:facet>
-				
-								#{song.album}
-								</h:column>
-								<h:column>
-								<f:facet name="header">
-									Release Year
-								</f:facet>
-				
-								#{song.releaseYear}
-								</h:column>
-								<h:column>
-								<f:facet name="header">
-									Added by
-								</f:facet>
-				
-								#{song.owner.name}
-								</h:column>
-								<h:column>
-								<h:panelGrid columns="2">
-									<h:commandButton action="#{newPlaylistMB.addSongToPlaylist()}"
-										value="Add" immediate="true">
-										<f:setPropertyActionListener
-											target="#{newPlaylistMB.song}" value="#{song}" />
-									</h:commandButton>
-								</h:panelGrid>
-								</h:column>
-							</h:dataTable>
-							</h:column>
-						</h:panelGrid>
-					</h:panelGroup>
-
-					<h:panelGrid columns="2">
-						<h:commandButton
-							action="#{newPlaylistMB.addPlaylist(activeUserMB)}"
-							value="Create Playlist" />
-						<h:commandButton action="#{newPlaylistMB.myPlaylists()}"
-							value="Cancel" immediate="true" />
+							<h:message for="playlistName" class="loginlabel" errorClass="loginerror" />
+							<h:messages globalOnly="true" class="generalError" />
+						</h:column>
+						<h:column>
+							<h:commandButton rendered="#{playlistsManagerMB.newP}"
+								style="margin-left:10px;" class="buttonList"
+								action="#{newPlaylistMB.addPlaylist(activeUserMB)}"
+								value="Create Playlist" />
+							<h:commandButton rendered="#{!playlistsManagerMB.newP}"
+								style="margin-left:10px;" class="buttonList"
+								action="#{playlistsManagerMB.updatePlaylistEnd(activeUserMB)}"
+								value="Update Playlist" />
+							<h:commandButton class="buttonList"
+								action="#{playlistsManagerMB.listMyPlaylists()}" value="Cancel"
+								immediate="true" />
+						</h:column>
 					</h:panelGrid>
+					<div>
+						<h:panelGroup columns="2">
+							<h:panelGrid class="addTracks">
+							<h:column>
+							<div class="myTitle">All Songs</div>
+							<h:dataTable value="#{playlistsManagerMB.allSongs}" var="song"
+										styleClass="order-table" captionClass="order-table-caption"
+										headerClass="order-table-header" rowClasses="order-table-row">
+								<h:column>
+									<f:facet name="header">
+									Title
+								</f:facet>
+				
+								#{song.title}
+								</h:column>
+										<h:column>
+											<f:facet name="header">
+									Artist
+								</f:facet>
+				
+								#{song.artist}
+								</h:column>
+										<h:column>
+											<f:facet name="header">
+									Album
+								</f:facet>
+				
+								#{song.album}
+								</h:column>
+										<h:column>
+											<f:facet name="header">
+									Release Year
+								</f:facet>
+				
+								#{song.releaseYear}
+								</h:column>
+										<h:column>
+											<f:facet name="header">
+									Added by
+								</f:facet>
+				
+								#{song.owner.name}
+								</h:column>
+										<h:column>
+											<h:panelGrid columns="1">
+												<h:commandButton rendered="#{playlistsManagerMB.newP}" class="buttonList"
+													action="#{newPlaylistMB.addSongToPlaylist()}" value="Add"
+													immediate="true">
+													<f:setPropertyActionListener target="#{newPlaylistMB.song}"
+														value="#{song}" />
+												</h:commandButton>
+												<h:commandButton rendered="#{!playlistsManagerMB.newP}" class="buttonList"
+													action="#{playlistsManagerMB.addSongToPlaylist()}"
+													value="Add"	immediate="true">
+													<f:setPropertyActionListener
+														target="#{playlistsManagerMB.song}" value="#{song}" />
+												</h:commandButton>											
+											</h:panelGrid>
+										</h:column>
+									</h:dataTable>
+								</h:column>
+							</h:panelGrid>
+							<h:panelGrid class="addTracks">
+							<h:column>
+							<h:panelGrid rendered="#{playlistsManagerMB.newP}">
+							<div class="myTitle">Songs to Add to Playlist</div>
+							</h:panelGrid>
+							<h:panelGrid rendered="#{!playlistsManagerMB.newP}">
+							<div class="myTitle">Playlist Songs</div>
+							</h:panelGrid>
+							<h:dataTable value="#{newPlaylistMB.listSongs()}" var="song" 
+										styleClass="order-table" captionClass="order-table-caption"
+										headerClass="order-table-header" rowClasses="order-table-row">
+								<h:column>
+								<f:facet name="header">
+									Title
+								</f:facet>
+				
+								#{song.title}
+								</h:column>
+								<h:column>
+								<f:facet name="header">
+									Artist
+								</f:facet>
+				
+								#{song.artist}
+								</h:column>
+										<h:column>
+											<f:facet name="header">
+									Album
+								</f:facet>
+				
+								#{song.album}
+								</h:column>
+										<h:column>
+											<f:facet name="header">
+									Release Year
+								</f:facet>
+				
+								#{song.releaseYear}
+								</h:column>
+										<h:column>
+											<f:facet name="header">
+									Added by
+								</f:facet>
+				
+								#{song.owner.name}
+								</h:column>
+										<h:column>
+											<h:panelGrid columns="1">
+												<h:commandButton rendered="#{playlistsManagerMB.newP}" 
+													action="#{newPlaylistMB.removeSongFromPlaylist()}"
+													value="Delete" immediate="true" class="buttonList">
+													<f:setPropertyActionListener
+														target="#{newPlaylistMB.song}"
+														value="#{song}" />
+												</h:commandButton>
+												<h:commandButton rendered="#{!playlistsManagerMB.newP}" 
+													action="#{playlistsManagerMB.removeSongFromPlaylist()}"
+													value="Delete" immediate="true" class="buttonList">
+													<f:setPropertyActionListener
+														target="#{playlistsManagerMB.song}"
+														value="#{song}" />
+												</h:commandButton>
+											</h:panelGrid>
+										</h:column>
+									</h:dataTable>
+								</h:column>
+							</h:panelGrid>
+						</h:panelGroup>
+					</div>
 				</h:form>
+				<br />
+				<br />
 			</div>
 		</ui:define>
 	</ui:composition>

@@ -1,6 +1,5 @@
 package dei.uc.pt.aor;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -34,6 +33,7 @@ public class PlaylistsManagerMB implements Serializable {
 	private String password;
 	private String repeatedPassword;
 	private String playlistName;
+	private boolean newP;
 	
 	private String operation; 
 	
@@ -77,7 +77,8 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public String updatePlaylistStart() {
 		playlistName = playlist.getName();
-		return "updatePlaylist?faces-redirect=true";
+		newP = false;
+		return "newPlaylist?faces-redirect=true";
 	}
 	
 	public String viewPlaylistStart() {
@@ -184,8 +185,13 @@ public class PlaylistsManagerMB implements Serializable {
 	public Song getSong() {
 		return song;
 	}
+	
+	public String deletePlaylistStart() {
+		return "deletePlaylist";
+	}
+		
 
-	public String deletePlaylistEnd(){
+	public String deletePlaylistEnd() {
 		
 		try {
 			playlistFacade.delete(playlist);
@@ -215,12 +221,14 @@ public class PlaylistsManagerMB implements Serializable {
 	
 	public String removeSongFromPlaylist() {
 		playlistFacade.removeSongFromPlaylist(playlist, song);
-		return "updatePlaylist";
+		newP = false;
+		return "newPlaylist";
 	}
 	
 	public String addSongToPlaylist() {
 		playlistFacade.addSongToPlaylist(playlist, song);
-		return "updatePlaylist";
+		newP = false;
+		return "newPlaylist";
 	}
 	
 
@@ -374,6 +382,14 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public void setPlaylistName(String playlistName) {
 		this.playlistName = playlistName;
+	}
+
+	public boolean isNewP() {
+		return newP;
+	}
+
+	public void setNewP(boolean newP) {
+		this.newP = newP;
 	}
 
 }

@@ -14,18 +14,17 @@
 
 			<h:form class="loginForm">
 			<h:panelGrid columns="1">
-			<h:column><div class="textInfo" >Are you sure you want to remove your account?</div></h:column>
-			<h:column><div class="textInfo" id="myTextInfo" >Pressing "Yes, I sure!" will be definitive.</div></h:column>
+			<h:column><h4 class="textInfo" >Are you sure you want to remove the playlist 
+											#{playlistsManagerMB.playlist.name}?</h4></h:column>
 			</h:panelGrid>
 			<h:panelGrid class="menuPrinc" columns="2">
-				<h:commandButton action="#{loginMB.removeUser(activeUserMB)}"
-					value="Yes, I'm sure!" class="button" />
-				<h:commandButton action="#{playlistsManagerMB.goToProfile()}"
+				<h:commandButton action="#{playlistsManagerMB.deletePlaylistEnd()}"
+					value="Yes" class="button" />
+				<h:commandButton action="#{playlistsManagerMB.listMyPlaylists()}"
 					value="Cancel" class="button" />
 				</h:panelGrid>
 			</h:form>
 			<br />
-			
 		</ui:define>
 
 	</ui:composition>

@@ -1,0 +1,90 @@
+@charset "UTF-8";
+
+
+body {
+	position: relative;
+	background-image: url("../resources/images/image2.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-attachment: fixed;
+	text-align: center;	
+	min-width: 1190px;
+	font-family: cursive;
+	margin: 0px;
+}
+
+
+.header {
+	text-align: center;
+	  padding-bottom: 10px;
+  padding-top: 15px;
+	color: white;
+	font-family: cursive;
+	font-weight: bolder;
+	font-size: 30px;
+		display: -webkit-inline-box;
+  display: -moz-inline-box;
+  display:inline-block;
+}
+
+
+/* .header {
+	  text-align: center;
+  padding-bottom: 5px;
+  color: white;
+  font-family: cursive;
+  font-weight: bolder;
+  font-size: 30px;
+	display: -webkit-inline-box;
+  display: -moz-inline-box;
+  display:inline-block;
+} */
+
+.entry{
+	 text-align:center;
+}
+.header2 {
+	  text-align: center;
+  padding-bottom: 5px;
+  color: white;
+  font-family: cursive;
+  font-weight: bolder;
+  font-size: 25px;
+  	display: -webkit-inline-box;
+  display: -moz-inline-box;
+  display:inline-block;
+}
+
+.bartext{
+	display: -webkit-inline-box;
+  display: -moz-inline-box;
+  display:inline-block;
+  font-size: 20px;
+
+}
+
+.buttonLogin {	
+  -webkit-border-radius: 11;
+  -moz-border-radius: 11;
+  border-radius: 11px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  background: gray;
+  padding: 5px 10px 5px 10px;
+  text-decoration: none;
+}
+
+
+.button{
+	  -webkit-border-radius: 11;
+  -moz-border-radius: 11;
+  border-radius: 11px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  background: #4b4b4b;
+  
+  padding: 3px 8px 3px 8px;
+  text-decoration: none;
+}

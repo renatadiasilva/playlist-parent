@@ -1,0 +1,372 @@
+@charset "UTF-8";
+
+.pagina {
+	background-image: url("../resources/images/fundo4.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-attachment: fixed;
+	text-align: center;
+}
+
+.header1 {
+	text-align: center;
+	padding-top: 10px;
+	color: white;
+	font-family: cursive;
+	font-weight: bolder;
+}
+
+.textInfo{
+	color:white;
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	margin-top: 5px;
+}
+
+#myTextInfo{
+	font-size: 15px;
+}
+
+.titleMenu{
+	text-align: center;
+	color:white;
+ 	font-size: 23px;
+ 	font-weight: bold;
+ }
+ 
+ .myTitle {
+ 	font-size: 20px;
+ }
+ 
+.buttonList{
+	display: -webkit-inline-box; 
+	 display: -moz-inline-box;
+  display:inline-block;
+  -webkit-border-radius: 11;
+	-moz-border-radius: 11;
+	border-radius: 11px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 15px;
+	background: #4b4b4b;
+	padding: 3px 8px 3px 8px;
+	text-decoration: none;
+}
+
+
+.my{
+	display: -webkit-inline-box; 
+	 display: -moz-inline-box;
+  display:inline-block;
+}
+
+.addTracks{
+	display: -webkit-inline-box; 
+	 display: -moz-inline-box;
+  display:inline-block;	
+  margin-right: 10px;
+  vertical-align: top;
+}
+
+.namePlaylist {
+		display: -webkit-inline-box; 
+	 display: -moz-inline-box;
+  display:inline-block;	
+  margin-right: 10px;
+  vertical-align: top;
+  margin-bottom: 20px;
+}
+
+.tabelaPlaylists{
+	display: -webkit-inline-box; 
+	 display: -moz-inline-box;
+  display:inline-block;
+}
+
+
+#login {
+	text-align: center;
+	display: -webkit-inline-box;
+	display: -moz-inline-box;
+	display: inline-block;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.face {
+	text-align: center;
+	padding-bottom: 5px;
+	color: white;
+	font-family: cursive;
+	font-weight: bolder;
+	font-size: 40px;
+}
+
+.header {
+	text-align: center;
+	padding-bottom: 10px;
+	padding-top: 15px;
+	color: white;
+	font-family: cursive;
+	font-weight: bolder;
+	font-size: 30px;
+	display: -webkit-inline-box;
+	display: -moz-inline-box;
+	display: inline-block;
+}
+
+.logout {
+	margin-left: 30px;
+	display: -webkit-inline-box;
+	display: -moz-inline-box;
+	display: inline-block;
+}
+
+.title {
+	text-align: center;
+	color: white;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.loginheader {
+	font-size: 20px;
+	padding-bottom: 20px;
+	padding-top: 10px;
+	color: white;
+	font-family: verdana;
+}
+
+.logintext {
+	font-weight: bold;
+	height: 25px;
+	border-color: gray;
+	width: 250px;
+}
+
+.buttonLogin {
+	-webkit-border-radius: 11;
+	-moz-border-radius: 11;
+	border-radius: 11px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 20px;
+	background: gray;
+	padding: 8px 15px 8px 15px;
+	text-decoration: none;
+}
+
+.button {
+	-webkit-border-radius: 11;
+	-moz-border-radius: 11;
+	border-radius: 11px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 20px;
+	background: #4b4b4b;
+	padding: 3px 8px 3px 8px;
+	text-decoration: none;
+	
+}
+
+.tabelaPlaylists{
+	display: -webkit-inline-box;
+	  display: -moz-inline-box;
+  display:inline-block;
+}
+
+.buttonPlaylist {
+	-webkit-border-radius: 11;
+	-moz-border-radius: 11;
+	border-radius: 11px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 15px;
+	background: #4b4b4b;
+	padding: 2px 5px 2px 5px;
+	text-decoration: none;
+	padding: 5px;
+}
+
+.loginNewUser {
+	height: 50px;
+}
+
+.fontLogin {
+	text-align: right;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	color: white;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.loginlabel {
+	color: white;
+	font-size: 20px;
+}
+
+.loginerror {
+	color: red;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.generalError {
+	color: red;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.fontNewUser {
+	text-align: right;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	color: white;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	color: white;
+	background:black;
+}
+
+.menuPrinc {
+	display: -webkit-inline-box;
+	display: -moz-inline-box;
+	display: inline-block;
+	margin-top: 10px;
+}
+
+.btn {
+	-webkit-box-shadow: 0px 1px 3px #00000a;
+	-moz-box-shadow: 0px 1px 3px #00000a;
+	box-shadow: 0px 1px 3px #00000a;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 20px;
+	background: #000000;
+	padding: 10px 40px 10px 40px;
+	text-decoration: none;
+}
+
+.btn:hover {
+	background: #646b70;
+	text-decoration: none;
+}
+
+.profile {
+	text-align: center;
+	color: white;
+	display: -webkit-inline-box;
+	display: -moz-inline-box;
+	display: inline-block;
+}
+
+.loginForm {
+	display: -webkit-inline-box;
+	display: -moz-inline-box;
+	display: inline-block;
+}
+
+.mensgConfirm {
+	color: red;
+	font-size: 30px;
+	font-weight: bold;
+	display: -webkit-inline-box;
+	display: -moz-inline-box;
+	display: inline-block;
+}
+
+.allSongs {
+	background: gray;
+	text-align: center;
+	border: 2px;
+	border-color: white;
+	width: auto;
+	height: auto;
+}
+
+.allSongsTitle {
+	background: gray;
+	text-align: center;
+	border: 2px;
+	border-color: white;
+	width: auto;
+	height: auto;
+}
+
+.talelaPlaylists {
+	display: -webkit-inline-box;
+	display: -moz-inline-box;
+	display: inline-block;
+}
+
+.order-table {
+	border-top: 2px solid transparent;
+	border: 1px solid #2a2c2f;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #45484d;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#45484d),
+		to(#000000));
+	background-image: -webkit-linear-gradient(top, #45484d, #000000);
+	background-image: -moz-linear-gradient(top, #45484d, #000000);
+	background-image: -ms-linear-gradient(top, #45484d, #000000);
+	background-image: -o-linear-gradient(top, #45484d, #000000);
+	background-image: linear-gradient(to bottom, #45484d, #000000);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,
+		startColorstr=#45484d, endColorstr=#000000);
+	padding: 10px;
+	width: 650px;
+}
+
+.order-table-caption {
+	text-align: center;
+	padding: 16px;
+	font-size: 15px;
+	font-weight: 900;
+	border-bottom: 1px solid white;
+	border-top: 2px solid transparent;
+	border: 1px solid #2a2c2f;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #45484d;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#45484d),
+		to(#000000));
+	background-image: -webkit-linear-gradient(top, #45484d, #000000);
+	background-image: -moz-linear-gradient(top, #45484d, #000000);
+	background-image: -ms-linear-gradient(top, #45484d, #000000);
+	background-image: -o-linear-gradient(top, #45484d, #000000);
+	background-image: linear-gradient(to bottom, #45484d, #000000);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,
+		startColorstr=#45484d, endColorstr=#000000);
+}
+
+.order-table-header {
+	text-align: center;
+	border-bottom: 1px solid white;
+	font-size: 15px;
+	padding: 5px;
+}
+
+.order-table-row {
+	text-align: center;
+	border-bottom: 1px solid white;
+	font-size: 15px;
+}

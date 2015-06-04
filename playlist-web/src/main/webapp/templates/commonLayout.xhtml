@@ -6,7 +6,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+	<h:outputStylesheet name="commonCss.css" library="css" />
+	<h:outputStylesheet name="playlistCss.css" library="css" />
 	<title>Playlists Manager</title>
 </h:head>
 
@@ -16,26 +17,20 @@
 			<ui:include src="commonHeader.xhtml" />
 		</ui:insert>
 	</div>
-	
+
 	<div class="menu">
 		<ui:insert name="menu">
 			<ui:include src="commonMenu.xhtml" />
 		</ui:insert>
 	</div>
-		
+
 	<div class="content">
 		<ui:insert name="content">
 			<ui:include src="commonContent.xhtml" />
 		</ui:insert>
 	</div>
-	
-	<div class="player">
-		<ui:insert name="player">
-			<ui:include src="commonPlayer.xhtml" />
-		</ui:insert>
-	</div>
-	
-		<div class="footer">
+
+	<div class="footer">
 		<ui:insert name="footer">
 			<ui:include src="commonFooter.xhtml" />
 		</ui:insert>
