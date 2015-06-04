@@ -72,7 +72,6 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public List<Playlist> playlistsOfUser(ActiveUserMB auser) {
-		
 		return playlistFacade.playlistsOfUser(auser.getCurrentUser());
 	}
 
@@ -109,6 +108,24 @@ public class PlaylistsManagerMB implements Serializable {
 	public boolean removeUser(ActiveUserMB auser) {
 		
 		try {
+			User u = auser.getCurrentUser();
+			List<Song> uSongs = songFacade.songsOfUser(u);
+			for (Song s : uSongs) {
+				try {
+					User admin = findUserByEmail("admin@admin.com");
+
+					s.setOwner(admin);
+					songFacade.update(s);
+				} catch (EJBException e) {
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting song."));
+					return false;
+				}
+			}
+			
+			List<Playlist> uPlaylists = playlistFacade.playlistsOfUser(u);
+			for (Playlist p: uPlaylists) playlistFacade.delete(p);
+			
+			// ver table 4!!
 			userFacade.delete(auser.getCurrentUser());
 			return true;
 		} catch (EJBException e) {
@@ -144,10 +161,9 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String updatePlaylistEnd(ActiveUserMB auser) {
-		System.out.println(playlistName.equals(playlist.getName()));
-		System.out.println(playlistSameName(auser, playlistName).size() == 0);
-		System.out.println(playlistName+" "+playlist.getName());
-		if ( (playlistName.equals(playlist.getName())) || (playlistSameName(auser, playlistName).size() == 0) ) {
+		
+		if ( (playlistName.equals(playlist.getName())) || 
+				(playlistSameName(auser, playlistName).size() == 0) ) {
 
 			try {
 				playlist.setName(playlistName);

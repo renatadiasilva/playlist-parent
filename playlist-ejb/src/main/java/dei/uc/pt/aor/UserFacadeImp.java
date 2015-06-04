@@ -67,9 +67,6 @@ public class UserFacadeImp implements UserFacade {
 	
 	public void delete(User u) {
 		log.info("Removing account for user with email {}.",u.getEmail());
-		
-		//remover playlists e songs (verificar se apaga tb da table PL_SNGS)
-		// usar id=8
 		userDAO.delete(u);
 	}
 
