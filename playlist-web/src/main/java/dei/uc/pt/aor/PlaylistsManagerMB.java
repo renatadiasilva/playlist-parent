@@ -315,6 +315,7 @@ public class PlaylistsManagerMB implements Serializable {
 	public String deleteSongEnd(ActiveUserMB auser) {
 		
 		if (auser.isAdmin()) {
+			//remover das playlists
 			songFacade.delete(song);
 			return "listMySongs";
 		} else { 
@@ -481,6 +482,11 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public void setOrder(int order) {
 		this.order = order;
+	}
+	
+	public String chooseOrder(int order) {
+		this.order = order;
+		return "listMyPlaylists";
 	}
 
 }
