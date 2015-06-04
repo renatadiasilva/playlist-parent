@@ -56,7 +56,6 @@ public abstract class GenericDAO<T> {
 		try {
 			Query query = em.createNamedQuery(namedQuery);
 
-			// Method that will populate parameters if they are passed not null and empty
 			if (parameters != null && !parameters.isEmpty()) {
 				populateQueryParameters(query, parameters);
 			}

@@ -40,7 +40,7 @@ public class LoginMB implements Serializable {
 				aUser.setEmail(email);
 				aUser.setCurrentUser(u);
 				aUser.startSession();
-				return "/pages/index?faces-redirect=true";
+				return "/pages/listMyPlaylists?faces-redirect=true";
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Login failure: Wrong password."));
 				return "login";
