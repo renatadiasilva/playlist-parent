@@ -277,8 +277,8 @@
 }
 
 .mensgConfirm {
-	color: red;
-	font-size: 30px;
+	color: green;
+	font-size: 20px;
 	font-weight: bold;
 	display: -webkit-inline-box;
 	display: -moz-inline-box;
@@ -303,7 +303,7 @@
 	height: auto;
 }
 
-.talelaPlaylists {
+.tabelaPlaylists {
 	display: -webkit-inline-box;
 	display: -moz-inline-box;
 	display: inline-block;

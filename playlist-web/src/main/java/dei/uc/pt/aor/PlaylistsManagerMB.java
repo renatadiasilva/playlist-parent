@@ -1,5 +1,6 @@
 package dei.uc.pt.aor;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -33,7 +34,17 @@ public class PlaylistsManagerMB implements Serializable {
 	private String password;
 	private String repeatedPassword;
 	private String playlistName;
+	private String releaseY;
+	private String searchTitle;
+	private String searchArtist;
+	
+	private boolean play;
 	private boolean newP;
+	private boolean newS;
+	private boolean delP;
+	private int order;
+	
+	private List<Song> searchList;
 	
 	private String operation; 
 	
@@ -41,10 +52,9 @@ public class PlaylistsManagerMB implements Serializable {
 	
 	private Song song;
 	
-	private boolean play;
-	
 	public PlaylistsManagerMB() {
-		setPlay(false);
+		play = false;
+		order = 1;
 	}
 	
 	public Playlist getPlaylist() {
@@ -72,7 +82,7 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public List<Playlist> playlistsOfUser(ActiveUserMB auser) {
-		return playlistFacade.playlistsOfUser(auser.getCurrentUser());
+		return playlistFacade.playlistsOfUser(auser.getCurrentUser(), order);
 	}
 
 	public String updatePlaylistStart() {
@@ -124,7 +134,7 @@ public class PlaylistsManagerMB implements Serializable {
 				}
 			}
 			
-			List<Playlist> uPlaylists = playlistFacade.playlistsOfUser(u);
+			List<Playlist> uPlaylists = playlistFacade.playlistsOfUser(u, order);
 			for (Playlist p: uPlaylists) playlistFacade.delete(p);
 			
 			userFacade.delete(auser.getCurrentUser());
@@ -187,9 +197,15 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String deletePlaylistStart() {
-		return "deletePlaylist";
+		delP = true;
+		return "delete";
 	}
-		
+
+	public String deleteSongStart() {
+		delP = false;
+		return "delete";
+	}
+
 
 	public String deletePlaylistEnd() {
 		
@@ -246,7 +262,9 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public String updateSongStart() {
-		return "updateSong?faces-redirect=true";
+		releaseY = ""+song.getReleaseYear();
+		newS = false;
+		return "newSong?faces-redirect=true";
 	}
 	
 	public String updateFilePath(Song s) {
@@ -262,15 +280,26 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public String updateSongEnd() {
+
+		if (releaseY.matches("^\\d+$")) {
+			
+			int y = Integer.parseInt(releaseY);
+			
+			if ( (y >= 1900) && (y <= Calendar.getInstance().get(Calendar.YEAR))) {
+			
+				try {
+					song.setReleaseYear(y);
+					songFacade.update(song);
+					return "listMySongs?faces-redirect=true";
+				} catch (EJBException e) {
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating song."));
+				}
+				
+			} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Release Year non valid!!"));
+
+		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Release Year is not an integer number!!"));
 		
-		try {			
-			songFacade.update(song);
-			return "listMySongs?faces-redirect=true";
-		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating song."));
-			return null;
-		}
-		
+		return null;
 	}
 	
 	public String deleteNewSong(Song s) {
@@ -300,6 +329,12 @@ public class PlaylistsManagerMB implements Serializable {
 				return null;
 			}
 		} 
+	}
+	
+	public List<Song> searchSongs() {
+		// cuidado se for nula a expressão
+//		songFacade.nova funcao para pesquisa
+		return null;
 	}
 	
 	public String changePass() {
@@ -390,6 +425,62 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public void setNewP(boolean newP) {
 		this.newP = newP;
+	}
+
+	public boolean isDelP() {
+		return delP;
+	}
+
+	public void setDelP(boolean delP) {
+		this.delP = delP;
+	}
+
+	public boolean isNewS() {
+		return newS;
+	}
+
+	public void setNewS(boolean newS) {
+		this.newS = newS;
+	}
+
+	public String getReleaseY() {
+		return releaseY;
+	}
+
+	public void setReleaseY(String releaseY) {
+		this.releaseY = releaseY;
+	}
+
+	public List<Song> getSearchList() {
+		return searchList;
+	}
+
+	public void setSearchList(List<Song> searchList) {
+		this.searchList = searchList;
+	}
+
+	public String getSearchTitle() {
+		return searchTitle;
+	}
+
+	public void setSearchTitle(String searchTitle) {
+		this.searchTitle = searchTitle;
+	}
+
+	public String getSearchArtist() {
+		return searchArtist;
+	}
+
+	public void setSearchArtist(String searchArtist) {
+		this.searchArtist = searchArtist;
+	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 }

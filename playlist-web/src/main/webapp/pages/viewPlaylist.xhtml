@@ -14,7 +14,11 @@
 					#{playlistsManagerMB.playlist.name}</h3>
 			</div>
 
-			<h:form class="talelaPlaylists">
+			<h:form class="tabelaPlaylists">
+				<h:panelGrid class="my" columns="1">
+					<h:commandButton action="#{playlistsManagerMB.listMyPlaylists()}"
+						value="Go Back" class="buttonList"/>
+				</h:panelGrid>
 				<h:dataTable style="width:1000px" class="allSongs"
 					value="#{playlistsManagerMB.songs}" var="song"
 					styleClass="order-table"
@@ -56,8 +60,9 @@
 								#{song.owner.name}
 								</h:column>
 					<h:column>
-						<h:panelGrid columns="1">
-							<h:commandButton action="#{playlistsManagerMB.start()}"
+						<h:panelGrid class="my" columns="1">
+							<h:commandButton class="buttonList"
+								action="#{playlistsManagerMB.start()}"
 								value="Play">
 								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
 									value="#{song}" />
@@ -65,11 +70,6 @@
 						</h:panelGrid>
 					</h:column>
 				</h:dataTable>
-
-				<h:panelGrid columns="1">
-					<h:commandButton action="#{playlistsManagerMB.listMyPlaylists()}"
-						value="Go Back" immediate="true" />
-				</h:panelGrid>
 				<br />
 				<br />
 				<br />
@@ -79,6 +79,8 @@
 						loop="loop" autoplay="autoplay" controls="controls" />
 				</h:panelGrid>
 			</h:form>
+			<br />
+			<br />
 			<br />
 		</ui:define>
 

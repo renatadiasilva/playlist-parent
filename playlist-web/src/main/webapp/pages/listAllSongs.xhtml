@@ -1,14 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-<h:head>
-	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
-	<title>Playlists Manager</title>
-</h:head>
 
 <h:body>
 
@@ -16,47 +11,54 @@
 
 		<ui:define name="content">
 
-			<div class="contentTitle">List All Songs</div>
+			<div>
+				<h3 class="titleMenu">All Songs</h3>
+			</div>
+			<h:form class="tabelaPlaylists" >
 
-			<br /><br />
-
-			<h:form>
-				<h:dataTable value="#{playlistsManagerMB.allSongs}" var="song">
+					<h:dataTable style="width:1000px" value="#{playlistsManagerMB.allSongs}" var="song"
+						styleClass="order-table" captionClass="order-table-caption"
+						headerClass="order-table-header" rowClasses="order-table-row">
 					<h:column>
 						<f:facet name="header">
 							Title
 						</f:facet>
-						<h:commandButton class="botoes" value="#{song.title}" />
+				
+						#{song.title}
 					</h:column>
 						<h:column>
 							<f:facet name="header">
 							Artist
 						</f:facet>
-						<h:commandButton class="botoes" value="#{song.artist}" />
+				
+						#{song.artist}
 					</h:column>
 						<h:column>
 							<f:facet name="header">
 							Album
 						</f:facet>
-						<h:commandButton class="botoes" value="#{song.album}" />
+				
+						#{song.album}
 					</h:column>
 						<h:column>
 							<f:facet name="header">
 							Release Year
 						</f:facet>
-						<h:commandButton class="botoes" value="#{song.releaseYear}" />
+				
+						#{song.releaseYear}
 					</h:column>
 						<h:column>
 							<f:facet name="header">
 							Added by
 						</f:facet>
-						<h:commandButton class="botoes" value="#{song.owner.name}" />				
+				
+						#{song.owner.name}
 					</h:column>
 						<h:column>
-							<h:panelGrid columns="2">
+							<h:panelGrid columns="2" class="allsongs">
 								<h:inputHidden value="#{song.id}" />
 								<h:commandButton action="#{newPlaylistMB.addSongToPlaylist()}"
-									value="Add to Playlist">
+									value="Add to Playlist" class="buttonList">
 									<f:setPropertyActionListener
 										target="#{newPlaylistMB.song}" value="#{song}" />
 								</h:commandButton>
@@ -64,6 +66,8 @@
 						</h:column>
 					</h:dataTable>
 			</h:form>
+			<br />
+			<br />
 			<br />
 		</ui:define>
 

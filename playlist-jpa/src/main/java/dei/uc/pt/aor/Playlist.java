@@ -21,11 +21,8 @@ import javax.validation.constraints.NotNull;
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.dateOfCriation DESC"),
 	@NamedQuery(name="Playlist.playlistOfUserBySizeAsc", 
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size"),
-//			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY SIZE(p.songs)"),
 	@NamedQuery(name="Playlist.playlistOfUserBySizeDesc", 
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size DESC"),
-//	@NamedQuery(name="Playlist.playlistOfUserBySizeDesc1", 
-//			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY SIZE(p.songs) DESC"),
 	@NamedQuery(name="Playlist.playlistSameName",
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId AND p.name = :name"),
 })

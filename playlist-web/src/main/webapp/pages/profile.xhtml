@@ -11,12 +11,14 @@
 
 		<ui:define name="content">
 
-			<div class="contentTitle">Editing Profile of User #{activeUserMB.email} </div>
+			<div class="contentTitle">
+				<h3 class="titleMenu">Edit Profile </h3>
+			</div>
 
 			<div class="profile">
 				<h:form id="loginForm">
-					<h:panelGroup>
-						<h:panelGrid columns="1">
+					<h:panelGroup style="display: inline-table;">
+						<h:panelGrid columns="1" style="display: inline-table;">
 
 							<h:outputLabel for="name" value="Name" class="loginlabel" />
 							<h:inputText value="#{playlistsManagerMB.name}" required="true"
@@ -27,18 +29,18 @@
 						</h:panelGrid>
 					</h:panelGroup>
 
-					<h:panelGrid columns="3">
-						<h:commandButton action="#{playlistsManagerMB.updateProfile(activeUserMB)}"
-							value="Update">
+					<h:panelGrid columns="3" style="margin-top: 20px">
+						<h:commandButton
+							action="#{playlistsManagerMB.updateProfile(activeUserMB)}"
+							value="Update" class="button">
 						</h:commandButton>
 						<h:commandButton action="#{playlistsManagerMB.changePass()}"
-							value="Change Pass">
+							value="Change Password" class="button">
 						</h:commandButton>
 						<h:commandButton action="#{playlistsManagerMB.remove()}"
-							value="Remove Account" immediate="true" />
+							value="Remove Account" immediate="true" class="button" />
 					</h:panelGrid>
 				</h:form>
-				<br />
 			</div>
 		</ui:define>
 

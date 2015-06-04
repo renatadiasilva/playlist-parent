@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 @Named
@@ -50,11 +51,12 @@ public class NewSongMB implements Serializable {
 
 	}
 	
-	public String mySongs() {
-		return "listMySongs?faces-redirect=true";
-	}
-	
 	public String newSong() {
+		title = "";
+		artist = "";
+		album = "";
+		releaseYear = "";
+		manager.setNewS(true);
 		return "newSong?faces-redirect=true";
 	}
 

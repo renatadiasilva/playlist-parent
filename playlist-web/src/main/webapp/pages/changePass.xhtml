@@ -5,16 +5,18 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<h:body>
+<h:body class="pagina1">
 
 	<ui:composition template="../templates/commonLayout.xhtml">
 
 		<ui:define name="content">
 
-			<div class="contentTitle">Changing password of User #{activeUserMB.email} </div>
+			<div>
+				<h3 class="titleMenu">Change Password</h3>
+			</div>
 
 			<div class="profile">
-				<h:form id="loginForm">
+				<h:form class="loginForm">
 					<h:panelGroup>
 						<h:panelGrid columns="1">
 
@@ -22,35 +24,34 @@
 							<h:inputSecret value="#{activeUserMB.password}" required="true"
 								requiredMessage="Empty old password!" id="opassword"
 								class="logintext" />
-							<h:message for="opassword" class="loginlabel"
+							<h:message   style="color:red;"  for="opassword" class="loginlabel"
 								errorClass="loginerror" />
 
 							<h:outputLabel value="New Password" class="loginlabel" />
 							<h:inputSecret value="#{playlistsManagerMB.password}" required="true"
 								requiredMessage="Empty new password!" id="npassword"
 								class="logintext" />
-							<h:message for="npassword" class="loginlabel"
+							<h:message  style="color:red;"  for="npassword" class="loginlabel"
 								errorClass="loginerror" />
 
 							<h:outputLabel value="Repeat New Password" class="loginlabel" />
 							<h:inputSecret value="#{playlistsManagerMB.repeatedPassword}"
 								required="true" requiredMessage="Empty repeated password!"
 								id="repassword" class="logintext" />
-							<h:message for="repassword" class="loginlabel"
+							<h:message   style="color:red;" for="repassword" class="loginlabel"
 								errorClass="loginerror" />
 
-							<h:messages globalOnly="true" class="loginlabel" />
+							<h:messages globalOnly="true" class="generalError" />
 						</h:panelGrid>
 					</h:panelGroup>
 
-					<h:panelGrid columns="2">
+					<h:panelGrid columns="2" style="display: display: -webkit-inline-box;display: -moz-inline-box;display: inline-block;">
 						<h:commandButton action="#{playlistsManagerMB.updatePass(activeUserMB.email,activeUserMB.password)}"
-							value="Update" />
+							value="Update" class="button"/>
 						<h:commandButton action="#{playlistsManagerMB.goToProfile()}"
-							value="Cancel" immediate="true" />
+							value="Cancel" immediate="true" class="button" />
 					</h:panelGrid>
 				</h:form>
-				<br />
 			</div>
 		</ui:define>
 

@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:body>
@@ -11,19 +11,20 @@
 
 		<ui:define name="content">
 
-			<div class="contentTitle">List All My Songs</div>
+			<div>
+				<h3 class="titleMenu">My Songs</h3>
+			</div>
 
-			<br /><br />
-
-			<h:form>
-				<h:panelGrid columns="1">
-					<h:commandButton
-						action="#{newSongMB.newSong()}"
-						value="Add New Song">
+			<h:form class="my">
+				<h:panelGrid  class="my">
+					<h:commandButton action="#{newSongMB.newSong()}"
+						value="Add New Song" class="buttonList">
 					</h:commandButton>
-				</h:panelGrid>
-				<h:dataTable value="#{playlistsManagerMB.songsOfUser(activeUserMB)}"
-					var="song">
+				</h:panelGrid >
+				<h:dataTable style="width:1000px" value="#{playlistsManagerMB.songsOfUser(activeUserMB)}"
+					var="song" styleClass="order-table"
+					captionClass="order-table-caption" headerClass="order-table-header"
+					rowClasses="order-table-row" >
 					<h:column>
 						<f:facet name="header">
 							Title
@@ -53,16 +54,17 @@
 						#{song.releaseYear}
 					</h:column>
 					<h:column>
-						<h:panelGrid columns="2">
+						<h:panelGrid class="my" columns="2">
 							<h:commandButton action="#{playlistsManagerMB.updateSongStart()}"
-								value="Update">
-								<f:setPropertyActionListener
-									target="#{playlistsManagerMB.song}" value="#{song}" />
+								value="Update" class="buttonList">
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
+									value="#{song}" />
 							</h:commandButton>
-							<h:commandButton action="#{playlistsManagerMB.deleteSongEnd(activeUserMB)}"
-								value="Delete">
-								<f:setPropertyActionListener
-									target="#{playlistsManagerMB.song}" value="#{song}" />
+							<h:commandButton
+								action="#{playlistsManagerMB.deleteSongStart()}"
+								value="Delete" class="buttonList">
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
+									value="#{song}" />
 							</h:commandButton>
 						</h:panelGrid>
 					</h:column>

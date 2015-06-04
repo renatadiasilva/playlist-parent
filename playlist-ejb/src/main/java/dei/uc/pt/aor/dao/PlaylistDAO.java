@@ -24,10 +24,18 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 			super.delete(playlist.getId(), Playlist.class);
 	}
 	
-	public List<Playlist> playlistsOfUser(User u) {
+	public List<Playlist> playlistsOfUser(User u, int order) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("ownerId", u);
-		return super.findSomeResults("Playlist.playlistOfUserByNameAsc", parameters);
+		switch (order) {
+		case 1: return super.findSomeResults("Playlist.playlistOfUserByNameAsc", parameters);
+		case 2: return super.findSomeResults("Playlist.playlistOfUserByNameDesc", parameters);
+		case 3: return super.findSomeResults("Playlist.playlistOfUserByDateAsc", parameters);
+		case 4: return super.findSomeResults("Playlist.playlistOfUserByDateDesc", parameters);
+		case 5: return super.findSomeResults("Playlist.playlistOfUserBySizeAsc", parameters);
+		case 6: return super.findSomeResults("Playlist.playlistOfUserBySizeDesc", parameters);
+		default: return null;
+		}
 	}
 	
 	public List<Playlist> playlistSameName(User u, String name) {

@@ -15,11 +15,43 @@
 				<h3 class="titleMenu">My Playlists</h3>
 			</div>
 
-			<h:form class="talelaPlaylists">
-				<h:panelGrid class="my" columns="1">
+			<h:form class="tabelaPlaylists">
+				<h:panelGrid class="my" columns="7">
+					<h:column>
 					<h:commandButton action="#{newPlaylistMB.newPlaylist()}"
 						value="New Playlist" class="buttonList">
 					</h:commandButton>
+					</h:column>
+					<h:column>
+					<h:commandButton action="#{playlistsManagerMB.order(1)}"
+						value="Order by Name Asc" class="buttonList">
+					</h:commandButton>
+					</h:column>
+					<h:column>
+					<h:commandButton action="#{playlistsManagerMB.order(2)}"
+						value="Order by Name Desc" class="buttonList">
+					</h:commandButton>
+					</h:column>
+					<h:column>
+					<h:commandButton action="#{playlistsManagerMB.order(4)}"
+						value="Order by Date Asc" class="buttonList">
+					</h:commandButton>
+					</h:column>
+					<h:column>
+					<h:commandButton action="#{playlistsManagerMB.order(4)}"
+						value="Order by Date Desc" class="buttonList">
+					</h:commandButton>
+					</h:column>
+					<h:column>
+					<h:commandButton action="#{playlistsManagerMB.order(5)}"
+						value="Order by Size Asc" class="buttonList">
+					</h:commandButton>
+					</h:column>
+					<h:column>
+					<h:commandButton action="#{playlistsManagerMB.order(6)}"
+						value="Order by Size Desc" class="buttonList">
+					</h:commandButton>
+					</h:column>
 				</h:panelGrid>
 				<h:dataTable style="width:1000px" class="allSongs"
 					value="#{playlistsManagerMB.playlistsOfUser(activeUserMB)}"
@@ -48,8 +80,7 @@
 					<h:column>
 						<h:panelGrid class="my" columns="3">
 							<h:commandButton class="buttonList"
-								action="#{playlistsManagerMB.viewPlaylistStart()}"
-								value="Play">
+								action="#{playlistsManagerMB.viewPlaylistStart()}" value="Play">
 								<f:setPropertyActionListener
 									target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
 							</h:commandButton>
@@ -67,9 +98,11 @@
 							</h:commandButton>
 						</h:panelGrid>
 					</h:column>
-
 				</h:dataTable>
 			</h:form>
+			<br />
+			<br />
+			<br />
 			<br />
 		</ui:define>
 
