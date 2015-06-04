@@ -1,6 +1,8 @@
 package dei.uc.pt.aor;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 //import javax.faces.application.FacesMessage;
 //import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -32,15 +34,18 @@ public class NewPlaylistMB implements Serializable {
 	
 	public String addPlaylist(ActiveUserMB auser) {
 
-//		ver se ja existe playlist c esse nome
-		Playlist playlist = new Playlist(name, new Date(), auser.getCurrentUser());
-		for (Song s : tracks) {
-			playlist.addSong(s);
+		if (manager.playlistSameName(auser, name).size() == 0) {
+
+			Playlist playlist = new Playlist(name, new Date(), auser.getCurrentUser());
+			for (Song s : tracks) {
+				playlist.addSong(s);
+			}
+			manager.addPlaylist(playlist);
+			return "listMyPlaylists?faces-redirect=true";
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("There is already a playlist with that name"));
+			return null;
 		}
-		manager.addPlaylist(playlist);
-		return "listMyPlaylists?faces-redirect=true";
-//		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("erros!!!!"));
-//		return "newSong";
 
 	}
 	

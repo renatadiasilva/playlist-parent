@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:body>
@@ -12,12 +13,58 @@
 
 			<div class="contentTitle">List All Users Starting by R</div>
 
-			<br /><br />
+			<br />
+			<br />
 
-			<h:dataTable value="#{playlistsManagerMB.getUsersStartingBy('R%')}"
-				var="user">
-				<h:column>#{user.name}</h:column>
-			</h:dataTable>
+			<h:form>
+				<h:dataTable value="#{playlistsManagerMB.getUsersStartingBy('R%')}"
+					var="user">
+					<h:column>#{user.name}</h:column>
+				</h:dataTable>
+
+				<h:dataTable value="#{playlistsManagerMB.allSongs}" var="song">
+					<h:column>
+						<f:facet name="header">
+							Title
+						</f:facet>
+						<h:commandButton class="botoes" value="#{song.title}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							Artist
+						</f:facet>
+						<h:commandButton class="botoes" value="#{song.artist}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							Album
+						</f:facet>
+						<h:commandButton class="botoes" value="#{song.album}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							Release Year
+						</f:facet>
+						<h:commandButton class="botoes" value="#{song.releaseYear}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							Added by
+						</f:facet>
+						<h:commandButton class="botoes" value="#{song.owner.name}" />
+					</h:column>
+					<h:column>
+						<h:panelGrid columns="2">
+							<h:inputHidden value="#{song.id}" />
+							<h:commandButton action="#{newPlaylistMB.addSongToPlaylist()}"
+								value="Add to Playlist">
+								<f:setPropertyActionListener target="#{newPlaylistMB.song}"
+									value="#{song}" />
+							</h:commandButton>
+						</h:panelGrid>
+					</h:column>
+				</h:dataTable>
+			</h:form>
 
 		</ui:define>
 

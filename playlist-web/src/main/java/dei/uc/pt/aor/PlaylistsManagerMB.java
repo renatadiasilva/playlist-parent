@@ -1,5 +1,6 @@
 package dei.uc.pt.aor;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -32,6 +33,7 @@ public class PlaylistsManagerMB implements Serializable {
 	private String name;
 	private String password;
 	private String repeatedPassword;
+	private String playlistName;
 	
 	private String operation; 
 	
@@ -75,6 +77,7 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public String updatePlaylistStart() {
+		playlistName = playlist.getName();
 		return "updatePlaylist?faces-redirect=true";
 	}
 	
@@ -140,14 +143,23 @@ public class PlaylistsManagerMB implements Serializable {
 
 	}
 	
-	public String updatePlaylistEnd() {
-		
-		try {
-			playlistFacade.update(playlist);
-			play = false;
-			return "listMyPlaylists";
-		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating playlist."));
+	public String updatePlaylistEnd(ActiveUserMB auser) {
+		System.out.println(playlistName.equals(playlist.getName()));
+		System.out.println(playlistSameName(auser, playlistName).size() == 0);
+		System.out.println(playlistName+" "+playlist.getName());
+		if ( (playlistName.equals(playlist.getName())) || (playlistSameName(auser, playlistName).size() == 0) ) {
+
+			try {
+				playlist.setName(playlistName);
+				playlistFacade.update(playlist);
+				return "listMyPlaylists";
+			} catch (EJBException e) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating playlist."));
+				return null;
+			}
+			
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("There is already a playlist with that name!"));
 			return null;
 		}
 		
@@ -170,8 +182,11 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String listMyPlaylists(){
-		play = false;
 		return "listMyPlaylists?faces-redirect=true";
+	}
+	
+	public List<Playlist> playlistSameName(ActiveUserMB auser, String name) {
+		return playlistFacade.playlistSameName(auser.getCurrentUser(), name);
 	}
 
 	public void addPlaylist(Playlist p) {
@@ -335,6 +350,14 @@ public class PlaylistsManagerMB implements Serializable {
 	public String path() {
 		if (song != null) return song.getPathFile();
 		return "";
+	}
+
+	public String getPlaylistName() {
+		return playlistName;
+	}
+
+	public void setPlaylistName(String playlistName) {
+		this.playlistName = playlistName;
 	}
 
 }

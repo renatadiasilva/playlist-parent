@@ -15,7 +15,7 @@
 				<h:panelGroup>
 				<h:panelGrid columns="1" >
 					<h:outputLabel for="playlistName" value="Name" />
-					<h:inputText id="playlistName" value="#{playlistsManagerMB.playlist.name}" required="true"
+					<h:inputText id="playlistName" value="#{playlistsManagerMB.playlistName}" required="true"
 						requiredMessage="Empty name!" />
 					<h:messages />
 				</h:panelGrid>
@@ -122,7 +122,7 @@
 				</h:panelGroup>
 
 				<h:panelGrid columns="2">
-					<h:commandButton action="#{playlistsManagerMB.updatePlaylistEnd()}"
+					<h:commandButton action="#{playlistsManagerMB.updatePlaylistEnd(activeUserMB)}"
 						value="Update" >
 						</h:commandButton>
 					<h:commandButton action="#{playlistsManagerMB.listMyPlaylists()}"

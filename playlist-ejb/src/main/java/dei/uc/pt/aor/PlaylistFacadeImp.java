@@ -46,6 +46,10 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 		return playlistDAO.playlistsOfUser(u);
 	}
 	
+	public List<Playlist> playlistSameName(User u, String name) {
+		return playlistDAO.playlistSameName(u, name);
+	}
+	
 	public List<Song> getSongs(Playlist p) {
 		return playlistDAO.getSongs(p);
 	}

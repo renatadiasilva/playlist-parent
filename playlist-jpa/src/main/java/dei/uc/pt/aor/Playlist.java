@@ -24,10 +24,10 @@ import javax.validation.constraints.NotNull;
 //			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY SIZE(p.songs)"),
 	@NamedQuery(name="Playlist.playlistOfUserBySizeDesc", 
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size DESC"),
-//			SELECT e FROM Employee ORDER BY SIZE(e.projects) DESC
-//			Using SIZE function, also selects the size (uses group by)
 //	@NamedQuery(name="Playlist.playlistOfUserBySizeDesc1", 
 //			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY SIZE(p.songs) DESC"),
+	@NamedQuery(name="Playlist.playlistSameName",
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId AND p.name = :name"),
 })
 public class Playlist implements Serializable {
 

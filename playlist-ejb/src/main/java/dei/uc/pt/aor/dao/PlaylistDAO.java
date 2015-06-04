@@ -29,6 +29,13 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 		parameters.put("ownerId", u);
 		return super.findSomeResults("Playlist.playlistOfUserByNameAsc", parameters);
 	}
+	
+	public List<Playlist> playlistSameName(User u, String name) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("ownerId", u);
+		parameters.put("name", name);
+		return super.findSomeResults("Playlist.playlistSameName", parameters);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Song> getSongs(Playlist p) {
