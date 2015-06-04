@@ -64,7 +64,7 @@ public class UploadFile implements Serializable {
 	}
 
 	private String generatePath(Long id) {
-		return "D:\\nata\\universidade\\Programação em Java\\PAJ\\software\\wildfly-8.2.0.Final\\Proj4UploadedFiles\\id"
+		return System.getProperty("jboss.home.dir")+"\\Proj4UploadedFiles\\id"
 					+id+"-"+getFilename(file);
 	}
 	

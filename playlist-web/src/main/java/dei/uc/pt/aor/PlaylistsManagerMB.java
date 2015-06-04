@@ -81,6 +81,7 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String viewPlaylistStart() {
+		play = false;
 		return "viewPlaylist?faces-redirect=true";
 	}	
 	
@@ -125,7 +126,6 @@ public class PlaylistsManagerMB implements Serializable {
 			List<Playlist> uPlaylists = playlistFacade.playlistsOfUser(u);
 			for (Playlist p: uPlaylists) playlistFacade.delete(p);
 			
-			// ver table 4!!
 			userFacade.delete(auser.getCurrentUser());
 			return true;
 		} catch (EJBException e) {

@@ -31,6 +31,7 @@ public class LoginMB implements Serializable {
 	}
 		
 	public String doLogin() {
+
 		User u = manager.findUserByEmail(email);
 		if (u != null) {
 			if (u.getPassword().equals(epw.encrypt(password))) {
