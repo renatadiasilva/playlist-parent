@@ -57,7 +57,7 @@ public class NewSongMB implements Serializable {
 		album = "";
 		releaseYear = "";
 		manager.setNewS(true);
-		return "newSong?faces-redirect=true";
+		return "song?faces-redirect=true";
 	}
 
 	/********* Getters e Setters ************/

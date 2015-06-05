@@ -60,14 +60,14 @@ public class NewPlaylistMB implements Serializable {
 
 	public String removeSongFromPlaylist() {
 		tracks.remove(song);
-		return "newPlaylist";
+		return "playlist";
 	}
 	
 	public String newPlaylist() {
 		name = "";
 		manager.setNewP(true);
 		tracks = new ArrayList<Song>();
-		return "newPlaylist?faces-redirect=true";
+		return "playlist?faces-redirect=true";
 	}
 	
 	public List<Song> listSongs() {

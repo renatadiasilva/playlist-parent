@@ -92,7 +92,7 @@ public class PlaylistsManagerMB implements Serializable {
 	public String updatePlaylistStart() {
 		playlistName = playlist.getName();
 		newP = false;
-		return "newPlaylist?faces-redirect=true";
+		return "playlist?faces-redirect=true";
 	}
 	
 	public String viewPlaylistStart() {
@@ -242,7 +242,7 @@ public class PlaylistsManagerMB implements Serializable {
 	public String removeSongFromPlaylist() {
 		playlistFacade.removeSongFromPlaylist(playlist, song);
 		newP = false;
-		return "newPlaylist";
+		return "playlist";
 	}
 	
 	public String addToPlaylist() {
@@ -257,7 +257,7 @@ public class PlaylistsManagerMB implements Serializable {
 	public String addSongToPlaylist() {
 		playlistFacade.addSongToPlaylist(playlist, song);
 		newP = false;
-		return "newPlaylist";
+		return "playlist";
 	}
 	
 	public String addSongToPlaylist2() {
@@ -281,7 +281,7 @@ public class PlaylistsManagerMB implements Serializable {
 	public String updateSongStart() {
 		releaseY = ""+song.getReleaseYear();
 		newS = false;
-		return "newSong?faces-redirect=true";
+		return "song?faces-redirect=true";
 	}
 	
 	public String updateFilePath(Song s) {
