@@ -11,96 +11,130 @@
 		<ui:define name="content">
 
 			<div class="profile">
-				<h3 class="titleMenu">Add song #{playlistsManagerMB.song.title}
-					to Playlists</h3>
 				<h:form class="loginForm">
-					<h:panelGrid class="namePlaylist" columns="1">
-						<h:column>
-							<h:commandButton class="buttonList"
+					<div class="my">
+						<div style="margin-top: 15px;">
+
+							<div class="titleMenu">
+								Add song <span >'#{playlistsManagerMB.song.title}'</span>
+					to Playlists </div>
+						</div>
+						<div style="margin-top: 15px;">
+							<h:commandButton style="text-align:center;" class="buttonList"
 								action="#{playlistsManagerMB.goBackSearch()}" value="Go Back" />
-						</h:column>
-					</h:panelGrid>
-				
-					<h:panelGroup class="addTracks" columns="2">
-						<h:column>
-							<div class="myTitle">All Playlists</div>
-							<h:dataTable
-								value="#{playlistsManagerMB.playlistsOfUser(activeUserMB)}"
-								var="playlist" styleClass="order-table"
-								captionClass="order-table-caption"
-								headerClass="order-table-header" rowClasses="order-table-row">
+
+						</div>
+
+					</div>
+
+					<div>
+						<h:panelGroup columns="2">
+							<h:panelGrid class="addTracks">
+
+
 								<h:column>
-									<f:facet name="header">
+									<div style="color: white;" class="myTitle">All
+										Playlists</div>
+								</h:column>
+
+
+								<h:dataTable
+									value="#{playlistsManagerMB.playlistsOfUser(activeUserMB)}"
+									var="playlist" styleClass="order-table"
+									captionClass="order-table-caption"
+									headerClass="order-table-header" rowClasses="order-table-row">
+									<h:column>
+										<f:facet name="header">
 										Name
 										</f:facet>
 										#{playlist.name}
 									</h:column>
-								<h:column>
-									<f:facet name="header">
+									<h:column>
+										<f:facet name="header">
 										Date of Creation
 										</f:facet>
 										#{playlist.dateOfCriation}
 									</h:column>
-								<h:column>
-									<f:facet name="header">
+									<h:column>
+										<f:facet name="header">
 										Tracks
 										</f:facet>
 										#{playlist.size}
 									</h:column>
-								<h:column>
-									<h:panelGrid columns="1">
-										<h:commandButton class="buttonList"
-											action="#{playlistsManagerMB.addSongToPlaylist2()}"
-											value="Add" immediate="true">
-											<f:setPropertyActionListener
-												target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
-										</h:commandButton>
-									</h:panelGrid>
-								</h:column>
-							</h:dataTable>
-						</h:column>
-						<h:column>
-							<div class="myTitle">My Playlists Containing Song</div>
-							<h:dataTable
-								value="#{playlistsManagerMB.playlistsOfUserContainingSong(activeUserMB)}"
-								var="playlist" styleClass="order-table"
-								captionClass="order-table-caption"
-								headerClass="order-table-header" rowClasses="order-table-row">
-								<h:column>
-									<f:facet name="header">
+									<h:column>
+										<h:panelGrid columns="1">
+											<h:commandButton class="buttonList"
+												action="#{playlistsManagerMB.addSongToPlaylist2()}"
+												value="Add" immediate="true">
+												<f:setPropertyActionListener
+													target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
+											</h:commandButton>
+										</h:panelGrid>
+									</h:column>
+								</h:dataTable>
+							</h:panelGrid>
+
+
+
+
+							<h:column class="addTraks;">
+								<h:panelGrid class="addTracks">
+
+
+									<h:column>
+
+										<h:outputText 
+											style="color: white" class="myTitle"
+											value="My Playlists
+												Containing Song" />
+									</h:column>
+									<h:dataTable
+										value="#{playlistsManagerMB.playlistsOfUserContainingSong(activeUserMB)}"
+										var="playlist" styleClass="order-table"
+										captionClass="order-table-caption"
+										headerClass="order-table-header" rowClasses="order-table-row">
+										<h:column>
+											<f:facet name="header">
 										Name
 										</f:facet>
 										#{playlist.name}
 									</h:column>
-								<h:column>
-									<f:facet name="header">
+										<h:column>
+											<f:facet name="header">
 											Date of Creation
 										</f:facet>
 										#{playlist.dateOfCriation}
 									</h:column>
-								<h:column>
-									<f:facet name="header">
+										<h:column>
+											<f:facet name="header">
 											Tracks
 										</f:facet>
 										#{playlist.size}
 									</h:column>
-								<h:column>
-									<h:panelGrid columns="1">
-										<h:commandButton class="buttonList"
-											action="#{playlistsManagerMB.removeSongFromPlaylist2()}"
-											value="Delete" immediate="true">
-											<f:setPropertyActionListener
-												target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
-										</h:commandButton>
-									</h:panelGrid>
-								</h:column>
-							</h:dataTable>
-						</h:column>
-					</h:panelGroup>
+										<h:column>
+											<h:panelGrid columns="1">
+												<h:commandButton class="buttonList"
+													action="#{playlistsManagerMB.removeSongFromPlaylist2()}"
+													value="Delete" immediate="true">
+													<f:setPropertyActionListener
+														target="#{playlistsManagerMB.playlist}"
+														value="#{playlist}" />
+												</h:commandButton>
+											</h:panelGrid>
+										</h:column>
+									</h:dataTable>
+
+								</h:panelGrid>
+							</h:column>
+						</h:panelGroup>
+					</div>
 				</h:form>
-				<br /> <br />
-				<br /> <br />
+
 			</div>
+			<br />
+			<br />
+			<br />
+
 		</ui:define>
 	</ui:composition>
 
