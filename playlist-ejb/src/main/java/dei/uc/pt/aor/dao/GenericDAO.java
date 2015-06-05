@@ -47,7 +47,7 @@ public abstract class GenericDAO<T> {
 		return em.createQuery(cq).getResultList();
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	public List<T> findAllByOrder(String namedQuery) {
 		List<T> results = new ArrayList<T>();
 		

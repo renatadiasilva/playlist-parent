@@ -17,7 +17,7 @@ public class SongDAO extends GenericDAO<Song> {
 	}
 
 	public void delete(Song song) {
-			super.delete(song.getId(), Song.class);
+		super.delete(song.getId(), Song.class);
 	}
 
 	public List<Song> songsOfUser(User u) {

@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
 
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.Song;
@@ -21,7 +20,7 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 	}
 
 	public void delete(Playlist playlist) {
-			super.delete(playlist.getId(), Playlist.class);
+		super.delete(playlist.getId(), Playlist.class);
 	}
 	
 	public List<Playlist> playlistsOfUser(User u, int order) {
