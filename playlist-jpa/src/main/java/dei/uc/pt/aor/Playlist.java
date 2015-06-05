@@ -14,17 +14,19 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name="Playlist.playlistOfUserByNameAsc",
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.name"),
 	@NamedQuery(name="Playlist.playlistOfUserByDateAsc",
-			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.dateOfCriation"),
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.dateOfCriation, p.name"),
 	@NamedQuery(name="Playlist.playlistOfUserByNameDesc",
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.name DESC"),
 	@NamedQuery(name="Playlist.playlistOfUserByDateDesc",
-			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.dateOfCriation DESC"),
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.dateOfCriation DESC, p.name"),
 	@NamedQuery(name="Playlist.playlistOfUserBySizeAsc", 
-			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size"),
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size, p.name"),
 	@NamedQuery(name="Playlist.playlistOfUserBySizeDesc", 
-			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size DESC"),
+			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.size DESC, p.name"),
 	@NamedQuery(name="Playlist.playlistSameName",
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId AND p.name = :name"),
+	@NamedQuery(name="Playlist.playlistsOfUserContainingSong",
+			query="SELECT p FROM Playlist p JOIN p.songs s WHERE p.owner = :ownerId AND s.id = :idS")
 })
 public class Playlist implements Serializable {
 

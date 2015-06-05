@@ -57,10 +57,10 @@
 						<h:column>
 							<h:panelGrid columns="2" class="allsongs">
 								<h:inputHidden value="#{song.id}" />
-								<h:commandButton action="#{newPlaylistMB.addSongToPlaylist()}"
+								<h:commandButton action="#{playlistsManagerMB.addToPlaylist()}"
 									value="Add to Playlist" class="buttonList">
 									<f:setPropertyActionListener
-										target="#{newPlaylistMB.song}" value="#{song}" />
+										target="#{playlistsManagerMB.song}" value="#{song}" />
 								</h:commandButton>
 							</h:panelGrid>
 						</h:column>

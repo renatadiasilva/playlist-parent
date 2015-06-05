@@ -9,6 +9,8 @@ public interface SongFacade {
 	public abstract void delete(Song song);
 	public abstract Song find(int entityID);
 	public abstract List<Song> findAll();
+	public abstract List<Song> findAllByOrder();
 	public abstract List<Song> songsOfUser(User u);
+	public abstract List<Song> songsByArtistTitle(String expt, String expa);
 
 }

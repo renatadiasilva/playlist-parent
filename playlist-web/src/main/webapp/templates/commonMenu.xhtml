@@ -19,13 +19,13 @@
 						action="listMySongs?faces-redirect=true" />
 
 					<h:commandButton value="All Songs" class="buttonLogin"
-						action="listAllSongs?faces-redirect=true" />
+						action="#{playlistsManagerMB.goAllSongs()}" />
 
 					<h:commandButton value= "My Profile" class="buttonLogin"
 					action="profile?faces-redirect=true"/>
 
 					<h:commandButton value="Search Songs" class="buttonLogin"
-						action="search?faces-redirect=true" />
+						action="#{playlistsManagerMB.search()}" />
 
 				</table>
 			</h:form>

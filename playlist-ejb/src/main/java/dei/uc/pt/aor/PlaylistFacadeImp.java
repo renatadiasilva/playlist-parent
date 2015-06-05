@@ -37,13 +37,16 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 		return playlistDAO.find(entityID);
 	}
 	
-	//Não é necessária
 	public List<Playlist> findAll() {
 		return playlistDAO.findAll();
 	}
 	
 	public List<Playlist> playlistsOfUser(User u, int order) {
 		return playlistDAO.playlistsOfUser(u, order);
+	}
+	
+	public List<Playlist> playlistsOfUserContainingSong(User u, Song s) {
+		return playlistDAO.playlistsOfUserContainingSong(u, s);
 	}
 	
 	public List<Playlist> playlistSameName(User u, String name) {

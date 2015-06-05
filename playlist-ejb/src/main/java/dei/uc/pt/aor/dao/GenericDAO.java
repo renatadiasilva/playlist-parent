@@ -42,13 +42,26 @@ public abstract class GenericDAO<T> {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<T> findAll() {
-		// order by???
 		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
 		cq.select(cq.from(entityClass));
 		return em.createQuery(cq).getResultList();
-//		cq.orderBy(em.getCriteriaBuilder().asc(cq.from(entityClass).get(Pet_.birthday));
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<T> findAllByOrder(String namedQuery) {
+		List<T> results = new ArrayList<T>();
+		
+		try {
+			Query query = em.createNamedQuery(namedQuery);
+			results = query.getResultList();
+		} catch (Exception e) {
+			System.out.println("Error while running query: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return results;
+	}
+
 	@SuppressWarnings("unchecked")
 	protected T findOneResult(String namedQuery, Map<String, Object> parameters) {
 		T result = null;

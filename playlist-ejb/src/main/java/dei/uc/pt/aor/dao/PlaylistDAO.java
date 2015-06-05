@@ -85,4 +85,13 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 		
 	}
 
+	public List<Playlist> playlistsOfUserContainingSong(User u, Song s) {
+
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("ownerId", u);
+		parameters.put("idS", s.getId());
+		return super.findSomeResults("Playlist.playlistsOfUserContainingSong", parameters);
+
+	}
+
 }

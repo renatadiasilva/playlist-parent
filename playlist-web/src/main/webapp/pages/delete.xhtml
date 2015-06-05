@@ -24,11 +24,11 @@
 			<h:panelGrid class="menuPrinc" columns="2">
 				<h:commandButton rendered="#{playlistsManagerMB.delP}" action="#{playlistsManagerMB.deletePlaylistEnd()}"
 					value="Yes" class="button" />
-				<h:commandButton rendered="#!{playlistsManagerMB.delP}" action="#{playlistsManagerMB.deleteSongEnd(activeUserMB)}"
+				<h:commandButton rendered="#{!playlistsManagerMB.delP}" action="#{playlistsManagerMB.deleteSongEnd(activeUserMB)}"
 					value="Yes" class="button" />
-				<h:commandButton action="#{playlistsManagerMB.listMyPlaylists()}"
+				<h:commandButton rendered="#{playlistsManagerMB.delP}" action="#{playlistsManagerMB.listMyPlaylists()}"
 					value="Cancel" class="button" />
-				<h:commandButton action="#{playlistsManagerMB.listMySongs()}"
+				<h:commandButton rendered="#{!playlistsManagerMB.delP}" action="#{playlistsManagerMB.listMySongs()}"
 					value="Cancel" class="button" />
 				</h:panelGrid>
 			</h:form>

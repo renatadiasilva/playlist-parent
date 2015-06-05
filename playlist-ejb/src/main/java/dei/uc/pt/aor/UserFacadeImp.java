@@ -27,16 +27,13 @@ public class UserFacadeImp implements UserFacade {
 		log.info("Adding user with email "+u.getEmail()+"to DB.");
 		log.debug("Trying to add user: "+u.getEmail()+" "+u.getName()+").");
 		userDAO.save(u);
-		//check if u has a valid email (not here): u.getPassword().contains("@")
 	}
 	
-	// tirar??
 	public List<User> getUsers() {
 		log.info("Creating Query for all users.");
 		return userDAO.findAll();
 	}
 
-	// depois passar para coisas mais genéricas (mas nas songs e playlists)
 	public List<User> usersWithNameStartingBy(String exp) {
 		log.info("Creating Query for all users with name starting by {}.",
 				exp.substring(exp.length() - 2, exp.length() - 1));
@@ -44,7 +41,6 @@ public class UserFacadeImp implements UserFacade {
 	}
 	
 	public User update(User u) {
-		//not all needed
 		isUserWithAllData(u);
 		return userDAO.update(u);
 	}

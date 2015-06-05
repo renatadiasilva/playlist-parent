@@ -1,5 +1,6 @@
 package dei.uc.pt.aor;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class PlaylistsManagerMB implements Serializable {
 	private boolean newP;
 	private boolean newS;
 	private boolean delP;
+	private boolean search;
 	private int order;
 	
 	private List<Song> searchList;
@@ -58,9 +60,7 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public Playlist getPlaylist() {
-		if(playlist == null){
-			playlist = new Playlist();
-		}
+		if(playlist == null) playlist = new Playlist();
 		return playlist;
 	}
 	
@@ -84,7 +84,11 @@ public class PlaylistsManagerMB implements Serializable {
 	public List<Playlist> playlistsOfUser(ActiveUserMB auser) {
 		return playlistFacade.playlistsOfUser(auser.getCurrentUser(), order);
 	}
-
+	
+	public List<Playlist> playlistsOfUserContainingSong(ActiveUserMB auser) {
+		return playlistFacade.playlistsOfUserContainingSong(auser.getCurrentUser(), song);
+	}
+	
 	public String updatePlaylistStart() {
 		playlistName = playlist.getName();
 		newP = false;
@@ -179,7 +183,7 @@ public class PlaylistsManagerMB implements Serializable {
 			try {
 				playlist.setName(playlistName);
 				playlistFacade.update(playlist);
-				return "listMyPlaylists";
+				return "listMyPlaylists?faces-redirect=true";
 			} catch (EJBException e) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating playlist."));
 				return null;
@@ -198,12 +202,12 @@ public class PlaylistsManagerMB implements Serializable {
 	
 	public String deletePlaylistStart() {
 		delP = true;
-		return "delete";
+		return "delete?faces-redirect=true";
 	}
 
 	public String deleteSongStart() {
 		delP = false;
-		return "delete";
+		return "delete?faces-redirect=true";
 	}
 
 
@@ -241,26 +245,39 @@ public class PlaylistsManagerMB implements Serializable {
 		return "newPlaylist";
 	}
 	
+	public String addToPlaylist() {
+		return "addToPlaylist?faces-redirect=true";
+	}
+	
+	public String removeSongFromPlaylist2() {
+		playlistFacade.removeSongFromPlaylist(playlist, song);
+		return "addToPlaylist";
+	}
+	
 	public String addSongToPlaylist() {
 		playlistFacade.addSongToPlaylist(playlist, song);
 		newP = false;
 		return "newPlaylist";
 	}
 	
+	public String addSongToPlaylist2() {
+		playlistFacade.addSongToPlaylist(playlist, song);
+		return "addToPlaylist";
+	}
 
 	public void addSong(Song s) {
 		songFacade.save(s);
 	}
 	
 	public List<Song> getAllSongs() {
-		return songFacade.findAll();
+//		return songFacade.findAll();
+		return songFacade.findAllByOrder();
 	}
 	
 	public List<Song> songsOfUser(ActiveUserMB auser) {
-		
 		return songFacade.songsOfUser(auser.getCurrentUser());
 	}
-
+	
 	public String updateSongStart() {
 		releaseY = ""+song.getReleaseYear();
 		newS = false;
@@ -332,10 +349,30 @@ public class PlaylistsManagerMB implements Serializable {
 		} 
 	}
 	
-	public List<Song> searchSongs() {
-		// cuidado se for nula a expressão
-//		songFacade.nova funcao para pesquisa
-		return null;
+	public String search() {
+		search = true;
+		searchArtist = "";
+		searchTitle = "";
+		searchList = new ArrayList<>();
+		return "search?faces-redirect=true";
+	}
+	
+	public String goAllSongs() {
+		search = false;
+		return "listAllSongs?faces-redirect=true";
+	}
+
+	
+	public String goBackSearch() {
+		if (search) return "search?faces-redirect=true";
+		else return "listAllSongs?faces-redirect=true";
+	}
+
+	public String searchSongs() {
+		String expa = "%"+searchTitle.toUpperCase()+"%";
+		String expt = "%"+searchArtist.toUpperCase()+"%";
+		searchList = songFacade.songsByArtistTitle(expa, expt);
+		return "search";
 	}
 	
 	public String changePass() {
@@ -453,6 +490,7 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public List<Song> getSearchList() {
+		if (searchList == null) searchList = new ArrayList<>();
 		return searchList;
 	}
 
@@ -487,6 +525,14 @@ public class PlaylistsManagerMB implements Serializable {
 	public String chooseOrder(int order) {
 		this.order = order;
 		return "listMyPlaylists";
+	}
+
+	public boolean isSearch() {
+		return search;
+	}
+
+	public void setSearch(boolean search) {
+		this.search = search;
 	}
 
 }

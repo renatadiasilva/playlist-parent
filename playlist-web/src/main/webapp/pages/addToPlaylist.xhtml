@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+
+	<ui:composition template="../templates/commonLayout.xhtml">
+		<ui:define name="content">
+
+			<div class="profile">
+				<h3 class="titleMenu">Add song #{playlistsManagerMB.song.title}
+					to Playlists</h3>
+				<h:form class="loginForm">
+					<h:panelGrid class="namePlaylist" columns="1">
+						<h:column>
+							<h:commandButton class="buttonList"
+								action="#{playlistsManagerMB.goBackSearch()}" value="Go Back" />
+						</h:column>
+					</h:panelGrid>
+				
+					<h:panelGroup class="addTracks" columns="2">
+						<h:column>
+							<div class="myTitle">All Playlists</div>
+							<h:dataTable
+								value="#{playlistsManagerMB.playlistsOfUser(activeUserMB)}"
+								var="playlist" styleClass="order-table"
+								captionClass="order-table-caption"
+								headerClass="order-table-header" rowClasses="order-table-row">
+								<h:column>
+									<f:facet name="header">
+										Name
+										</f:facet>
+										#{playlist.name}
+									</h:column>
+								<h:column>
+									<f:facet name="header">
+										Date of Creation
+										</f:facet>
+										#{playlist.dateOfCriation}
+									</h:column>
+								<h:column>
+									<f:facet name="header">
+										Tracks
+										</f:facet>
+										#{playlist.size}
+									</h:column>
+								<h:column>
+									<h:panelGrid columns="1">
+										<h:commandButton class="buttonList"
+											action="#{playlistsManagerMB.addSongToPlaylist2()}"
+											value="Add" immediate="true">
+											<f:setPropertyActionListener
+												target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
+										</h:commandButton>
+									</h:panelGrid>
+								</h:column>
+							</h:dataTable>
+						</h:column>
+						<h:column>
+							<div class="myTitle">My Playlists Containing Song</div>
+							<h:dataTable
+								value="#{playlistsManagerMB.playlistsOfUserContainingSong(activeUserMB)}"
+								var="playlist" styleClass="order-table"
+								captionClass="order-table-caption"
+								headerClass="order-table-header" rowClasses="order-table-row">
+								<h:column>
+									<f:facet name="header">
+										Name
+										</f:facet>
+										#{playlist.name}
+									</h:column>
+								<h:column>
+									<f:facet name="header">
+											Date of Creation
+										</f:facet>
+										#{playlist.dateOfCriation}
+									</h:column>
+								<h:column>
+									<f:facet name="header">
+											Tracks
+										</f:facet>
+										#{playlist.size}
+									</h:column>
+								<h:column>
+									<h:panelGrid columns="1">
+										<h:commandButton class="buttonList"
+											action="#{playlistsManagerMB.removeSongFromPlaylist2()}"
+											value="Delete" immediate="true">
+											<f:setPropertyActionListener
+												target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
+										</h:commandButton>
+									</h:panelGrid>
+								</h:column>
+							</h:dataTable>
+						</h:column>
+					</h:panelGroup>
+				</h:form>
+				<br /> <br />
+				<br /> <br />
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

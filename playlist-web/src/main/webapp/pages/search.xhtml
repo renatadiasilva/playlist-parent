@@ -37,7 +37,7 @@
 					</h:column>
 				</h:panelGrid>
 				<h:dataTable style="width:1000px"
-					value="#{playlistsManagerMB.allSongs}" var="song"
+					value="#{playlistsManagerMB.searchList}" var="song"
 					styleClass="order-table" captionClass="order-table-caption"
 					headerClass="order-table-header" rowClasses="order-table-row">
 					<h:column>
@@ -78,9 +78,9 @@
 					<h:column>
 						<h:panelGrid columns="2" class="allsongs">
 							<h:inputHidden value="#{song.id}" />
-							<h:commandButton action="#{newPlaylistMB.addSongToPlaylist()}"
+							<h:commandButton action="#{playlistsManagerMB.addToPlaylist()}"
 								value="Add to Playlist" class="buttonList">
-								<f:setPropertyActionListener target="#{newPlaylistMB.song}"
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
 									value="#{song}" />
 							</h:commandButton>
 						</h:panelGrid>

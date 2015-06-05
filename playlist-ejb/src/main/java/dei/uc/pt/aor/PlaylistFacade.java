@@ -14,4 +14,5 @@ public interface PlaylistFacade {
 	public abstract void removeSongFromPlaylist(Playlist p, Song s); 
 	public abstract void addSongToPlaylist(Playlist p, Song s);
 	public abstract List<Playlist> playlistSameName(User u, String name);
+	public abstract List<Playlist> playlistsOfUserContainingSong(User u, Song s);
 }

@@ -40,9 +40,17 @@ public class SongFacadeImp implements SongFacade {
 	public List<Song> findAll() {
 		return songDAO.findAll();
 	}
+	
+	public List<Song> findAllByOrder() {
+		return songDAO.findAllByOrder();
+	}
 
 	public List<Song> songsOfUser(User u) {
 		return songDAO.songsOfUser(u);
+	}
+	
+	public List<Song> songsByArtistTitle(String expt, String expa) {
+		return songDAO.songsByArtistTitle(expt, expa);
 	}
 	
 	private void isSongWithAllData(Song song) {
