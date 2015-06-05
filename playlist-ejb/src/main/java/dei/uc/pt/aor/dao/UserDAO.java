@@ -10,7 +10,7 @@ import dei.uc.pt.aor.User;
 
 @Stateless
 public class UserDAO extends GenericDAO<User> {
-
+	
 	public UserDAO() {
 		super(User.class);
 	}

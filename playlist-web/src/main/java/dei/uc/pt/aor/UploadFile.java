@@ -9,11 +9,16 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.Part;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Named
 @RequestScoped
 public class UploadFile implements Serializable {
 
 	private static final long serialVersionUID = -5537671907313363474L;
+	
+	private static final Logger log = LoggerFactory.getLogger(UploadFile.class);
 
 	private Part file;
 
@@ -36,6 +41,7 @@ public class UploadFile implements Serializable {
 	}
 
 	public boolean upload(Long id) {
+		log.info("Uploading file");
 		String Localpath = generatePath(id);
 
 		try {
@@ -44,11 +50,15 @@ public class UploadFile implements Serializable {
 				path = generateServerPath(id);
 				return true;
 			} else {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The file is not a MP3 File!"));
+	        	String errorMsg = "The file is not a MP3 File!";
+	        	log.error(errorMsg);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 				return false;
 			}
 		} catch (IOException ioe) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error in the file upload!"));
+        	String errorMsg = "Error in the file upload: "+ioe.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 			return false;
 		}
 

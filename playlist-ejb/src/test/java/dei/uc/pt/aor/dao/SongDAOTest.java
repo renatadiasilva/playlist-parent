@@ -1,5 +1,7 @@
 package dei.uc.pt.aor.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -12,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.*;
+import dei.uc.pt.aor.Song;
 import dei.uc.pt.aor.User;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -32,34 +35,53 @@ public class SongDAOTest {
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
+		u = new User("teste", "123", "teste@teste.com");
  	}
 
 	@Test
 	public void TestAllSongs() {
-		when(em.createNamedQuery("Song.allSongs")).thenReturn(q);
-		dao.findAllByOrder();
+		String NAMEDQUERY = "Song.allSongs";
+		when(em.createNamedQuery(NAMEDQUERY)).thenReturn(q);
+		
+		List<Song> results = dao.findAllByOrder();
+		when(q.getResultList()).thenReturn(results);
+			
 		verify(q).getResultList();
-		System.out.println("Checked query Song.allSongs.");
+		verify(em).createNamedQuery(NAMEDQUERY);
+
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
+	}
+	
+	@Test
+	public void TestSongsOfUser() {
+		String NAMEDQUERY = "Song.songsOfUser";
+		when(em.createNamedQuery(NAMEDQUERY)).thenReturn(q);
+
+		List<Song> results = dao.songsOfUser(u);
+		when(q.getResultList()).thenReturn(results);
+
+		verify(q).getResultList();
+		verify(q).setParameter("ownerId", u);
+		verify(em).createNamedQuery(NAMEDQUERY);
+
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
 	}
 
 	@Test
-	public void TestSongsOfUser() {
-		when(em.createNamedQuery("Song.songsOfUser")).thenReturn(q);
-	    u = new User("teste", "123", "teste@teste.com");
-		dao.songsOfUser(u);
-		verify(q).getResultList();
-		verify(q).setParameter("ownerId", u);
-		System.out.println("Checked query Song.songsOfUser.");
-	}
-
 	public void TestSongsByArtistTitle() {
-		String exp = "exp";
-		when(em.createNamedQuery("Song.songsByArtistTitle")).thenReturn(q);
-		dao.songsByArtistTitle(exp, exp);
+		String exp = "%";
+		String NAMEDQUERY = "Song.songsByArtistTitle";
+		when(em.createNamedQuery(NAMEDQUERY)).thenReturn(q);
+
+		List<Song> results = dao.songsByArtistTitle(exp, exp);
+		when(q.getResultList()).thenReturn(results);
+
 		verify(q).getResultList();
 		verify(q).setParameter("t", exp);
 		verify(q).setParameter("a", exp);
-		System.out.println("Checked query Song.songsByArtistTitle");
+		verify(em).createNamedQuery(NAMEDQUERY);
+
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
 	}
 	
 }

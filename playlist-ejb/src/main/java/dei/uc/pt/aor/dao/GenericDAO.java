@@ -5,46 +5,92 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class GenericDAO<T> {
 	
 	@PersistenceContext(unitName = "Entities")
 	protected EntityManager em;
 
-	//logger??
-	
 	private Class<T> entityClass;
 	
+	private static final Logger log = LoggerFactory.getLogger(GenericDAO.class);
+
 	public GenericDAO(Class<T> entityClass) {
 		this.entityClass = entityClass;
 	}
 	
 	public void save(T entity) {
-		em.persist(entity);
+		try {
+			em.persist(entity);
+		} catch (Exception e) {
+        	String errorMsg = "Error persisting Entity to BD: "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
 	}
 
 	protected void delete(Object id, Class<T> classe) {
-		T entityToBeRemoved = em.getReference(classe, id);
-		em.remove(entityToBeRemoved);
+		try {
+			T entityToBeRemoved = em.getReference(classe, id);
+			em.remove(entityToBeRemoved);
+		} catch (Exception e) {
+        	String errorMsg = "Error removing Entitiy to BD: "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
 	}
 	
 	public T update(T entity) {
-		return em.merge(entity);
+		try {
+			return em.merge(entity);
+		} catch (Exception e) {
+        	String errorMsg = "Error updating BD: "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+	
+		return null;
 	}
 
 	public T find(int entityID) {
-		return em.find(entityClass, entityID);
+		try {
+			return em.find(entityClass, entityID);
+		} catch (Exception e) {
+        	String errorMsg = "Error in seaching(FIND) BD: "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		
+		return null;
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<T> findAll() {
-		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-		cq.select(cq.from(entityClass));
-		return em.createQuery(cq).getResultList();
+		try {
+			CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+			cq.select(cq.from(entityClass));
+			return em.createQuery(cq).getResultList();
+		} catch (Exception e) {
+        	String errorMsg = "Error in seaching(FINDALL) BD: "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		
+		return null;
 	}
 	
 	@SuppressWarnings({ "unchecked" })
@@ -55,8 +101,10 @@ public abstract class GenericDAO<T> {
 			Query query = em.createNamedQuery(namedQuery);
 			results = query.getResultList();
 		} catch (Exception e) {
-			System.out.println("Error while running query: " + e.getMessage());
-			e.printStackTrace();
+        	String errorMsg = "Error while running query"+
+					"(FINDALLBYORDER): "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
 		
 		return results;
@@ -75,8 +123,11 @@ public abstract class GenericDAO<T> {
 			
 			result = (T) query.getSingleResult();
 		} catch (Exception e) {
-			System.out.println("Error while running query: " + e.getMessage());
-			e.printStackTrace();
+        	String errorMsg = "Error while running query"+
+					"(FINDONERESULT): "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
 		
 		return result;
@@ -96,9 +147,11 @@ public abstract class GenericDAO<T> {
 			results = query.getResultList();
 			
 		} catch (Exception e) {
-			// passar para log??
-			System.out.println("Error while running query: " + e.getMessage());
-			e.printStackTrace();
+        	String errorMsg = "Error while running query"+
+					"(FINDSOMERESULT): "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
 		
 		return results;

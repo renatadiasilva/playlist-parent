@@ -11,6 +11,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import dei.uc.pt.aor.dao.PlaylistDAO;
+
 import java.io.Serializable;
 
 @Named
@@ -18,6 +23,8 @@ import java.io.Serializable;
 public class PlaylistsManagerMB implements Serializable {
 
 	private static final long serialVersionUID = -6930815753145461767L;
+
+	private static final Logger log = LoggerFactory.getLogger(PlaylistDAO.class);
 
 	@EJB
 	private EncryptPass epw;
@@ -76,7 +83,6 @@ public class PlaylistsManagerMB implements Serializable {
 		this.repeatedPassword = repeatedPassword;
 	}
 
-	// tirar
 	public List<Playlist> getAllPlaylists() {
 		return playlistFacade.findAll();
 	}
@@ -105,7 +111,8 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public String updateProfile(ActiveUserMB auser) {
-
+		log.info("Updating profile of user");
+		log.debug("Updating profile of user "+auser.getCurrentUser().getEmail());
 		User u = auser.getCurrentUser();
 		
 		try {
@@ -115,43 +122,58 @@ public class PlaylistsManagerMB implements Serializable {
 			operation = "User Name Update";
 			return "operationOK?faces-redirect=true";
 		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating the name."));
+        	String errorMsg = "Error updating the user name: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 			return "profile";
 		}
 
 	}
 	
 	public boolean removeUser(ActiveUserMB auser) {
-		
+		User u = auser.getCurrentUser();
+		String uemail = u.getEmail();
+		log.info("Removing completely user account ");
+		log.debug("Removing completely user account "+uemail);
 		try {
-			User u = auser.getCurrentUser();
+			u = auser.getCurrentUser();
 			List<Song> uSongs = songFacade.songsOfUser(u);
 			for (Song s : uSongs) {
 				try {
+					log.info("Changing ownership of all songs to admin");
+					log.debug("Changing ownership of all songs of "+uemail+" to admin");
 					User admin = findUserByEmail("admin@admin.com");
 
 					s.setOwner(admin);
 					songFacade.update(s);
 				} catch (EJBException e) {
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting song."));
+		        	String errorMsg = "Error changing the ownership of songs to admin: "+e.getMessage();
+		        	log.error(errorMsg);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 					return false;
 				}
 			}
-			
+			log.info("Deleting all playlists of user");
+			log.debug("Deleting all playlists of "+uemail);
 			List<Playlist> uPlaylists = playlistFacade.playlistsOfUser(u, order);
 			for (Playlist p: uPlaylists) playlistFacade.delete(p);
 			
+			log.info("Deleting account of user");
+			log.debug("Deleting account of "+uemail);
 			userFacade.delete(auser.getCurrentUser());
 			return true;
 		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting user."));
+        	String errorMsg = "Error deleting user: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 			return false;
 		}
 		
 	}
 	
 	public String updatePass(String email, String pass) {
-	
+		log.info("Updating password");
+		log.debug("Updating password of "+email);
 		User u = findUserByEmail(email);
 		
 		if (password.equals(repeatedPassword)) {
@@ -162,22 +184,31 @@ public class PlaylistsManagerMB implements Serializable {
 					operation = "User Password Update";
 					return "operationOK?faces-redirect=true";
 				} catch (EJBException e) {
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating password."));
+		        	String errorMsg = "Error updating password: "+e.getMessage();
+		        	log.error(errorMsg);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 					return "changePass";
 				} 
 			} else {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Wrong old password."));
-				return "changePass";			}
+	        	String errorMsg = "Wrong old password.";
+	        	log.error(errorMsg);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+				return "changePass";		
+			}
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Passwords don't match."));
+        	String errorMsg = "Passwords don't match.";
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 			return "changePass";
 		}	
 
 	}
 	
 	public String updatePlaylistEnd(ActiveUserMB auser) {
-		
-		if ( (playlistName.equals(playlist.getName())) || 
+		String pname = playlist.getName();
+		log.info("Updating playlist");
+		log.debug("Updating playlist "+pname);
+		if ( (playlistName.equals(pname)) || 
 				(playlistSameName(auser, playlistName).size() == 0) ) {
 
 			try {
@@ -185,12 +216,16 @@ public class PlaylistsManagerMB implements Serializable {
 				playlistFacade.update(playlist);
 				return "listMyPlaylists?faces-redirect=true";
 			} catch (EJBException e) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating playlist."));
+	        	String errorMsg = "Error updating playlist: "+e.getMessage();
+	        	log.error(errorMsg);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 				return null;
 			}
 			
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("There is already a playlist with that name!"));
+        	String errorMsg = "There is already a playlist with that name!";
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 			return null;
 		}
 		
@@ -217,7 +252,9 @@ public class PlaylistsManagerMB implements Serializable {
 			playlistFacade.delete(playlist);
 			return "listMyPlaylists?faces-redirect=true";
 		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting playlist."));
+        	String errorMsg = "Error deleting playlist: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 			return null;
 		}
 		
@@ -240,9 +277,20 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String removeSongFromPlaylist() {
-		playlistFacade.removeSongFromPlaylist(playlist, song);
-		newP = false;
-		return "playlist";
+		try {
+			playlistFacade.removeSongFromPlaylist(playlist, song);
+			newP = false;
+			return "playlist";
+		} catch (EJBException e) {
+        	String errorMsg = "Error while removing"
+					+ "song from new playlist: "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		
+		return null;
+
 	}
 	
 	public String addToPlaylist() {
@@ -250,32 +298,79 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String removeSongFromPlaylist2() {
-		playlistFacade.removeSongFromPlaylist(playlist, song);
-		return "addToPlaylist";
+		try {
+			playlistFacade.removeSongFromPlaylist(playlist, song);
+			return "addToPlaylist";
+		} catch (EJBException e) {
+        	String errorMsg = "Error removing song"
+					+ "from playlist: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
 	}
 	
 	public String addSongToPlaylist() {
-		playlistFacade.addSongToPlaylist(playlist, song);
-		newP = false;
-		return "playlist";
+		try {
+			playlistFacade.addSongToPlaylist(playlist, song);
+			newP = false;
+			return "playlist";
+		} catch (EJBException e) {
+        	String errorMsg = "Error adding song"
+					+ "to playlist: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
 	}
 	
 	public String addSongToPlaylist2() {
-		playlistFacade.addSongToPlaylist(playlist, song);
-		return "addToPlaylist";
+		try {
+			playlistFacade.addSongToPlaylist(playlist, song);
+			return "addToPlaylist";
+		} catch (EJBException e) {
+        	String errorMsg = "Error adding song"
+					+ "to new playlist: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
 	}
 
 	public void addSong(Song s) {
-		songFacade.save(s);
+		try {
+			songFacade.save(s);
+		} catch (EJBException e) {
+        	String errorMsg = "Error adding song: "
+					+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+
 	}
 	
 	public List<Song> getAllSongs() {
-//		return songFacade.findAll();
-		return songFacade.findAllByOrder();
+		try {
+			return songFacade.findAllByOrder();
+		} catch (EJBException e) {
+        	String errorMsg = "Error adding getting"
+					+ "all songs: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
 	}
 	
 	public List<Song> songsOfUser(ActiveUserMB auser) {
-		return songFacade.songsOfUser(auser.getCurrentUser());
+		try {
+			return songFacade.songsOfUser(auser.getCurrentUser());
+		} catch (EJBException e) {
+        	String errorMsg = "Error listing songs"
+					+ "of User: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
 	}
 	
 	public String updateSongStart() {
@@ -285,19 +380,23 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String updateFilePath(Song s) {
-		
+		log.info("Updating file path");
+		log.debug("Updating file path of "+s.getTitle());
 		try {			
 			songFacade.update(s);
 			return "listMySongs?faces-redirect=true";
 		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating song path file."));
+        	String errorMsg = "Error updating song path file: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 			return null;
 		}
 
 	}
 
 	public String updateSongEnd() {
-
+		log.info("Updating song");
+		log.debug("Updating song "+song.getTitle());
 		if (releaseY.matches("^\\d+$")) {
 			
 			int y = Integer.parseInt(releaseY);
@@ -309,33 +408,56 @@ public class PlaylistsManagerMB implements Serializable {
 					songFacade.update(song);
 					return "listMySongs?faces-redirect=true";
 				} catch (EJBException e) {
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error updating song."));
+		        	String errorMsg = "Error updating song: "+e.getMessage();
+		        	log.error(errorMsg);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 				}
 				
-			} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Release Year non valid!!"));
+			} else {
+	        	String errorMsg = "Release Year non valid!";
+	        	log.error(errorMsg);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+			}
 
-		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Release Year is not an integer number!!"));
+		} else {
+        	String errorMsg = "Release Year is not an integer number!";
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
 		
 		return null;
 	}
 	
 	public String deleteNewSong(Song s) {
+		log.info("Deleting new song");
 		try {
 			songFacade.delete(s); 
 		} catch (EJBException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting new song"));
+        	String errorMsg = "Error deleting new song: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
 		return null;
-	
 	}
 
 	public String deleteSongEnd(ActiveUserMB auser) {
-		
 		if (auser.isAdmin()) {
+			log.info("Deleting song");
+			log.debug("Deleting song "+song.getTitle()+" (ADMIN)");
 			//remover das playlists
-			songFacade.delete(song);
-			return "listMySongs";
+			try {
+				songFacade.delete(song);
+				return "listMySongs";
+			} catch (EJBException e) {
+	        	String errorMsg = "Error deleting"
+						+ "song (ADMIN): "+e.getMessage();
+	        	log.error(errorMsg);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+			}
+			return null;
 		} else { 
+			log.info("Changing ownership of song to admin");
+			log.debug("Changing ownership of song "+song.getTitle()+"to admin");
 			try {
 				User admin = findUserByEmail("admin@admin.com");
 
@@ -343,7 +465,9 @@ public class PlaylistsManagerMB implements Serializable {
 				songFacade.update(song);
 				return "listMySongs";
 			} catch (EJBException e) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error deleting song."));
+	        	String errorMsg = "Error deleting song: "+e.getMessage();
+	        	log.error(errorMsg);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 				return null;
 			}
 		} 
@@ -371,8 +495,19 @@ public class PlaylistsManagerMB implements Serializable {
 	public String searchSongs() {
 		String expa = "%"+searchTitle.toUpperCase()+"%";
 		String expt = "%"+searchArtist.toUpperCase()+"%";
-		searchList = songFacade.songsByArtistTitle(expa, expt);
-		return "search";
+		log.info("Searching songs");
+		log.debug("Searching songs with title containing "
+				+expa+" and with artist containing "+expt);
+		try {
+			searchList = songFacade.songsByArtistTitle(expa, expt);
+			return "search";
+		} catch (EJBException e) {
+        	String errorMsg = "Error searching songs"
+					+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
 	}
 	
 	public String changePass() {
@@ -388,19 +523,51 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public void addUser(User user) {
-		userFacade.addUser(user);
+		try {
+			userFacade.addUser(user);
+		} catch (EJBException e) {
+        	String errorMsg = "Error adding user"
+					+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
 	}
 	
 	public User findUserByEmail(String email) {
-		return userFacade.findUserByEmail(email);
+		try {
+			return userFacade.findUserByEmail(email);
+		} catch (EJBException e) {
+        	String errorMsg = "Error finding user"
+					+ "by email: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
 	}
 
 	public List<User> getUsers() {
-		return userFacade.getUsers();
+		try {
+			return userFacade.getUsers();
+		} catch (EJBException e) {
+        	String errorMsg = "Error getting users"
+					+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
 	}
 	
 	public List<User> getUsersStartingBy(String exp) {
-		return userFacade.usersWithNameStartingBy(exp);
+		try {
+			return userFacade.usersWithNameStartingBy(exp);
+		} catch (EJBException e) {
+        	String errorMsg = "Error getting users"
+					+ "with name starting by: "+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		
+		return null;
 	}
 
 	public String getName() {
@@ -440,8 +607,16 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public List<Song> getSongs() {
-		searchList = playlistFacade.getSongs(playlist);
-		return searchList;
+		try {
+			searchList = playlistFacade.getSongs(playlist);
+			return searchList;
+		} catch (EJBException e) {
+        	String errorMsg = "Error getting songs"
+					+e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
 	}
 	
 	public int index(Song s) {

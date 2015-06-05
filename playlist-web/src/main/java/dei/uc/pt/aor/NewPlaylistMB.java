@@ -3,10 +3,12 @@ package dei.uc.pt.aor;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-//import javax.faces.application.FacesMessage;
-//import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +20,9 @@ import java.util.List;
 public class NewPlaylistMB implements Serializable {
 
 	private static final long serialVersionUID = -2624145242993606181L;
+
+	private static final Logger log = LoggerFactory.getLogger(NewPlaylistMB.class);
+
 	private String name;
 	private Song song;
 	private List<Song> tracks;
@@ -33,7 +38,8 @@ public class NewPlaylistMB implements Serializable {
 	}
 	
 	public String addPlaylist(ActiveUserMB auser) {
-
+		log.info("Creating Playlist");
+		log.debug("Creating Playlist "+name);
 		if (manager.playlistSameName(auser, name).size() == 0) {
 
 			Playlist playlist = new Playlist(name, new Date(), auser.getCurrentUser());
@@ -43,7 +49,9 @@ public class NewPlaylistMB implements Serializable {
 			manager.addPlaylist(playlist);
 			return "listMyPlaylists?faces-redirect=true";
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("There is already a playlist with that name!"));
+        	String errorMsg = "There is already a playlist with that name!";
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 			return null;
 		}
 
@@ -59,6 +67,8 @@ public class NewPlaylistMB implements Serializable {
 	}
 
 	public String removeSongFromPlaylist() {
+		log.info("Removing song from new playlist");
+		log.debug("Removing song "+song.getTitle()+" from new playlist");
 		tracks.remove(song);
 		return "playlist";
 	}

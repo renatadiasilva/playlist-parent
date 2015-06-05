@@ -13,34 +13,38 @@ import dei.uc.pt.aor.dao.UserDAO;
 @Stateless
 public class UserFacadeImp implements UserFacade {
 	
-	// meter cenas info, debug e error
 	private static final Logger log = LoggerFactory.getLogger(UserFacadeImp.class);
 
 	@EJB
 	private UserDAO userDAO;
 	
+	public void delete(User u) {
+		log.info("Removing user from DB");
+		userDAO.delete(u);
+	}
+
 	public User findUserByEmail(String email) {
+		log.info("Finding user by email");
 		return userDAO.findUserByEmail(email);
 	}
 
 	public void addUser(User u) {
-		log.info("Adding user with email "+u.getEmail()+"to DB.");
-		log.debug("Trying to add user: "+u.getEmail()+" "+u.getName()+").");
+		log.info("Saving user in DB");
 		userDAO.save(u);
 	}
 	
 	public List<User> getUsers() {
-		log.info("Creating Query for all users.");
+		log.info("Creating Query for all users");
 		return userDAO.findAll();
 	}
 
 	public List<User> usersWithNameStartingBy(String exp) {
-		log.info("Creating Query for all users with name starting by {}.",
-				exp.substring(exp.length() - 2, exp.length() - 1));
+		log.info("Creating Query for all users with name starting by");
 		return userDAO.usersWithNameStartingBy(exp);
 	}
 	
 	public User update(User u) {
+		log.info("Updating user of DB");
 		isUserWithAllData(u);
 		return userDAO.update(u);
 	}
@@ -61,9 +65,5 @@ public class UserFacadeImp implements UserFacade {
 		}
 	}
 	
-	public void delete(User u) {
-		log.info("Removing account for user with email {}.",u.getEmail());
-		userDAO.delete(u);
-	}
 
 }

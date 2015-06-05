@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.Song;
@@ -15,6 +20,8 @@ import dei.uc.pt.aor.User;
 @Stateless
 public class PlaylistDAO extends GenericDAO<Playlist> {
 	
+	private static final Logger log = LoggerFactory.getLogger(PlaylistDAO.class);
+
 	public PlaylistDAO() {
 		super(Playlist.class);
 	}
@@ -46,24 +53,39 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 
 	@SuppressWarnings("unchecked")
 	public List<Song> getSongs(Playlist p) {
-
-		Query cq = em.createQuery("select s from Playlist p join p.songs s where p.id = :id");
-		cq.setParameter("id", p.getId());
-		return cq.getResultList();
+		try {
+			Query cq = em.createQuery("select s from Playlist p join p.songs s where p.id = :id");
+			cq.setParameter("id", p.getId());
+			return cq.getResultList();
+		} catch (Exception e) {
+        	String errorMsg = "Error while running query"+
+					"(GETSONGSOFPLAYLIST): "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
 		
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void removeSong(Playlist p, Song s) {
-		
-		Query cq = em.createQuery("select p, s from Playlist p join p.songs s where p.id = :idP and s.id = :idS");
-		cq.setParameter("idP", p.getId());
-		cq.setParameter("idS", s.getId());
-		List<Object[]> listobjs = cq.getResultList();
-		Playlist playlist = (Playlist) listobjs.get(0)[0];
-		Song song = (Song) listobjs.get(0)[1];
-		playlist.removeSong(song);
-		p.setSize(playlist.getSize());
+		try {
+			Query cq = em.createQuery("select p, s from Playlist p join p.songs s where p.id = :idP and s.id = :idS");
+			cq.setParameter("idP", p.getId());
+			cq.setParameter("idS", s.getId());
+			List<Object[]> listobjs = cq.getResultList();
+			Playlist playlist = (Playlist) listobjs.get(0)[0];
+			Song song = (Song) listobjs.get(0)[1];
+			playlist.removeSong(song);
+			p.setSize(playlist.getSize());
+		} catch (Exception e) {
+        	String errorMsg = "Error while running query"+
+					"(REMOVESONGFROMPLAYLIST): "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
 	}
 
 	public void addSong(Playlist p, Song s) {

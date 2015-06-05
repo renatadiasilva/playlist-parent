@@ -7,6 +7,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 
 @Named
@@ -14,6 +17,9 @@ import java.io.Serializable;
 public class RegisterMB implements Serializable {
 
 	private static final long serialVersionUID = -2624145242993606181L;
+
+	private static final Logger log = LoggerFactory.getLogger(RegisterMB.class);
+
 	private String email;
 	private String password;
 	private String repeatedPassword;
@@ -36,12 +42,14 @@ public class RegisterMB implements Serializable {
 	}
 
 	public void newUser() {
-
+		log.info("Creating new user");
+		log.debug("Creating new user "+email);
 		name = login.getName();
 		email = login.getEmail();
 		password = login.getPassword();
 
-		if (email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+		if (email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+"
+				+ "(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
 			if (password.equals(repeatedPassword)) {
 
 				if (manager.findUserByEmail(email) == null) {
@@ -49,13 +57,20 @@ public class RegisterMB implements Serializable {
 					manager.addUser(u); 
 					aUser.changeToLogin();
 				} else {
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("This email already exists!"));
+		        	String errorMsg = "This email already exists!";
+		        	log.error(errorMsg);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 				}
 
-			} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Passwords don't match!"));
-
+			} else {
+	        	String errorMsg = "Passwords don't match!";
+	        	log.error(errorMsg);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+			}
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The email is not valid!"));
+        	String errorMsg = "The email is not valid!";
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
 	}
 

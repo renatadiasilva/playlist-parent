@@ -6,6 +6,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -14,6 +17,9 @@ import java.util.Calendar;
 public class NewSongMB implements Serializable {
 
 	private static final long serialVersionUID = -2624145242993606181L;
+
+	private static final Logger log = LoggerFactory.getLogger(NewSongMB.class);
+
 	private String title;
 	private String artist;
 	private String album;
@@ -27,7 +33,8 @@ public class NewSongMB implements Serializable {
 	}
 	
 	public String addSong(ActiveUserMB auser, UploadFile uf) {
-
+		log.info("Adding new song");
+		log.debug("Adding new song with"+title);
 		if (releaseYear.matches("^\\d+$")) {
 			
 			int y = Integer.parseInt(releaseYear);
@@ -42,9 +49,17 @@ public class NewSongMB implements Serializable {
 					return manager.updateFilePath(song);
 				} else return manager.deleteNewSong(song);
 				
-			} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Release Year non valid!!"));
+			} else {
+	        	String errorMsg = "Release Year non valid!";
+	        	log.error(errorMsg);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+			}
 
-		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Release Year is not an integer number!!"));
+		} else {
+        	String errorMsg = "Release Year is not an integer number!";
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
 		
 		return null;
 

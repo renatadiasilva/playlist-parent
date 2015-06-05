@@ -7,6 +7,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 
 @Named
@@ -14,6 +17,9 @@ import java.io.Serializable;
 public class LoginMB implements Serializable {
 	
 	private static final long serialVersionUID = -5381236051617076780L;
+	
+	private static final Logger log = LoggerFactory.getLogger(LoginMB.class);
+
 	private String email;
 	private String name;
 	private String password;
@@ -31,7 +37,8 @@ public class LoginMB implements Serializable {
 	}
 		
 	public String doLogin() {
-
+		log.info("Doing login");
+		log.debug("Doing login for "+email);
 		User u = manager.findUserByEmail(email);
 		if (u != null) {
 			if (u.getPassword().equals(epw.encrypt(password))) {
@@ -42,23 +49,28 @@ public class LoginMB implements Serializable {
 				aUser.startSession();
 				return "/pages/listMyPlaylists?faces-redirect=true";
 			} else {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Login failure: Wrong password."));
+	        	String errorMsg = "Login failure: Wrong password.";
+	        	log.error(errorMsg);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 				return "login";
 			}
 
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Login failure: Wrong email."));
+        	String errorMsg = "Login failure: Wrong email.";
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 			return "login";
 		}
 
 	}
 	
 	public String doLogout() {
+		log.info("Doing logout");
+		log.debug("Doing logout for user "+ aUser.getEmail());
 		aUser.endSession();
 		return "/login?faces-redirect=true";
 	}
 	
-	// apagar referências todas primeiro
 	public String removeUser(ActiveUserMB auser) {
 		manager.removeUser(auser);
 		return doLogout();

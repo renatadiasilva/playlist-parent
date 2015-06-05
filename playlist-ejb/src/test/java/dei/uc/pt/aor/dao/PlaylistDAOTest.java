@@ -1,12 +1,9 @@
 package dei.uc.pt.aor.dao;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.junit.Before;
@@ -17,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.Song;
@@ -50,87 +46,139 @@ public class PlaylistDAOTest {
         u = new User("teste", "123", "teste@teste.com");
         s = new Song("T", "A", "Al", 2000, "C", u);
         p = new Playlist("P", new Date(), u);
+		em.persist(u);
+		em.persist(s);
+		em.persist(p);
+		p.addSong(s);
 	}	 
 
 	@Test
-	public void TestPlaylistsOfUser() {
-//		when(em.createNamedQuery("Song.allSongs")).thenReturn(q);
-//		dao.findAllByOrder();
-//		verify(q).getResultList();
+	public void TestPlaylistSameName() {
+		String name = "P";
+		String NAMEDQUERY = "Playlist.playlistSameName";
+		when(em.createNamedQuery(NAMEDQUERY)).thenReturn(q);
+
+		List<Playlist> results = dao.playlistSameName(u, name);
+		when(q.getResultList()).thenReturn(results);
+
+		verify(q).getResultList();
+		verify(q).setParameter("ownerId", u);
+		verify(q).setParameter("name", name);
+		verify(em).createNamedQuery(NAMEDQUERY);
+
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
+	}	
+
+	@Test
+	public void TestGetSongsOfPlaylist() {
+		String NAMEDQUERY="Playlist.songsOfPlaylist";
+		String QUERY = "select s from Playlist p join p.songs s where p.id = :id";
+		when(em.createQuery(QUERY)).thenReturn(q);
+
+		List<Song> results = dao.getSongs(p);
+		when(q.getResultList()).thenReturn(results);
+
+		verify(q).getResultList();
+		verify(q).setParameter("id", p.getId());
+		verify(em).createQuery(QUERY);
+
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
+	}
+	
+	@Test
+	public void TestPlaylistsOfUserByNameAsc() {
+		int order = 1;
+		String NAMEDQUERY = "Playlist.playlistOfUserByNameAsc";
+		when(em.createNamedQuery(NAMEDQUERY)).thenReturn(q);
+		
+		List<Playlist> results = dao.playlistsOfUser(u, order);
+		when(q.getResultList()).thenReturn(results);
+		
+		verify(q).getResultList();
+		verify(em).createNamedQuery(NAMEDQUERY);
+		
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
+		
 	}
 
-//	public void delete(Playlist playlist) {
-//			super.delete(playlist.getId(), Playlist.class);
-//	}
-//	
-//	public List<Playlist> playlistsOfUser(User u, int order) {
-//		Map<String, Object> parameters = new HashMap<String, Object>();
-//		parameters.put("ownerId", u);
-//		switch (order) {
-//		case 1: return super.findSomeResults("Playlist.playlistOfUserByNameAsc", parameters);
-//		case 2: return super.findSomeResults("Playlist.playlistOfUserByNameDesc", parameters);
-//		case 3: return super.findSomeResults("Playlist.playlistOfUserByDateAsc", parameters);
-//		case 4: return super.findSomeResults("Playlist.playlistOfUserByDateDesc", parameters);
-//		case 5: return super.findSomeResults("Playlist.playlistOfUserBySizeAsc", parameters);
-//		case 6: return super.findSomeResults("Playlist.playlistOfUserBySizeDesc", parameters);
-//		default: return null;
-//		}
-//	}
-//	
-//	public List<Playlist> playlistSameName(User u, String name) {
-//		Map<String, Object> parameters = new HashMap<String, Object>();
-//		parameters.put("ownerId", u);
-//		parameters.put("name", name);
-//		return super.findSomeResults("Playlist.playlistSameName", parameters);
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	public List<Song> getSongs(Playlist p) {
-//
-//		Query cq = em.createQuery("select s from Playlist p join p.songs s where p.id = :id");
-//		cq.setParameter("id", p.getId());
-//		return cq.getResultList();
-//		
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	public void removeSong(Playlist p, Song s) {
-//		
-//		Query cq = em.createQuery("select p, s from Playlist p join p.songs s where p.id = :idP and s.id = :idS");
-//		cq.setParameter("idP", p.getId());
-//		cq.setParameter("idS", s.getId());
-//		List<Object[]> listobjs = cq.getResultList();
-//		Playlist playlist = (Playlist) listobjs.get(0)[0];
-//		Song song = (Song) listobjs.get(0)[1];
-//		playlist.removeSong(song);
-//		p.setSize(playlist.getSize());
-//	}
-//
-//	public void addSong(Playlist p, Song s) {
-//
-//		Query cq = em.createQuery("select p from Playlist p where p.id = :idP");
-//		cq.setParameter("idP", p.getId());
-//		Playlist playlist = (Playlist) cq.getSingleResult();
-//		cq = em.createQuery("select s from Playlist p join p.songs s where p.id = :idP and s.id = :idS");
-//		cq.setParameter("idP", p.getId());
-//		cq.setParameter("idS", s.getId());
-//
-//		try{
-//			cq.getSingleResult();
-//		} catch (NoResultException nre){
-//			playlist.addSong(s);
-//			p.setSize(playlist.getSize());
-//		}
-//		
-//	}
-//
-//	public List<Playlist> playlistsOfUserContainingSong(User u, Song s) {
-//
-//		Map<String, Object> parameters = new HashMap<String, Object>();
-//		parameters.put("ownerId", u);
-//		parameters.put("idS", s.getId());
-//		return super.findSomeResults("Playlist.playlistsOfUserContainingSong", parameters);
-//
-//	}
+	@Test
+	public void TestPlaylistsOfUserByNameDesc() {
+		int order = 2;
+		String NAMEDQUERY = "Playlist.playlistOfUserByNameDesc";
+		when(em.createNamedQuery(NAMEDQUERY)).thenReturn(q);
+		
+		List<Playlist> results = dao.playlistsOfUser(u, order);
+		when(q.getResultList()).thenReturn(results);
+		
+		verify(q).getResultList();
+		verify(em).createNamedQuery(NAMEDQUERY);
+		
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
+		
+	}
+
+	@Test
+	public void TestPlaylistsOfUserByDateAsc() {
+		int order = 3;
+		String NAMEDQUERY = "Playlist.playlistOfUserByDateAsc";
+		when(em.createNamedQuery(NAMEDQUERY)).thenReturn(q);
+		
+		List<Playlist> results = dao.playlistsOfUser(u, order);
+		when(q.getResultList()).thenReturn(results);
+		
+		verify(q).getResultList();
+		verify(em).createNamedQuery(NAMEDQUERY);
+		
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
+		
+	}
+
+	@Test
+	public void TestPlaylistsOfUserByDateDesc() {
+		int order = 4;
+		String NAMEDQUERY = "Playlist.playlistOfUserByDateDesc";
+		when(em.createNamedQuery(NAMEDQUERY)).thenReturn(q);
+		
+		List<Playlist> results = dao.playlistsOfUser(u, order);
+		when(q.getResultList()).thenReturn(results);
+		
+		verify(q).getResultList();
+		verify(em).createNamedQuery(NAMEDQUERY);
+		
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
+		
+	}
+	
+	@Test
+	public void TestPlaylistsOfUserBySizeAsc() {
+		int order = 5;
+		String NAMEDQUERY = "Playlist.playlistOfUserBySizeAsc";
+		when(em.createNamedQuery(NAMEDQUERY)).thenReturn(q);
+		
+		List<Playlist> results = dao.playlistsOfUser(u, order);
+		when(q.getResultList()).thenReturn(results);
+		
+		verify(q).getResultList();
+		verify(em).createNamedQuery(NAMEDQUERY);
+		
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
+		
+	}
+
+	@Test
+	public void TestPlaylistsOfUserBySizeDesc() {
+		int order = 6;
+		String NAMEDQUERY = "Playlist.playlistOfUserBySizeDesc";
+		when(em.createNamedQuery(NAMEDQUERY)).thenReturn(q);
+		
+		List<Playlist> results = dao.playlistsOfUser(u, order);
+		when(q.getResultList()).thenReturn(results);
+		
+		verify(q).getResultList();
+		verify(em).createNamedQuery(NAMEDQUERY);
+		
+		System.out.println("Checked successfully query "+NAMEDQUERY+".");
+		
+	}
 
 }
