@@ -84,7 +84,7 @@ public class Song implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public void setArtist(String artist) {
 		this.artist = artist;
 	}

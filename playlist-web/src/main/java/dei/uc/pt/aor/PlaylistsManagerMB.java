@@ -440,7 +440,12 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public List<Song> getSongs() {
-		return playlistFacade.getSongs(playlist);
+		searchList = playlistFacade.getSongs(playlist);
+		return searchList;
+	}
+	
+	public int index(Song s) {
+		return searchList.indexOf(s)+1;
 	}
 	
 	// change to loop
