@@ -9,16 +9,18 @@
 	<ui:composition template="../templates/commonLayout.xhtml">
 
 		<ui:define name="content">
-
 			<h:form>
-				<h:panelGrid class="my" columns="1">
-					<h4 class="mensgConfirm">Operation Complete
-						#{playlistsManagerMB.operation}</h4>
-				</h:panelGrid>
-				<h:commandButton action="#{playlistsManagerMB.goToProfile()}"
-					value="OK" class="button">
-				</h:commandButton>
-
+				<div>
+					<div>
+						<h4 class="mensgConfirm">Operation Complete
+							#{playlistsManagerMB.operation}</h4>
+					</div>
+					<div>
+						<h:commandButton action="#{playlistsManagerMB.goToProfile()}"
+							value="OK" class="button">
+						</h:commandButton>
+					</div>
+				</div>
 			</h:form>
 		</ui:define>
 

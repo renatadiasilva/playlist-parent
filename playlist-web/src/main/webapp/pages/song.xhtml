@@ -11,86 +11,154 @@
 
 		<ui:define name="content">
 
-			<div class="profile">
-				<h:panelGrid rendered="#{playlistsManagerMB.newS}">
-					<h3 class="titleMenu">Adding New Song</h3>
-				</h:panelGrid>
-				<h:panelGrid rendered="#{!playlistsManagerMB.newS}">
-					<h3 class="titleMenu">Updating Song
-						#{playlistsManagerMB.song.title}</h3>
-				</h:panelGrid>
-				<h:form class="loginForm" enctype="multipart/form-data">
-					<h:panelGrid class="namePlaylist" columns="1">
-						<h:outputLabel value="Title" style="font-size:20px;margin-right:15px;"/>
-						<h:inputText rendered="#{playlistsManagerMB.newS}"
-							value="#{newSongMB.title}" required="true"
-							requiredMessage="Empty title!" id="title" class="logintext" />
-						<h:inputText rendered="#{!playlistsManagerMB.newS}"
-							value="#{playlistsManagerMB.song.title}" required="true"
-							requiredMessage="Empty title!" id="songTitle" class="logintext" />
-						<h:message for="title" class="loginlabel" errorClass="loginerror" />
-						<h:message for="songTitle" class="loginlabel" errorClass="loginerror" />
+			<div style="margin-top: 15px;">
 
-						<h:outputLabel value="Artist" />
-						<h:inputText rendered="#{playlistsManagerMB.newS}"
-							value="#{newSongMB.artist}" required="true"
-							requiredMessage="Empty artists!" id="artist" class="logintext" />
-						<h:inputText rendered="#{!playlistsManagerMB.newS}"
-							value="#{playlistsManagerMB.song.artist}" required="true"
-							requiredMessage="Empty artists!" id="songArtist" class="logintext" />
-						<h:message for="artist" class="loginlabel" errorClass="loginerror" />
-						<h:message for="songArtist" class="loginlabel" errorClass="loginerror" />
+				<h:outputLabel rendered="#{playlistsManagerMB.newS}"
+					class="titleMenu" style="color:white" value="Adding New Song" />
 
-						<h:outputLabel value="Album" />
-						<h:inputText rendered="#{playlistsManagerMB.newS}"
-							value="#{newSongMB.album}" required="true"
-							requiredMessage="Empty album!" id="album" class="logintext" />
-						<h:inputText rendered="#{!playlistsManagerMB.newS}"
-							value="#{playlistsManagerMB.song.album}" required="true"
-							requiredMessage="Empty album!" id="songAlbum" class="logintext" />
-						<h:message for="album" class="loginlabel" errorClass="loginerror" />
-						<h:message for="songAlbum" class="loginlabel" errorClass="loginerror" />
 
-						<h:outputLabel value="Release Year" />
-						<h:inputText rendered="#{playlistsManagerMB.newS}"
-							value="#{newSongMB.releaseYear}" required="true"
-							requiredMessage="Empty release year!" id="release"
-							class="logintext" />
-						<h:inputText rendered="#{!playlistsManagerMB.newS}"
-							value="#{playlistsManagerMB.releaseY}" required="true"
-							requiredMessage="Empty release year!" id="songRelease"
-							class="logintext" />
-						<h:message for="release" class="loginlabel"
-							errorClass="loginerror" />
-						<h:message for="songRelease" class="loginlabel"
-							errorClass="loginerror" />
 
-						<h:messages globalOnly="true" class="generalError" />
-					</h:panelGrid>
-					<br />
+
+				<h:outputLabel rendered="#{!playlistsManagerMB.newS}"
+					class="titleMenu" style="color:white"
+					value="Updating Song
+						'#{playlistsManagerMB.song.title}'" />
+
+			</div>
+
+			<h:form class="loginForm" enctype="multipart/form-data">
+				<div style="text-align: center;">
+					<table>
+						<tr>
+							<td><h:outputLabel value="Title"
+									class="preencher" /></td>
+						</tr>
+						<tr>
+							<td><h:inputText rendered="#{playlistsManagerMB.newS}"
+									value="#{newSongMB.title}" required="true"
+									requiredMessage="Empty title!" id="title" class="logintext" />
+							</td>
+						</tr>
+						<tr>
+							<td><h:inputText rendered="#{!playlistsManagerMB.newS}"
+									value="#{playlistsManagerMB.song.title}" required="true"
+									requiredMessage="Empty title!" id="songTitle" class="logintext" />
+							</td>
+						</tr>
+						<tr>
+							<td><h:message for="title" class="loginlabel"
+									errorClass="loginerror" /></td>
+						</tr>
+						<tr>
+							<td><h:message for="songTitle" class="loginlabel"
+									errorClass="loginerror" /></td>
+						</tr>
+
+						<tr>
+							<td><h:outputLabel
+							class="preencher"  value="Artist" /></td>
+						</tr>
+						<tr>
+							<td><h:inputText rendered="#{playlistsManagerMB.newS}"
+									value="#{newSongMB.artist}" required="true"
+									requiredMessage="Empty artists!" id="artist" class="logintext" />
+							</td>
+						</tr>
+						<tr>
+							<td><h:inputText rendered="#{!playlistsManagerMB.newS}"
+									value="#{playlistsManagerMB.song.artist}" required="true"
+									requiredMessage="Empty artists!" id="songArtist"
+									class="logintext" /></td>
+						</tr>
+						<tr>
+							<td><h:message for="artist" class="loginlabel"
+									errorClass="loginerror" /></td>
+						</tr>
+						<tr>
+							<td><h:message for="songArtist" class="loginlabel"
+									errorClass="loginerror" /></td>
+						</tr>
+
+						<tr>
+							<td><h:outputLabel class="preencher" value="Album" /></td>
+						</tr>
+						<tr>
+							<td><h:inputText rendered="#{playlistsManagerMB.newS}"
+									value="#{newSongMB.album}" required="true"
+									requiredMessage="Empty album!" id="album" class="logintext" />
+							</td>
+						</tr>
+						<tr>
+							<td><h:inputText rendered="#{!playlistsManagerMB.newS}"
+									value="#{playlistsManagerMB.song.album}" required="true"
+									requiredMessage="Empty album!" id="songAlbum" class="logintext" />
+							</td>
+						</tr>
+						<tr>
+							<td><h:message for="album" class="loginlabel"
+									errorClass="loginerror" /></td>
+						</tr>
+						<tr>
+							<td><h:message for="songAlbum" class="loginlabel"
+									errorClass="loginerror" /></td>
+						</tr>
+
+						<tr>
+							<td><h:outputLabel class="preencher" value="Release Year" /></td>
+						</tr>
+						<tr>
+							<td><h:inputText rendered="#{playlistsManagerMB.newS}"
+									value="#{newSongMB.releaseYear}" required="true"
+									requiredMessage="Empty release year!" id="release"
+									class="logintext" /></td>
+						</tr>
+						<tr>
+							<td><h:inputText rendered="#{!playlistsManagerMB.newS}"
+									value="#{playlistsManagerMB.releaseY}" required="true"
+									requiredMessage="Empty release year!" id="songRelease"
+									class="logintext" /></td>
+						</tr>
+						<tr>
+							<td><h:message for="release" class="loginlabel"
+									errorClass="loginerror" /></td>
+						</tr>
+						<tr>
+							<td><h:message for="songRelease" class="loginlabel"
+									errorClass="loginerror" /></td>
+						</tr>
+
+						<tr>
+							<td><h:messages globalOnly="true" class="generalError" /></td>
+						</tr>
+
+					</table>
+				</div>
+			</h:form>
+			<h:form  style="text-align: center;" enctype="multipart/form-data">
+				<div style="margin-botttom: 10px;">
 					<h:inputFile rendered="#{playlistsManagerMB.newS}"
-						converterMessage="" 
-						requiredMessage=""
-						class="buttonList" value="#{uploadFile.file}"
-						required="true" />
-					<br />
-					<br />
-					<h:panelGrid class="my" columns="2">
-						<h:commandButton rendered="#{playlistsManagerMB.newS}"
-							style="margin-left:10px;" class="buttonList" 
+						converterMessage=""
+							requiredMessage="" class="buttonList"
+						value="#{uploadFile.file}" required="true" />
+				</div>
+				<div style="margin-botttom:30px; text-align: center;">
+					<h:panelGrid style="padding-bottom:50px;" class="my" columns="2">
+						<h:commandButton  style="margin-left:10px;" rendered="#{playlistsManagerMB.newS}"
+							 class="buttonList"
 							action="#{newSongMB.addSong(activeUserMB,uploadFile)}"
 							value="Add song" />
-						<h:commandButton rendered="#{!playlistsManagerMB.newS}"
+						<h:commandButton  rendered="#{!playlistsManagerMB.newS}"
 							action="#{playlistsManagerMB.updateSongEnd()}"
 							value="Update song" class="buttonList" />
-						<h:commandButton action="#{playlistsManagerMB.listMySongs()}"
+						<h:commandButton  action="#{playlistsManagerMB.listMySongs()}"
 							value="Cancel" immediate="true" class="buttonList" />
 					</h:panelGrid>
-				</h:form>
-				<br />
-				<br />
-				<br />
-			</div>
+				</div>
+
+			</h:form>
+			<br />
+			<br />
+			<br />
 		</ui:define>
 
 	</ui:composition>

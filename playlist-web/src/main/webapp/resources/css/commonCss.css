@@ -8,7 +8,7 @@ body {
 	background-size: 100% 100%;
 	background-attachment: fixed;
 	text-align: center;	
-	min-width: 1190px;
+	min-width: 1350px;
 	font-family: cursive;
 	margin: 0px;
 }
@@ -45,7 +45,6 @@ body {
 }
 .header2 {
 	  text-align: center;
-  padding-bottom: 5px;
   color: white;
   font-family: cursive;
   font-weight: bolder;

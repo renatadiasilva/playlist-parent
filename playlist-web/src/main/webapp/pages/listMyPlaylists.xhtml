@@ -18,42 +18,45 @@
 			<h:form class="tabelaPlaylists">
 				<h:panelGrid class="my" columns="7">
 					<h:column>
-					<h:commandButton action="#{newPlaylistMB.newPlaylist()}"
-						value="New Playlist" class="buttonList">
-					</h:commandButton>
+						<h:commandButton action="#{newPlaylistMB.newPlaylist()}"
+							value="New Playlist" class="buttonList">
+						</h:commandButton>
 					</h:column>
 					<h:column>
-					<h:commandButton action="#{playlistsManagerMB.chooseOrder(1)}"
-						value="Order by Name Asc" class="buttonList">
-					</h:commandButton>
+						<h:commandButton action="#{playlistsManagerMB.chooseOrder(1)}"
+							value="Order by Name Asc" class="buttonList">
+						</h:commandButton>
 					</h:column>
 					<h:column>
-					<h:commandButton action="#{playlistsManagerMB.chooseOrder(2)}"
-						value="Order by Name Desc" class="buttonList">
-					</h:commandButton>
+						<h:commandButton action="#{playlistsManagerMB.chooseOrder(2)}"
+							value="Order by Name Desc" class="buttonList">
+						</h:commandButton>
 					</h:column>
 					<h:column>
-					<h:commandButton action="#{playlistsManagerMB.chooseOrder(3)}"
-						value="Order by Date Asc" class="buttonList">
-					</h:commandButton>
+						<h:commandButton action="#{playlistsManagerMB.chooseOrder(3)}"
+							value="Order by Date Asc" class="buttonList">
+						</h:commandButton>
 					</h:column>
 					<h:column>
-					<h:commandButton action="#{playlistsManagerMB.chooseOrder(4)}"
-						value="Order by Date Desc" class="buttonList">
-					</h:commandButton>
+						<h:commandButton action="#{playlistsManagerMB.chooseOrder(4)}"
+							value="Order by Date Desc" class="buttonList">
+						</h:commandButton>
 					</h:column>
 					<h:column>
-					<h:commandButton action="#{playlistsManagerMB.chooseOrder(5)}"
-						value="Order by Size Asc" class="buttonList">
-					</h:commandButton>
+						<h:commandButton action="#{playlistsManagerMB.chooseOrder(5)}"
+							value="Order by Size Asc" class="buttonList">
+						</h:commandButton>
 					</h:column>
 					<h:column>
-					<h:commandButton action="#{playlistsManagerMB.chooseOrder(6)}"
-						value="Order by Size Desc" class="buttonList">
-					</h:commandButton>
+						<h:commandButton action="#{playlistsManagerMB.chooseOrder(6)}"
+							value="Order by Size Desc" class="buttonList">
+						</h:commandButton>
 					</h:column>
 				</h:panelGrid>
-				<h:dataTable style="width:1000px" class="allSongs"
+				
+				
+				
+				<h:dataTable style="width:1060px" class="allSongs"
 					value="#{playlistsManagerMB.playlistsOfUser(activeUserMB)}"
 					var="playlist" styleClass="order-table"
 					captionClass="order-table-caption" headerClass="order-table-header"
@@ -78,6 +81,7 @@
 					</h:column>
 					<h:column>
 						<h:panelGrid class="my" columns="3">
+
 							<h:commandButton class="buttonList"
 								action="#{playlistsManagerMB.viewPlaylistStart()}" value="Play">
 								<f:setPropertyActionListener
@@ -95,11 +99,12 @@
 								<f:setPropertyActionListener
 									target="#{playlistsManagerMB.playlist}" value="#{playlist}" />
 							</h:commandButton>
+
 						</h:panelGrid>
 					</h:column>
 				</h:dataTable>
+				
 			</h:form>
-			<br />
 			<br />
 			<br />
 			<br />
