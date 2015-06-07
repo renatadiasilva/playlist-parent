@@ -280,7 +280,7 @@ public class PlaylistsManagerMB implements Serializable {
 		try {
 			playlistFacade.removeSongFromPlaylist(playlist, song);
 			newP = false;
-			return "playlist";
+			return null;
 		} catch (EJBException e) {
         	String errorMsg = "Error while removing"
 					+ "song from new playlist: "+
@@ -314,7 +314,7 @@ public class PlaylistsManagerMB implements Serializable {
 		try {
 			playlistFacade.addSongToPlaylist(playlist, song);
 			newP = false;
-			return "playlist";
+			return null;
 		} catch (EJBException e) {
         	String errorMsg = "Error adding song"
 					+ "to playlist: "+e.getMessage();
@@ -537,7 +537,7 @@ public class PlaylistsManagerMB implements Serializable {
 		try {
 			return userFacade.findUserByEmail(email);
 		} catch (EJBException e) {
-        	String errorMsg = "Error finding user"
+        	String errorMsg = "Error finding user "
 					+ "by email: "+e.getMessage();
         	log.error(errorMsg);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));

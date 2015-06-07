@@ -26,7 +26,9 @@ public class UserDAO extends GenericDAO<User> {
 	public User findUserByEmail(String email) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("email", email);
-		return super.findOneResult("User.findUserByEmail", parameters);
+		List<User> list = super.findSomeResults("User.findUserByEmail", parameters);
+		if (list.size() == 1) return list.get(0);
+		else return null;
 	}
 	
 	public List<User> usersWithNameStartingBy(String exp) {

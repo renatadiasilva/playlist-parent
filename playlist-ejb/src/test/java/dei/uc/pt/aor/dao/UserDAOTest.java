@@ -47,7 +47,7 @@ public class UserDAOTest {
 		User result = dao.findUserByEmail(email);
 		when(q.getSingleResult()).thenReturn(result);
 		
-		verify(q).getSingleResult();
+		verify(q).getResultList();
 		verify(q).setParameter("email", email);
 		verify(em).createNamedQuery(NAMEDQUERY);
 

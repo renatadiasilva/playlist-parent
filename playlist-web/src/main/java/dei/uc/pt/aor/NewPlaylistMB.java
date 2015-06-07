@@ -70,7 +70,7 @@ public class NewPlaylistMB implements Serializable {
 		log.info("Removing song from new playlist");
 		log.debug("Removing song "+song.getTitle()+" from new playlist");
 		tracks.remove(song);
-		return "playlist";
+		return null;
 	}
 	
 	public String newPlaylist() {

@@ -61,10 +61,6 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	// public String getPassword() {
-	// return password;
-	// }
-
 	public boolean checkPassword(String password) {
 		return this.password.equals(password);
 	}
@@ -139,25 +135,5 @@ public class User implements Serializable {
 	public String toString() {
 		return name + " -> " + email;
 	}
-
-	// criar conta (novo user)
-	// editar conta - dados
-	// apagar conta (desaparece tudo - mesmo musicas??)
-	// fazer login e logout
-	// criar nova playlist
-	// mudar nome a uma playlist
-	// listar as playlists de forma ascendente/descendente por nome, data ou
-	// tamanho
-	// listar musicas de cada playlist, selecionando a playlist a partir da
-	// lista
-	// apagar playlist selecionada (não apaga as músicas)
-	// adicionar e remover músicas a uma playlist
-	// adicionar e remover músicas à aplicação
-	// editar os dados das músicas
-	// listar todas as músicas da aplicação
-	// listar todas as músicas da aplicação que satisfaçam critério: pesquisar
-	// por título e/ou artista
-	// adicionar músicas ás playlists a partir dos dois tipos de listagens
-	// anteriores
 
 }

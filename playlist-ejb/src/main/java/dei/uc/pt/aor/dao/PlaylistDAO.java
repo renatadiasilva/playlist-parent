@@ -90,20 +90,28 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 
 	public void addSong(Playlist p, Song s) {
 
-		Query cq = em.createQuery("select p from Playlist p where p.id = :idP");
-		cq.setParameter("idP", p.getId());
-		Playlist playlist = (Playlist) cq.getSingleResult();
-		cq = em.createQuery("select s from Playlist p join p.songs s where p.id = :idP and s.id = :idS");
-		cq.setParameter("idP", p.getId());
-		cq.setParameter("idS", s.getId());
-
 		try{
-			cq.getSingleResult();
-		} catch (NoResultException nre){
-			playlist.addSong(s);
-			p.setSize(playlist.getSize());
+			Query cq = em.createQuery("select p from Playlist p where p.id = :idP");
+			cq.setParameter("idP", p.getId());
+			Playlist playlist = (Playlist) cq.getSingleResult();
+			cq = em.createQuery("select s from Playlist p join p.songs s where p.id = :idP and s.id = :idS");
+			cq.setParameter("idP", p.getId());
+			cq.setParameter("idS", s.getId());
+
+
+			if (cq.getResultList().size() == 0) {
+				playlist.addSong(s);
+				p.setSize(playlist.getSize());
+			}
+
+		} catch (Exception e){
+        	String errorMsg = "Error while running query"+
+					"(ADDSONGTOPLAYLIST): "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
-		
+
 	}
 
 	public List<Playlist> playlistsOfUserContainingSong(User u, Song s) {
