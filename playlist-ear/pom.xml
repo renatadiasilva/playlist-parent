@@ -24,6 +24,13 @@
 			<version>${project.version}</version>
 			<type>ejb</type>
 		</dependency>
+
+		<dependency>
+			<groupId>dei.uc.pt.aor</groupId>
+			<artifactId>playlist-ws</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -46,6 +53,10 @@
 							<groupId>dei.uc.pt.aor</groupId>
 							<artifactId>playlist-ejb</artifactId>
 						</ejbModule>
+						<webModule>
+							<groupId>dei.uc.pt.aor</groupId>
+							<artifactId>playlist-ws</artifactId>
+						</webModule>
 					</modules>
 				</configuration>
 			</plugin>
