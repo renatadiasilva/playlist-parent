@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.slf4j.Logger;

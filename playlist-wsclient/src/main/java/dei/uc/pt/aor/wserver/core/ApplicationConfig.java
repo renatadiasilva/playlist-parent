@@ -22,8 +22,7 @@ public class ApplicationConfig extends Application{
 	 */
 	private void addRestResourceClasses(Set<Class<?>> resources) {
 	    // resources.add(xpto.class);
-		resources.add(SimpleService.class);
-		resources.add(SimpleUserService1.class);
+		resources.add(UserService.class);
 	}
 	
 }

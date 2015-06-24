@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "users")
@@ -15,6 +17,7 @@ import javax.validation.constraints.Size;
 	@NamedQuery(name="User.findUserStartingBy",
 			query="SELECT u FROM User u WHERE u.name like :exp")
 }) 
+@XmlRootElement
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -3895128862200329846L;
@@ -31,6 +34,7 @@ public class User implements Serializable {
 	
 	@NotNull
 	@Column(name = "password", nullable = false)
+	@XmlTransient
 	private String password;
 
 	@NotNull
@@ -39,9 +43,11 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy = "owner")
 	@OrderBy("name")
+	@XmlTransient
 	private List<Playlist> playlists;
 
 	@OneToMany(mappedBy = "owner")
+	@XmlTransient
 	private List<Song> songs;
 
 	public User() {
@@ -78,6 +84,7 @@ public class User implements Serializable {
 	}
 
 	// tirar dp
+	@XmlTransient
 	public String getPassword() {
 		return password;
 	}
@@ -90,6 +97,7 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
+	@XmlTransient
 	public List<Playlist> getPlaylists() {
 		return playlists;
 	}
@@ -98,6 +106,7 @@ public class User implements Serializable {
 		this.playlists = playlists;
 	}
 
+	@XmlTransient
 	public List<Song> getSongs() {
 		return songs;
 	}
@@ -131,7 +140,6 @@ public class User implements Serializable {
 		return true;
 	}
 
-	// listar Users??? só nome?
 	public String toString() {
 		return name + " -> " + email;
 	}

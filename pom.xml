@@ -16,6 +16,7 @@
 		<module>playlist-web</module>
 		<module>playlist-ear</module>
 		<module>playlist-ws</module>
+		<module>playlist-wsclient</module>
 	</modules>
 
 
@@ -72,11 +73,13 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
 				<version>${slf4jlog4.version}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>

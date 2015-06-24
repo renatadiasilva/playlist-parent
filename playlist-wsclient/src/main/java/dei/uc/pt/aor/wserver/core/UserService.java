@@ -1,49 +1,63 @@
 package dei.uc.pt.aor.wserver.core;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
+//import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
+//import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+//import javax.ws.rs.core.Response;
 
 import dei.uc.pt.aor.User;
 import dei.uc.pt.aor.UserFacade;
 
 @Stateless
-@Path("/simpleusers")
-public class SimpleUserService1 {
+@Path("/users")
+public class UserService {
 
 	@Inject
 	private UserFacade usermng;
 	
 	@GET
-	@Produces({MediaType.TEXT_HTML, MediaType.TEXT_PLAIN})
-	public String getAllInString(){
-		// not the way ! just for test.. 
-		System.out.println("entrou");
-
-		ArrayList<User> usr_list = new ArrayList<User>();
-		usr_list.addAll(usermng.getUsers());
-
-		StringBuilder sb = new StringBuilder();
-		
-		System.out.println("passou");
-
-		for (User usr : usr_list) {
-			System.out.println(usr);
-			sb.append(usr.toString()).append(" ; ");
-		}
-		return sb.toString();
+	@Path("/allusers")
+	@Produces({MediaType.APPLICATION_XML})
+//	@Produces({MediaType.TEXT_HTML, MediaType.TEXT_PLAIN})
+	public List<User> getAllUsers() {
+		return usermng.getUsers();
 	}
 	
+	@GET
+	@Path("{uemail}")
+	@Produces({MediaType.APPLICATION_XML})
+	public User getSimpleUserById(@PathParam("uemail") String email){
+		
+		return  usermng.findUserByEmail(email);
+	}	
 	
+	
+//	@GET
+//	@Produces({MediaType.TEXT_HTML, MediaType.TEXT_PLAIN})
+//	public String getAllInString(){
+//		// not the way ! just for test.. 
+//		
+//		ArrayList<SimpleUser> usr_list = new ArrayList<SimpleUser>();
+//		usr_list.addAll(usermng.findAll());
+//
+//		StringBuilder sb = new StringBuilder();
+//
+//		for (SimpleUser usr : usr_list)
+//			sb.append(usr.toString()).append(" ; ");
+//		
+//		return sb.toString();
+//	}
+//
+//
 //	@GET
 //	@Path("{suid: \\d+}")
 //	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML,MediaType.TEXT_HTML, MediaType.TEXT_PLAIN})
