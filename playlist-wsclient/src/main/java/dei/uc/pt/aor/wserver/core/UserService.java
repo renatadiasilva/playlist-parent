@@ -1,18 +1,22 @@
 package dei.uc.pt.aor.wserver.core;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 //import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-//import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-//import javax.ws.rs.POST;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-//import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response;
 
 import dei.uc.pt.aor.User;
 import dei.uc.pt.aor.UserFacade;
@@ -39,7 +43,65 @@ public class UserService {
 		
 		return  usermng.findUserByEmail(email);
 	}	
-	
+
+//implementar o findUserById
+//	@GET
+//	@Path("{suid: \\d+}")
+//	@Produces({MediaType.APPLICATION_XML})
+//	public User getUserById(@PathParam("suid") int id){
+//
+//		return  usermng.findUserById(id);
+//	}
+		
+	//testar
+	@POST
+	@Path("/createuser")
+	@Consumes({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	public Response createSimpleUser(User user) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+
+		//tirar user e meter nome, email, pass??
+		usermng.addUser(user); //pass?
+
+		User newuser = usermng.findUserByEmail(user.getEmail());
+		//Response.notModified();
+
+		return Response.ok(newuser).build();
+
+	}
+		
+	//testar
+	@DELETE
+	@Path("/deleteuser")
+	@Consumes({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	public Response deleteUser(User user){
+
+		User newuser = usermng.findUserByEmail(user.getEmail());
+		usermng.delete(newuser);
+
+		return Response.ok().build();
+
+	}
+
+	//testar
+	@PUT
+	@Path("/updateuser")
+	@Consumes({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	public Response updateUser(User user){
+
+		//mudar email???
+		User newuser = usermng.findUserByEmail(user.getEmail());		
+//		User newuser = usermng.findUserById(user.getId());
+//		newuser.setEmail(user.getEmail());
+		newuser.setName(user.getName());
+		//confirmar isto de mudar pass??
+		newuser.setPassword(user.getPassword());
+
+		return Response.ok(newuser).build();
+
+	}
 	
 //	@GET
 //	@Produces({MediaType.TEXT_HTML, MediaType.TEXT_PLAIN})
