@@ -43,7 +43,6 @@ Temporary Items
 .apdisk
 
 # from tutorial Maven
-*/pom.xml
 .settings/
 *.classpath
 *.project
