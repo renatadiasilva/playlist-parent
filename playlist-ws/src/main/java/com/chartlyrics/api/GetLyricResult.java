@@ -7,12 +7,19 @@
 
 package com.chartlyrics.api;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.sun.xml.txw2.annotation.XmlElement;
+
+@XmlRootElement
 public class GetLyricResult  implements java.io.Serializable {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1621443949009682849L;
-
+	
+	
 	private java.lang.String trackChecksum;
 
     private int trackId;
