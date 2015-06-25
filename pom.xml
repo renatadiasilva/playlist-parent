@@ -106,7 +106,7 @@
 					<configuration>
 						<skip>true</skip>
 						<hostname>localhost</hostname>
-						<port>9190</port>
+						<port>${server.port}</port>
 					</configuration>
 				</plugin>
 

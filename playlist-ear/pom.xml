@@ -78,7 +78,7 @@
 					<skip>false</skip>
 					<filename>playlist.ear</filename>
 					<hostname>localhost</hostname>
-					<port>9190</port>
+					<port>${server.port}</port>
 				</configuration>				
 				<executions>
                     <execution>
