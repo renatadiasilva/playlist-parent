@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+//import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -15,9 +16,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import dei.uc.pt.aor.EncryptPass;
 import dei.uc.pt.aor.User;
 import dei.uc.pt.aor.UserFacade;
 
@@ -27,6 +30,9 @@ public class UserService {
 
 	@Inject
 	private UserFacade usermng;
+	
+	@Inject
+	private EncryptPass epw;
 	
 	@GET
 	@Path("/allusers")
@@ -39,7 +45,7 @@ public class UserService {
 	@GET
 	@Path("{uemail}")
 	@Produces({MediaType.APPLICATION_XML})
-	public User getSimpleUserById(@PathParam("uemail") String email){
+	public User getUserByEmail(@PathParam("uemail") String email) {
 		
 		return  usermng.findUserByEmail(email);
 	}	
@@ -48,40 +54,67 @@ public class UserService {
 //	@GET
 //	@Path("{suid: \\d+}")
 //	@Produces({MediaType.APPLICATION_XML})
-//	public User getUserById(@PathParam("suid") int id){
+//	public User getUserById(@PathParam("suid") int id) {
 //
 //		return  usermng.findUserById(id);
 //	}
 		
-	//testar
+//	@POST
+//	@Path("/createuser")
+//	@Consumes({MediaType.APPLICATION_XML})
+//	@Produces({MediaType.APPLICATION_XML})
+//	public Response createUser(User user) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+//
+//		user.setPassword(epw.encrypt("123"));
+//		usermng.addUser(user);
+//
+//		User newuser = usermng.findUserByEmail(user.getEmail());
+//		//Response.notModified();
+//
+//		return Response.ok(newuser).build();
+//
+//	}
+		
 	@POST
 	@Path("/createuser")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response createSimpleUser(User user) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+	public Response createUser(@QueryParam("name") String name, 
+			@QueryParam("email") String email, @QueryParam("pass") String pass)
+			throws NoSuchAlgorithmException, UnsupportedEncodingException{
 
-		//tirar user e meter nome, email, pass??
-		usermng.addUser(user); //pass?
+		User user = new User(name, epw.encrypt(pass), email);
+		usermng.addUser(user);
 
+		//@DefaultValue("user") VERRR????
+//		@DefaultValue("75000") @QueryParam("zip") Long zip, @QueryParam("city") String city) 
+//
+//		/customer?zip=75012&city=Paris
+		
 		User newuser = usermng.findUserByEmail(user.getEmail());
 		//Response.notModified();
 
 		return Response.ok(newuser).build();
 
 	}
-		
-	//testar
+
 	@DELETE
-	@Path("/deleteuser")
+	@Path("/deleteuser/{uemail}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response deleteUser(User user){
+	public Response deleteUser(@PathParam("uemail") String email) {
 
-		User newuser = usermng.findUserByEmail(user.getEmail());
-		usermng.delete(newuser);
+		User newuser = usermng.findUserByEmail(email);
 
-		return Response.ok().build();
-
+		if (newuser != null) {
+			usermng.delete(newuser);
+			return Response.ok().build();
+		} else {
+			return Response.ok().build();
+			// ver melhor
+//			return Response.notModified().build();
+		}
+		
 	}
 
 	//testar
@@ -89,7 +122,7 @@ public class UserService {
 	@Path("/updateuser")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response updateUser(User user){
+	public Response updateUser(User user) {
 
 		//mudar email???
 		User newuser = usermng.findUserByEmail(user.getEmail());		

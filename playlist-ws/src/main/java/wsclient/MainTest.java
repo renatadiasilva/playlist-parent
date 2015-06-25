@@ -32,8 +32,6 @@ public class MainTest {
 		
 		System.out.println("Lyric: \n"+result.getLyric());
 		
-		
-		
 	}
 
 }
