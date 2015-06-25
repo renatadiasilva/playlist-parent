@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-//import javax.ws.rs.DefaultValue;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -39,14 +39,19 @@ public class UserService {
 	@Produces({MediaType.APPLICATION_XML})
 //	@Produces({MediaType.TEXT_HTML, MediaType.TEXT_PLAIN})
 	public List<User> getAllUsers() {
-		return usermng.getUsers();
+		return (List<User>) usermng.getUsers();
 	}
+//		public Users getAllUsers() {
+//			return (Users) usermng.getUsers();
+//			Users u = new Users();
+//			u.setListUsers(usermng.getUsers());
+//			return u;
+//	}
 	
 	@GET
 	@Path("{uemail}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserByEmail(@PathParam("uemail") String email) {
-		
 		return  usermng.findUserByEmail(email);
 	}	
 
@@ -79,22 +84,19 @@ public class UserService {
 	@Path("/createuser")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
+//	/createuser?name=user5&email=user5@user.com[&pass=123]
 	public Response createUser(@QueryParam("name") String name, 
-			@QueryParam("email") String email, @QueryParam("pass") String pass)
+			@QueryParam("email") String email, @DefaultValue("123") @QueryParam("pass") String pass)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException{
 
 		User user = new User(name, epw.encrypt(pass), email);
 		usermng.addUser(user);
 
-		//@DefaultValue("user") VERRR????
-//		@DefaultValue("75000") @QueryParam("zip") Long zip, @QueryParam("city") String city) 
-//
-//		/customer?zip=75012&city=Paris
-		
-		User newuser = usermng.findUserByEmail(user.getEmail());
+		// precisa?? parece q não
+//		User newuser = usermng.findUserByEmail(user.getEmail());
 		//Response.notModified();
 
-		return Response.ok(newuser).build();
+		return Response.ok(user).build();
 
 	}
 
@@ -104,10 +106,10 @@ public class UserService {
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteUser(@PathParam("uemail") String email) {
 
-		User newuser = usermng.findUserByEmail(email);
+		User user = usermng.findUserByEmail(email);
 
-		if (newuser != null) {
-			usermng.delete(newuser);
+		if (user != null) {
+			usermng.delete(user);
 			return Response.ok().build();
 		} else {
 			return Response.ok().build();
@@ -126,61 +128,18 @@ public class UserService {
 
 		//mudar email???
 		User newuser = usermng.findUserByEmail(user.getEmail());		
-//		User newuser = usermng.findUserById(user.getId());
-//		newuser.setEmail(user.getEmail());
-		newuser.setName(user.getName());
-		//confirmar isto de mudar pass??
-		newuser.setPassword(user.getPassword());
 
+		newuser.setName(user.getName());
+		usermng.update(newuser);
+//
+//		//confirmar isto de mudar pass??
+////		newuser.setPassword(user.getPassword());
+//
+////		user.setPassword(epw.encrypt("123"));
+////
+		
 		return Response.ok(newuser).build();
 
 	}
-	
-//	@GET
-//	@Produces({MediaType.TEXT_HTML, MediaType.TEXT_PLAIN})
-//	public String getAllInString(){
-//		// not the way ! just for test.. 
-//		
-//		ArrayList<SimpleUser> usr_list = new ArrayList<SimpleUser>();
-//		usr_list.addAll(usermng.findAll());
-//
-//		StringBuilder sb = new StringBuilder();
-//
-//		for (SimpleUser usr : usr_list)
-//			sb.append(usr.toString()).append(" ; ");
-//		
-//		return sb.toString();
-//	}
-//
-//
-//	@GET
-//	@Path("{suid: \\d+}")
-//	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML,MediaType.TEXT_HTML, MediaType.TEXT_PLAIN})
-//	public SimpleUser getSimpleUserById(@PathParam("suid") Long id){
-//		// use logs!!! (im lazy)
-//		System.out.println("get me : "+id);
-//		
-//		return usermng.find(id);
-//	}
-//	
-	
-	
-//	@POST
-//	@Path("/simpleuser")
-//	@Consumes({MediaType.APPLICATION_XML})
-//	@Produces({MediaType.APPLICATION_XML})
-//	public Response createSimpleUser(SimpleUser user){
-//		System.out.println(user.getId());
-//		System.out.println(user.getUsername());
-//		SimpleUser another = new SimpleUser();
-//		another.setUsername(user.getUsername());// Why ? :(
-//		
-//		
-//		SimpleUser newuser = usermng.create(another);
-//		//Response.notModified();
-//		
-//		return Response.ok(newuser).build();
-//		
-//	}
-	
+		
 }

@@ -34,7 +34,6 @@ public class User implements Serializable {
 	
 	@NotNull
 	@Column(name = "password", nullable = false)
-	@XmlTransient
 	private String password;
 
 	@NotNull
@@ -83,8 +82,6 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	// tirar dp
-	@XmlTransient
 	public String getPassword() {
 		return password;
 	}
