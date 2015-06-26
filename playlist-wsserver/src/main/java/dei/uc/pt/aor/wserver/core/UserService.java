@@ -48,17 +48,17 @@ public class UserService {
 	private EncryptPass epw;
 	
 	@GET
-	@Path("/allusers")
-	@Produces({MediaType.APPLICATION_XML})
-	public List<User> getAllUsers() {
-		return (List<User>) usermng.getUsers();
-	}
-
-	@GET
 	@Path("/totalusers")
 	@Produces({MediaType.TEXT_PLAIN})
 	public int getTotalUsers() {
 		return usermng.getUsers().size();
+	}
+
+	@GET
+	@Path("/allusers")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<User> getAllUsers() {
+		return (List<User>) usermng.getUsers();
 	}
 
 	@GET
@@ -68,7 +68,14 @@ public class UserService {
 		return  usermng.findUserByEmail(email);
 	}	
 
-//implementar o findUserById
+	@GET
+	@Path("{uid}")
+	@Produces({MediaType.APPLICATION_XML})
+	public User getUserById(@PathParam("uid") Long id) {
+		return  usermng.findUserById(id);
+	}	
+
+	//implementar o findUserById
 //	@GET
 //	@Path("{suid: \\d+}")
 //	@Produces({MediaType.APPLICATION_XML})

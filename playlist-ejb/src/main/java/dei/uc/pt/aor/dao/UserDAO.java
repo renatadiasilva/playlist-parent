@@ -23,6 +23,14 @@ public class UserDAO extends GenericDAO<User> {
 		super.save(user);
 	}
 	
+	public User findUserById(Long id) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("id", id);
+		List<User> list = super.findSomeResults("User.findUserById", parameters);
+		if (list.size() == 1) return list.get(0);
+		else return null;
+	}
+
 	public User findUserByEmail(String email) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("email", email);

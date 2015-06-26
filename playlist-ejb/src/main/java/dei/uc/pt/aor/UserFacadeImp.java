@@ -23,6 +23,11 @@ public class UserFacadeImp implements UserFacade {
 		userDAO.delete(u);
 	}
 
+	public User findUserById(Long id) {
+		log.info("Finding user by id");
+		return userDAO.findUserById(id);
+	}
+
 	public User findUserByEmail(String email) {
 		log.info("Finding user by email");
 		return userDAO.findUserByEmail(email);
