@@ -128,6 +128,7 @@ public class User implements Serializable {
 		return result;
 	}
 
+	@XmlTransient
 	public List<Lyric> getLyrics() {
 		return lyrics;
 	}
