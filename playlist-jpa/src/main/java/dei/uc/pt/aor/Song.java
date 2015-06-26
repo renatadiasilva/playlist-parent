@@ -52,6 +52,13 @@ public class Song implements Serializable {
 	@ManyToMany(mappedBy="songs")
 	private List<Playlist> playlists;
 
+	////Boolean para saber se a Song tem lyric
+	@Column(name = "hasLyric")
+	private boolean hasLyric;
+	
+	@OneToMany(mappedBy="music")
+	private List<Lyric> lyrics;
+	
 	public Song() {
 	}
 
@@ -119,6 +126,22 @@ public class Song implements Serializable {
 
 	public void setOwner(User owner) {
 		this.owner = owner;
+	}
+
+	public boolean isHasLyric() {
+		return hasLyric;
+	}
+
+	public void setHasLyric(boolean hasLyric) {
+		this.hasLyric = hasLyric;
+	}
+	
+	public List<Lyric> getLyrics() {
+		return lyrics;
+	}
+
+	public void setLyrics(List<Lyric> lyrics) {
+		this.lyrics = lyrics;
 	}
 
 	@Override

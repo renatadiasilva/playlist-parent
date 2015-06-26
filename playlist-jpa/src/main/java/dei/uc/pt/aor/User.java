@@ -52,6 +52,9 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "owner")
 	@XmlTransient
 	private List<Song> songs;
+	
+	@OneToMany(mappedBy = "owner")
+	private List<Lyric> lyrics;
 
 	public User() {
 	}
@@ -122,6 +125,14 @@ public class User implements Serializable {
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
+	}
+
+	public List<Lyric> getLyrics() {
+		return lyrics;
+	}
+
+	public void setLyrics(List<Lyric> lyrics) {
+		this.lyrics = lyrics;
 	}
 
 	@Override
