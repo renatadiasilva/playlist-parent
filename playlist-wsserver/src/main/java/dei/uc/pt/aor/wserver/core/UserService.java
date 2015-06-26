@@ -58,18 +58,18 @@ public class UserService {
 	@Path("/allusers")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<User> getAllUsers() {
-		return (List<User>) usermng.getUsers();
+		return (List<User>) usermng.findAllByOrder();
 	}
 
 	@GET
-	@Path("{uemail}")
+	@Path("/email/{uemail}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserByEmail(@PathParam("uemail") String email) {
 		return  usermng.findUserByEmail(email);
 	}	
 
 	@GET
-	@Path("{uid}")
+	@Path("/id/{uid}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserById(@PathParam("uid") Long id) {
 		return  usermng.findUserById(id);
@@ -121,13 +121,13 @@ public class UserService {
 	}
 
 	@DELETE
-	@Path("/deleteuser/{uemail}")
+	@Path("/deleteuser/{uid}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response deleteUser(@PathParam("uemail") String email) {
+	public Response deleteUser(@PathParam("uid") Long id) {
 
 		Boolean error = false;
-		User user = usermng.findUserByEmail(email);
+		User user = usermng.findUserById(id);
 
 		if (user != null) {
 			
@@ -170,14 +170,14 @@ public class UserService {
 	}
 
 	@PUT
-	@Path("/updateuser/{uemail}")
+	@Path("/updateuser/{uid}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response updateUser(@PathParam("uemail") String email, 
+	public Response updateUser(@PathParam("uid") Long id, 
 			@DefaultValue("") @QueryParam("name") String name, 
 			@DefaultValue("") @QueryParam("pass") String pass) {
 
-		User user = usermng.findUserByEmail(email);		
+		User user = usermng.findUserById(id);		
 
 		if (!name.equals("")) user.setName(name);
 		// encrypt??

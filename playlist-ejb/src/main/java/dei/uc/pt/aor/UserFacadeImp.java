@@ -33,6 +33,11 @@ public class UserFacadeImp implements UserFacade {
 		return userDAO.findUserByEmail(email);
 	}
 
+	public List<User> findAllByOrder() {
+		log.info("Creating Query for all users (ordered by id)");
+		return userDAO.findAllByOrder();
+	}
+
 	public void addUser(User u) {
 		log.info("Saving user in DB");
 		userDAO.save(u);

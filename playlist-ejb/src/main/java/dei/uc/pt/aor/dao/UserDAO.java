@@ -23,6 +23,10 @@ public class UserDAO extends GenericDAO<User> {
 		super.save(user);
 	}
 	
+	public List<User> findAllByOrder() {
+		return super.findAllByOrder("User.findAllByIdOrder");
+	}
+	
 	public User findUserById(Long id) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("id", id);
