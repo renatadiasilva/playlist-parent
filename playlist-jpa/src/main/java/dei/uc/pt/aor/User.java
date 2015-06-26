@@ -54,6 +54,7 @@ public class User implements Serializable {
 	private List<Song> songs;
 	
 	@OneToMany(mappedBy = "owner")
+	@XmlTransient
 	private List<Lyric> lyrics;
 
 	public User() {
