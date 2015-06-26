@@ -2,7 +2,6 @@ package dei.uc.pt.aor.wserver.core;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-//import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJBException;
@@ -69,42 +68,16 @@ public class UserService {
 	}	
 
 	@GET
-	@Path("/id/{uid}")
+	@Path("/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserById(@PathParam("uid") Long id) {
 		return  usermng.findUserById(id);
 	}	
-
-	//implementar o findUserById
-//	@GET
-//	@Path("{suid: \\d+}")
-//	@Produces({MediaType.APPLICATION_XML})
-//	public User getUserById(@PathParam("suid") int id) {
-//
-//		return  usermng.findUserById(id);
-//	}
-		
-//	@POST
-//	@Path("/createuser")
-//	@Consumes({MediaType.APPLICATION_XML})
-//	@Produces({MediaType.APPLICATION_XML})
-//	public Response createUser(User user) throws NoSuchAlgorithmException, UnsupportedEncodingException{
-//
-//		user.setPassword(epw.encrypt("123"));
-//		usermng.addUser(user);
-//
-//		User newuser = usermng.findUserByEmail(user.getEmail());
-//		//Response.notModified();
-//
-//		return Response.ok(newuser).build();
-//
-//	}
 		
 	@POST
 	@Path("/createuser")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-//	/createuser?name=user5&email=user5@user.com[&pass=123]
 	public Response createUser(@QueryParam("name") String name, 
 			@QueryParam("email") String email, @DefaultValue("123") @QueryParam("pass") String pass)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException{
@@ -112,7 +85,7 @@ public class UserService {
 		User user = new User(name, epw.encrypt(pass), email);
 		usermng.addUser(user);
 
-		// precisa?? parece q não
+		// precisa?? (verifica se já existe email!!!!!
 //		User newuser = usermng.findUserByEmail(user.getEmail());
 		//Response.notModified();
 
@@ -170,7 +143,7 @@ public class UserService {
 	}
 
 	@PUT
-	@Path("/updateuser/{uid}")
+	@Path("/updateuser/{uid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response updateUser(@PathParam("uid") Long id, 
@@ -187,22 +160,5 @@ public class UserService {
 		return Response.ok(user).build();
 
 	}
-
-//	@PUT
-//	@Path("/updateuser")
-//	@Consumes({MediaType.APPLICATION_XML})
-//	@Produces({MediaType.APPLICATION_XML})
-//	public Response updateUser(User user) {
-//
-//		User newuser = usermng.findUserByEmail(user.getEmail());		
-//
-//		newuser.setName(user.getName());
-//		// encrypt??
-//		newuser.setPassword(epw.encrypt(user.getPassword()));
-//		usermng.update(newuser);
-//		
-//		return Response.ok(newuser).build();
-//
-//	}
 
 }

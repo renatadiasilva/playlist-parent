@@ -29,6 +29,14 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 		super.delete(playlist.getId(), Playlist.class);
 	}
 	
+	public Playlist findPlaylistById(Long id) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("id", id);
+		List<Playlist> list = super.findSomeResults("Playlist.findPlaylistById", parameters);
+		if (list.size() == 1) return list.get(0);
+		else return null;
+	}
+	
 	public List<Playlist> playlistsOfUser(User u, int order) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("ownerId", u);

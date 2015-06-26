@@ -40,6 +40,12 @@ public class SongFacadeImp implements SongFacade {
 		return songDAO.find(entityID);
 	}
 	
+	//duplicate??
+	public Song findSongById(Long id) {
+		log.info("Finding song by id");
+		return songDAO.findSongById(id);
+	}
+	
 	public List<Song> findAll() {
 		log.info("Finding all songs");
 		return songDAO.findAll();

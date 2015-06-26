@@ -40,6 +40,12 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 		return playlistDAO.find(entityID);
 	}
 	
+	//duplicate??
+	public Playlist findPlaylistById(Long id) {
+		log.info("Finding playlist by id");
+		return playlistDAO.findPlaylistById(id);
+	}
+
 	public List<Playlist> findAll() {
 		log.info("Creating Query for all playlists");
 		return playlistDAO.findAll();
