@@ -1,26 +1,22 @@
-package wsclient;
+package wsconsumer;
 
 import java.rmi.RemoteException;
 
 import com.chartlyrics.api.Apiv1SoapProxy;
 import com.chartlyrics.api.GetLyricResult;
 
-public class MainTest {
+public class SoapConsumer {
 
-	public static void main(String[] args) {
+	public String getLyricFromSoap(String artist, String title) {
 		
 		Apiv1SoapProxy soap = new Apiv1SoapProxy();
-		String artist = "amy winehouse";
-		String song = "back to black";
-//		String artist = "jonh legend";
-//		String song = "all of me";
 		GetLyricResult result = null;
 		boolean search = false;
 		
 		//Ir Buscar a lyric de uma musica por artista e titulo
 		while(!search){
 			try {
-				result = soap.searchLyricDirect(artist, song);
+				result = soap.searchLyricDirect(artist, title);
 				search = true;
 				
 			} catch (RemoteException e) {
@@ -30,7 +26,7 @@ public class MainTest {
 			
 		}
 		
-		System.out.println("Lyric: \n"+result.getLyric());
+		return result.getLyric();
 		
 	}
 
