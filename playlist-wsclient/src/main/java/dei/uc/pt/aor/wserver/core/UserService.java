@@ -162,23 +162,40 @@ public class UserService {
 		
 	}
 
-	//testar
 	@PUT
-	@Path("/updateuser")
+	@Path("/updateuser/{uemail}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response updateUser(User user) {
+	public Response updateUser(@PathParam("uemail") String email, 
+			@DefaultValue("") @QueryParam("name") String name, 
+			@DefaultValue("") @QueryParam("pass") String pass) {
 
-		//mudar email???
-		User newuser = usermng.findUserByEmail(user.getEmail());		
+		User user = usermng.findUserByEmail(email);		
 
-		newuser.setName(user.getName());
+		if (!name.equals("")) user.setName(name);
 		// encrypt??
-		newuser.setPassword(epw.encrypt(user.getPassword()));
-		usermng.update(newuser);
+		if (!pass.equals("")) user.setPassword(epw.encrypt(pass));
+		usermng.update(user);
 		
-		return Response.ok(newuser).build();
+		return Response.ok(user).build();
 
 	}
-		
+
+//	@PUT
+//	@Path("/updateuser")
+//	@Consumes({MediaType.APPLICATION_XML})
+//	@Produces({MediaType.APPLICATION_XML})
+//	public Response updateUser(User user) {
+//
+//		User newuser = usermng.findUserByEmail(user.getEmail());		
+//
+//		newuser.setName(user.getName());
+//		// encrypt??
+//		newuser.setPassword(epw.encrypt(user.getPassword()));
+//		usermng.update(newuser);
+//		
+//		return Response.ok(newuser).build();
+//
+//	}
+
 }
