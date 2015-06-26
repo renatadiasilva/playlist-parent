@@ -1,16 +1,9 @@
 package wsclient;
 
 
-import java.io.InputStream;
-import java.io.StringReader;
-
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -22,11 +15,12 @@ public class RestConsumer {
 		//		  consumeSimpleService();
 		//		  consumeSimpleUsersService();
 		//		  getUserById(1L);
-		getLyric("michael jackson", "thriller");
+		getChartLyric("michael jackson", "thriller");
+		getWikiaLyric("abba", "fernando");
 	}
 
-
-	private static void getLyric(String artist, String title) throws JAXBException {
+	//Method to get the lyric by artist & title using REST WS - chartlyrics.com
+	private static void getChartLyric(String artist, String title) throws JAXBException {
 
 		ResteasyClient client = new ResteasyClientBuilder().build();
 
@@ -35,24 +29,50 @@ public class RestConsumer {
 		target = target.queryParam("artist", artist);
 		target = target.queryParam("song", title);
 
-		System.out.println(target.getUri());
+		//System.out.println(target.getUri());
 
 		// MediaType in XML 
 		Response response = target.request(MediaType.APPLICATION_XML).get();
 		
-		System.out.println(response.getStatus());
-		System.out.println(response.readEntity(String.class));
+		//System.out.println(response.getStatus());
+		//System.out.println(response.readEntity(String.class));     //Attention: the Entity can only be read once!
 		
 		GetLyricResult glr = response.readEntity(GetLyricResult.class);
-//		
-//	
-//
-		System.out.println(glr.getLyric());
+
+		System.out.println(glr.getSongLyric());
 	}
 
 
+	
+	
+	//Method to get the lyric by artist & title using REST WS - api.wikia.com
+	private static void getWikiaLyric(String artist, String title) throws JAXBException {
+	
+		ResteasyClient client = new ResteasyClientBuilder().build();
 
+//		http://lyrics.wikia.com/api.php?artist=Cake&song=Dime
+//		http://lyrics.wikia.com/api.php?artist=Cake&song=Dime&fmt=xml
+		ResteasyWebTarget target = client.target("http://lyrics.wikia.com/api.php");
 
+		target = target.queryParam("artist", artist);
+		target = target.queryParam("song", title);
+
+		//System.out.println(target.getUri());
+
+		// MediaType in XML 
+		Response response = target.request(MediaType.APPLICATION_XML).get();
+		
+		//System.out.println(response.getStatus());
+		//System.out.println(response.readEntity(String.class));     //Attention: the Entity can only be read once!
+		
+		GetLyricResult glr = response.readEntity(GetLyricResult.class);
+
+		System.out.println(glr.getSongLyric());
+	
+	}	
+		
+		
+	
 	//	private static void createUser(){
 	//		
 	//		// Pode ser reutilizado !
