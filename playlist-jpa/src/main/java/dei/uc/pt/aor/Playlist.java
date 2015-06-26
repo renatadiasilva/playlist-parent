@@ -26,7 +26,9 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name="Playlist.playlistSameName",
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId AND p.name = :name"),
 	@NamedQuery(name="Playlist.playlistsOfUserContainingSong",
-			query="SELECT p FROM Playlist p JOIN p.songs s WHERE p.owner = :ownerId AND s.id = :idS")
+			query="SELECT p FROM Playlist p JOIN p.songs s WHERE p.owner = :ownerId AND s.id = :idS"),
+	@NamedQuery(name="Playlist.findPlaylistById",
+		query="SELECT p FROM Playlist p WHERE p.id = :id"),
 })
 public class Playlist implements Serializable {
 

@@ -10,11 +10,13 @@ import javax.validation.constraints.NotNull;
 @Table(name = "songs")
 @NamedQueries({
 	@NamedQuery(name="Song.allSongs",
-			query="SELECT s FROM Song s ORDER BY s.title"),
+			query="SELECT s FROM Song s ORDER BY s.id"),
 	@NamedQuery(name="Song.songsOfUser",
 			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title"),
 	@NamedQuery(name="Song.songsByArtistTitle",
 			query="SELECT s FROM Song s WHERE UPPER(s.title) LIKE :t AND UPPER(s.artist) LIKE :a ORDER BY s.title"),
+	@NamedQuery(name="Song.findSongById",
+			query="SELECT s FROM Song s WHERE s.id = :id"),
 })
 public class Song implements Serializable {
 	
