@@ -74,8 +74,6 @@ public class UserService {
 		return  usermng.findUserById(id);
 	}	
 		
-	// playlists de um user
-	
 	@POST
 	@Path("/createuser")
 	@Consumes({MediaType.APPLICATION_XML})
