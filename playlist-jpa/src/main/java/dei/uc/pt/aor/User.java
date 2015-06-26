@@ -18,6 +18,8 @@ import javax.xml.bind.annotation.XmlTransient;
 			query="SELECT u FROM User u WHERE u.name like :exp"),
 	@NamedQuery(name="User.findUserById", 
 		query="SELECT u FROM User u WHERE u.id = :id"),
+	@NamedQuery(name="User.findAllByIdOrder", 
+		query="SELECT u FROM User u ORDER BY u.id")
 }) 
 @XmlRootElement
 public class User implements Serializable {
