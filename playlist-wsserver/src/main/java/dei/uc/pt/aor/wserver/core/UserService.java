@@ -50,17 +50,17 @@ public class UserService {
 	@GET
 	@Path("/allusers")
 	@Produces({MediaType.APPLICATION_XML})
-//	@Produces({MediaType.TEXT_HTML, MediaType.TEXT_PLAIN})
 	public List<User> getAllUsers() {
 		return (List<User>) usermng.getUsers();
 	}
-//		public Users getAllUsers() {
-//			return (Users) usermng.getUsers();
-//			Users u = new Users();
-//			u.setListUsers(usermng.getUsers());
-//			return u;
-//	}
-	
+
+	@GET
+	@Path("/totalusers")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int getTotalUsers() {
+		return usermng.getUsers().size();
+	}
+
 	@GET
 	@Path("{uemail}")
 	@Produces({MediaType.APPLICATION_XML})

@@ -6,10 +6,10 @@
     	<version>1</version>
   	</parent>
   
-  	<artifactId>playlist-wsclient</artifactId>
+  	<artifactId>playlist-wsserver</artifactId>
   	<packaging>war</packaging>
   
-	<name>playlist-wsclient</name>
+	<name>playlist-wsserver</name>
 	<description> Web Service Server</description>
 
 	<build>

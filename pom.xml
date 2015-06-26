@@ -16,7 +16,7 @@
 		<module>playlist-web</module>
 		<module>playlist-ear</module>
 		<module>playlist-ws</module>
-		<module>playlist-wsclient</module>
+		<module>playlist-wsserver</module>
 	</modules>
 
 
