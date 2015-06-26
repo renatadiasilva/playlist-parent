@@ -51,6 +51,11 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 		return playlistDAO.findAll();
 	}
 	
+	public List<Playlist> findAllByOrder() {
+		log.info("Creating Query for all playlists (ordered by id)");
+		return playlistDAO.findAllByOrder();
+	}
+	
 	public List<Playlist> playlistsOfUser(User u, int order) {
 		log.info("Creating Query for playlists of User");
 		return playlistDAO.playlistsOfUser(u, order);

@@ -31,53 +31,36 @@ import dei.uc.pt.aor.User;
 import dei.uc.pt.aor.UserFacade;
 
 @Stateless
-@Path("/users")
-public class UserService {
+@Path("/playlists")
+public class PlaylistService {
 
-	@Inject
-	private UserFacade usermng;
-	
-	//tirar?
-	@Inject
-	private SongFacade songmng;
 	@Inject
 	private PlaylistFacade playmng;
 
-	@Inject
-	private EncryptPass epw;
-	
 	@GET
-	@Path("/totalusers")
+	@Path("/totalplaylists")
 	@Produces({MediaType.TEXT_PLAIN})
-	public int getTotalUsers() {
-		return usermng.getUsers().size();
+	public int getTotalPlaylists() {
+		return playmng.findAll().size();
 	}
 
 	@GET
-	@Path("/allusers")
+	@Path("/allplaylists")
 	@Produces({MediaType.APPLICATION_XML})
-	public List<User> getAllUsers() {
-		return (List<User>) usermng.findAllByOrder();
+	public List<Playlist> getAllPlaylists() {
+		return (List<Playlist>) playmng.findAllByOrder();
 	}
 
+	//buscar musicas...
 	@GET
-	@Path("/email/{uemail}")
+	@Path("/id/{pid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
-	public User getUserByEmail(@PathParam("uemail") String email) {
-		return  usermng.findUserByEmail(email);
-	}	
-
-	@GET
-	@Path("/id/{uid: \\d+}")
-	@Produces({MediaType.APPLICATION_XML})
-	public User getUserById(@PathParam("uid") Long id) {
-		return  usermng.findUserById(id);
+	public Playlist getPlaylistById(@PathParam("pid") Long id) {
+		return playmng.findPlaylistById(id);
 	}	
 		
-	// playlists de um user
-	
 	@POST
-	@Path("/createuser")
+	@Path("/createplaylist")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response createUser(@QueryParam("name") String name, 
@@ -85,7 +68,7 @@ public class UserService {
 			throws NoSuchAlgorithmException, UnsupportedEncodingException{
 
 		User user = new User(name, epw.encrypt(pass), email);
-		usermng.addUser(user);
+		playmng.addUser(user);
 
 		// precisa?? (verifica se já existe email!!!!!
 //		User newuser = usermng.findUserByEmail(user.getEmail());
@@ -102,7 +85,7 @@ public class UserService {
 	public Response deleteUser(@PathParam("uid") Long id) {
 
 		Boolean error = false;
-		User user = usermng.findUserById(id);
+		User user = playmng.findUserById(id);
 
 		if (user != null) {
 			
@@ -112,7 +95,7 @@ public class UserService {
 				try {
 //					log.info("Changing ownership of all songs to admin");
 //					log.debug("Changing ownership of all songs of "+uemail+" to admin");
-					User admin = usermng.findUserByEmail("admin@admin.com");
+					User admin = playmng.findUserByEmail("admin@admin.com");
 
 					s.setOwner(admin);
 					songmng.update(s);
@@ -133,7 +116,7 @@ public class UserService {
 
 //				log.info("Deleting account of user");
 //				log.debug("Deleting account of "+uemail);
-				usermng.delete(user);
+				playmng.delete(user);
 			}
 			return Response.ok().build();
 		} else {
@@ -152,12 +135,12 @@ public class UserService {
 			@DefaultValue("") @QueryParam("name") String name, 
 			@DefaultValue("") @QueryParam("pass") String pass) {
 
-		User user = usermng.findUserById(id);		
+		User user = playmng.findUserById(id);		
 
 		if (!name.equals("")) user.setName(name);
 		// encrypt??
 		if (!pass.equals("")) user.setPassword(epw.encrypt(pass));
-		usermng.update(user);
+		playmng.update(user);
 		
 		return Response.ok(user).build();
 

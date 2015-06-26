@@ -129,5 +129,9 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 		return super.findSomeResults("Playlist.playlistsOfUserContainingSong", parameters);
 
 	}
+	
+	public List<Playlist> findAllByOrder() {
+		return super.findAllByOrder("Playlist.allPlaylistsById");
+	}
 
 }

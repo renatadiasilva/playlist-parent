@@ -9,6 +9,7 @@ public interface PlaylistFacade {
 	public abstract void delete(Playlist playlist);
 	public abstract Playlist find(int entityID);
 	public abstract Playlist findPlaylistById(Long id);
+	public abstract List<Playlist> findAllByOrder();
 	public abstract List<Playlist> findAll();
 	public abstract List<Playlist> playlistsOfUser(User u, int order);
 	public abstract List<Song> getSongs(Playlist p);
