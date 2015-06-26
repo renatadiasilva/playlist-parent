@@ -57,6 +57,10 @@ public class User implements Serializable {
 	@XmlTransient
 	private List<Lyric> lyrics;
 
+	@ManyToMany(mappedBy = "owners")
+	@XmlTransient
+	private List<Role> roles;
+	
 	public User() {
 	}
 	
@@ -120,6 +124,24 @@ public class User implements Serializable {
 		this.songs = songs;
 	}
 
+	@XmlTransient
+	public List<Lyric> getLyrics() {
+		return lyrics;
+	}
+	
+	public void setLyrics(List<Lyric> lyrics) {
+		this.lyrics = lyrics;
+	}
+	
+	@XmlTransient
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -128,14 +150,6 @@ public class User implements Serializable {
 		return result;
 	}
 
-	@XmlTransient
-	public List<Lyric> getLyrics() {
-		return lyrics;
-	}
-
-	public void setLyrics(List<Lyric> lyrics) {
-		this.lyrics = lyrics;
-	}
 
 	@Override
 	public boolean equals(Object obj) {
