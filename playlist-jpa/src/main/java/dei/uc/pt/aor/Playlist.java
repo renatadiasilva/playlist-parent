@@ -11,6 +11,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "playlists")
 @NamedQueries({
+	@NamedQuery(name="Playlist.allPlaylistsById",
+			query="SELECT p FROM Playlist p ORDER BY p.id"),
 	@NamedQuery(name="Playlist.playlistOfUserByNameAsc",
 			query="SELECT p FROM Playlist p WHERE p.owner = :ownerId ORDER BY p.name"),
 	@NamedQuery(name="Playlist.playlistOfUserByDateAsc",
