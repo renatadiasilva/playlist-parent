@@ -32,6 +32,9 @@ public class LoginMB implements Serializable {
 	
 	@Inject
 	private ActiveUserMB aUser;
+	
+	@Inject
+	private LoggedUsers loggedUsers;
 
 	public LoginMB() {
 	}
@@ -47,6 +50,7 @@ public class LoginMB implements Serializable {
 				aUser.setEmail(email);
 				aUser.setCurrentUser(u);
 				aUser.startSession();
+				loggedUsers.addUserToLoggedUsersList(u);
 				return "/pages/listMyPlaylists?faces-redirect=true";
 			} else {
 	        	String errorMsg = "Login failure: Wrong password.";
@@ -68,6 +72,7 @@ public class LoginMB implements Serializable {
 		log.info("Doing logout");
 		log.debug("Doing logout for user "+ aUser.getEmail());
 		aUser.endSession();
+		loggedUsers.removeUserFromLoggedUsersList(aUser.getCurrentUser());
 		return "/login?faces-redirect=true";
 	}
 	

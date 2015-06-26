@@ -23,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import dei.uc.pt.aor.EncryptPass;
+import dei.uc.pt.aor.LoggedUsers;
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
@@ -45,6 +46,25 @@ public class UserService {
 
 	@Inject
 	private EncryptPass epw;
+	
+	/////////////////////////////////////
+	@Inject
+	private LoggedUsers loggedUsers;
+	
+	@GET
+	@Path("/loggedusers")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<User> getLoggedUsers() {
+		return (List<User>) loggedUsers.getLoggedUsersList();
+	}
+	
+	@GET
+	@Path("/totalloggedusers")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int getTotalLoggedUsers() {
+		return loggedUsers.getLoggedUsersList().size();
+	}
+	////////////////////////////////////
 	
 	@GET
 	@Path("/totalusers")
