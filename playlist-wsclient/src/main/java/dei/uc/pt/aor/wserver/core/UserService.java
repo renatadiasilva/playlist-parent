@@ -5,7 +5,10 @@ import java.security.NoSuchAlgorithmException;
 //import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -21,6 +24,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import dei.uc.pt.aor.EncryptPass;
+import dei.uc.pt.aor.Playlist;
+import dei.uc.pt.aor.PlaylistFacade;
+import dei.uc.pt.aor.Song;
+import dei.uc.pt.aor.SongFacade;
 import dei.uc.pt.aor.User;
 import dei.uc.pt.aor.UserFacade;
 
@@ -31,6 +38,12 @@ public class UserService {
 	@Inject
 	private UserFacade usermng;
 	
+	//tirar?
+	@Inject
+	private SongFacade songmng;
+	@Inject
+	private PlaylistFacade playmng;
+
 	@Inject
 	private EncryptPass epw;
 	
@@ -106,10 +119,40 @@ public class UserService {
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteUser(@PathParam("uemail") String email) {
 
+		Boolean error = false;
 		User user = usermng.findUserByEmail(email);
 
 		if (user != null) {
-			usermng.delete(user);
+			
+			// pôr isto no facade!!
+			List<Song> uSongs = songmng.songsOfUser(user);
+			for (Song s : uSongs) {
+				try {
+//					log.info("Changing ownership of all songs to admin");
+//					log.debug("Changing ownership of all songs of "+uemail+" to admin");
+					User admin = usermng.findUserByEmail("admin@admin.com");
+
+					s.setOwner(admin);
+					songmng.update(s);
+				} catch (EJBException e) {
+		        	String errorMsg = "Error changing the ownership of songs to admin: "+e.getMessage();
+//		        	log.error(errorMsg);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+					error = true;
+					break;
+				}
+			}
+			
+			if (!error) {
+//				log.info("Deleting all playlists of user");
+//				log.debug("Deleting all playlists of "+uemail);
+				List<Playlist> uPlaylists = playmng.playlistsOfUser(user, 1);
+				for (Playlist p: uPlaylists) playmng.delete(p);
+
+//				log.info("Deleting account of user");
+//				log.debug("Deleting account of "+uemail);
+				usermng.delete(user);
+			}
 			return Response.ok().build();
 		} else {
 			return Response.ok().build();
@@ -130,13 +173,9 @@ public class UserService {
 		User newuser = usermng.findUserByEmail(user.getEmail());		
 
 		newuser.setName(user.getName());
+		// encrypt??
+		newuser.setPassword(epw.encrypt(user.getPassword()));
 		usermng.update(newuser);
-//
-//		//confirmar isto de mudar pass??
-////		newuser.setPassword(user.getPassword());
-//
-////		user.setPassword(epw.encrypt("123"));
-////
 		
 		return Response.ok(newuser).build();
 
