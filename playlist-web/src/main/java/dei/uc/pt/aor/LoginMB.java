@@ -1,7 +1,7 @@
 package dei.uc.pt.aor;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -13,7 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 
 @Named
-@RequestScoped
+//verificar dp da segurança
+@ApplicationScoped
 public class LoginMB implements Serializable {
 	
 	private static final long serialVersionUID = -5381236051617076780L;
@@ -33,7 +34,7 @@ public class LoginMB implements Serializable {
 	@Inject
 	private ActiveUserMB aUser;
 	
-	@Inject
+	@EJB
 	private LoggedUsers loggedUsers;
 
 	public LoginMB() {
@@ -51,6 +52,8 @@ public class LoginMB implements Serializable {
 				aUser.setCurrentUser(u);
 				aUser.startSession();
 				loggedUsers.addUserToLoggedUsersList(u);
+				email = "";
+//				System.out.println("login"+ aUser.getEmail() + "\n" +loggedUsers.getLoggedUsersList());
 				return "/pages/listMyPlaylists?faces-redirect=true";
 			} else {
 	        	String errorMsg = "Login failure: Wrong password.";
@@ -73,6 +76,7 @@ public class LoginMB implements Serializable {
 		log.debug("Doing logout for user "+ aUser.getEmail());
 		aUser.endSession();
 		loggedUsers.removeUserFromLoggedUsersList(aUser.getCurrentUser());
+//		System.out.println("logout"+ aUser.getEmail() + "\n" +loggedUsers.getLoggedUsersList());
 		return "/login?faces-redirect=true";
 	}
 	
