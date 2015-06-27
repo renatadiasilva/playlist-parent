@@ -12,6 +12,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.DELETE;
@@ -34,8 +35,7 @@ import dei.uc.pt.aor.SongFacade;
 import dei.uc.pt.aor.User;
 import dei.uc.pt.aor.UserFacade;
 
-@Stateful
-@ApplicationScoped
+@Stateless
 @Path("/users")
 public class UserService {
 
@@ -47,11 +47,11 @@ public class UserService {
 	@Inject
 	private PlaylistFacade playmng;
 
-	@Inject
-	private EncryptPass epw;
+//	@Inject
+//	private LoggedUsers loggedlist;
 	
 	@Inject
-	private LoggedUsers loggedUsers;
+	private EncryptPass epw;
 	
 	@GET
 	@Path("/totalusers")
@@ -82,19 +82,19 @@ public class UserService {
 		return  usermng.findUserById(id);
 	}	
 		
-	@GET
-	@Path("/loggedusers")
-	@Produces({MediaType.APPLICATION_XML})
-	public List<User> getLoggedUsers() {
-		return (List<User>) loggedUsers.getLoggedUsersList();
-	}
+//	@GET
+//	@Path("/loggedusers")
+//	@Produces({MediaType.APPLICATION_XML})
+//	public List<User> getLoggedUsers() {
+//		return (List<User>) loggedlist.getLoggedUsersList();
+//	}
 	
-	@GET
-	@Path("/totalloggedusers")
-	@Produces({MediaType.TEXT_PLAIN})
-	public int getTotalLoggedUsers() {
-		return loggedUsers.getLoggedUsersList().size();
-	}
+//	@GET
+//	@Path("/totalloggedusers")
+//	@Produces({MediaType.TEXT_PLAIN})
+//	public int getTotalLoggedUsers() {
+//		return loggedUsers.getLoggedUsersList().size();
+//	}
 	
 	@POST
 	@Path("/createuser")
