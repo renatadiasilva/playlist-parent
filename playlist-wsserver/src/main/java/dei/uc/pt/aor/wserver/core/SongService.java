@@ -1,18 +1,13 @@
 package dei.uc.pt.aor.wserver.core;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,9 +17,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import dei.uc.pt.aor.EncryptPass;
-import dei.uc.pt.aor.Playlist;
-import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
 import dei.uc.pt.aor.SongFacade;
 import dei.uc.pt.aor.User;
@@ -62,12 +54,11 @@ public class SongService {
 		return  songmng.findSongById(id);
 	}	
 
-	//remover mesmo ou passar para admin??
 	@DELETE
 	@Path("/deletesong/{sid}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response deleteUser(@PathParam("sid") Long id) {
+	public Response deleteSong(@PathParam("sid") Long id) {
 
 		Song song = songmng.findSongById(id);
 
@@ -90,7 +81,28 @@ public class SongService {
 		return Response.ok().build();		
 	}
 
-	//mais atributos
+	@DELETE
+	@Path("/deletesongforgood/{sid}")
+	@Consumes({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	public Response deleteSongDef(@PathParam("sid") Long id) {
+
+		Song song = songmng.findSongById(id);
+
+		if (song != null) {
+			
+			try {
+				//remover das playlists (query playlistsOfSong; for p remove song)
+				songmng.delete(song);
+			} catch (EJBException e) {
+//	        	String errorMsg = "Error deleting song: "+e.getMessage();
+//	        	log.error(errorMsg);
+//				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+			}
+		}
+		return Response.ok().build();		
+	}
+
 	@PUT
 	@Path("/updatesong/{sid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})

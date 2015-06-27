@@ -168,12 +168,13 @@ public class UserService {
 	@Produces({MediaType.APPLICATION_XML})
 	public Response updateUser(@PathParam("uid") Long id, 
 			@DefaultValue("") @QueryParam("name") String name, 
+			@DefaultValue("") @QueryParam("email") String email, 
 			@DefaultValue("") @QueryParam("pass") String pass) {
 
 		User user = usermng.findUserById(id);		
 
 		if (!name.equals("")) user.setName(name);
-		// encrypt??
+		if (!email.equals("")) user.setEmail(email);
 		if (!pass.equals("")) user.setPassword(epw.encrypt(pass));
 		usermng.update(user);
 		
