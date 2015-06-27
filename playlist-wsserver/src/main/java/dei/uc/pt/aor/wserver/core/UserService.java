@@ -41,11 +41,10 @@ public class UserService {
 
 	@Inject
 	private UserFacade usermng;
-	
-	@Inject
-	private SongFacade songmng;
 	@Inject
 	private PlaylistFacade playmng;
+	@Inject
+	private SongFacade songmng;
 
 //	@Inject
 //	private LoggedUsers loggedlist;
@@ -72,7 +71,7 @@ public class UserService {
 
 	//3
 	@GET
-	@Path("/email/{uemail}")
+	@Path("/useremail/{uemail: .+@.+\\.[a-z]+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserByEmail(@PathParam("uemail") String email) {
 		return  usermng.findUserByEmail(email);
@@ -80,7 +79,7 @@ public class UserService {
 
 	//3
 	@GET
-	@Path("/id/{uid: \\d+}")
+	@Path("/userid/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserById(@PathParam("uid") Long id) {
 		return  usermng.findUserById(id);
@@ -108,15 +107,12 @@ public class UserService {
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response createUser(@QueryParam("name") String name, 
-			@QueryParam("email") String email, @DefaultValue("123") @QueryParam("pass") String pass)
-			throws NoSuchAlgorithmException, UnsupportedEncodingException{
+			//check!!
+			@QueryParam("uemail: .+@.+\\.[a-z]+") String email,
+			@DefaultValue("123") @QueryParam("pass") String pass) {
 
 		User user = new User(name, epw.encrypt(pass), email);
 		usermng.addUser(user);
-
-		// precisa?? (verifica se já existe email!!!!!
-//		User newuser = usermng.findUserByEmail(user.getEmail());
-		//Response.notModified();
 
 		return Response.ok(user).build();
 
@@ -124,7 +120,7 @@ public class UserService {
 
 	//14
 	@DELETE
-	@Path("/deleteuser/{uid}")
+	@Path("/deleteuser/{uid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteUser(@PathParam("uid") Long id) {
@@ -173,21 +169,16 @@ public class UserService {
 	}
 
 	//15
-	// só password
 	@PUT
-	@Path("/updateuser/{uid: \\d+}")
+	@Path("/changepass/{uid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response updateUser(@PathParam("uid") Long id, 
-			@DefaultValue("") @QueryParam("name") String name, 
-			@DefaultValue("") @QueryParam("email") String email, 
-			@DefaultValue("") @QueryParam("pass") String pass) {
+	public Response updateUser(@PathParam("uid") Long id,
+			@QueryParam("pass") String pass) {
 
 		User user = usermng.findUserById(id);		
 
-		if (!name.equals("")) user.setName(name);
-		if (!email.equals("")) user.setEmail(email);
-		if (!pass.equals("")) user.setPassword(epw.encrypt(pass));
+		user.setPassword(epw.encrypt(pass));
 		usermng.update(user);
 		
 		return Response.ok(user).build();

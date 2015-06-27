@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 @Entity
 @Table(name = "users")
@@ -21,6 +22,12 @@ import javax.xml.bind.annotation.XmlTransient;
 	@NamedQuery(name="User.findAllByIdOrder", 
 		query="SELECT u FROM User u ORDER BY u.id")
 }) 
+@XmlType(propOrder = {
+	    "id",
+	    "email",
+	    "name",
+	    "password"
+	})
 @XmlRootElement
 public class User implements Serializable {
 
@@ -46,7 +53,7 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy = "owner")
 	@OrderBy("name")
-	@XmlTransient
+//	@XmlTransient
 	private List<Playlist> playlists;
 
 	@OneToMany(mappedBy = "owner")
