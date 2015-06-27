@@ -53,6 +53,7 @@ public class UserService {
 	@Inject
 	private EncryptPass epw;
 	
+	//1
 	@GET
 	@Path("/totalusers")
 	@Produces({MediaType.TEXT_PLAIN})
@@ -60,6 +61,7 @@ public class UserService {
 		return usermng.getUsers().size();
 	}
 
+	//2
 	@GET
 	@Path("/allusers")
 	@Produces({MediaType.APPLICATION_XML})
@@ -68,6 +70,7 @@ public class UserService {
 		return (List<User>) usermng.findAllByOrder();
 	}
 
+	//3
 	@GET
 	@Path("/email/{uemail}")
 	@Produces({MediaType.APPLICATION_XML})
@@ -75,13 +78,15 @@ public class UserService {
 		return  usermng.findUserByEmail(email);
 	}	
 
+	//3
 	@GET
 	@Path("/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserById(@PathParam("uid") Long id) {
 		return  usermng.findUserById(id);
 	}	
-		
+	
+	//4
 //	@GET
 //	@Path("/loggedusers")
 //	@Produces({MediaType.APPLICATION_XML})
@@ -89,6 +94,7 @@ public class UserService {
 //		return (List<User>) loggedlist.getLoggedUsersList();
 //	}
 	
+	//5
 //	@GET
 //	@Path("/totalloggedusers")
 //	@Produces({MediaType.TEXT_PLAIN})
@@ -96,6 +102,7 @@ public class UserService {
 //		return loggedUsers.getLoggedUsersList().size();
 //	}
 	
+	//14
 	@POST
 	@Path("/createuser")
 	@Consumes({MediaType.APPLICATION_XML})
@@ -115,6 +122,7 @@ public class UserService {
 
 	}
 
+	//14
 	@DELETE
 	@Path("/deleteuser/{uid}")
 	@Consumes({MediaType.APPLICATION_XML})
@@ -164,6 +172,7 @@ public class UserService {
 		
 	}
 
+	//15
 	// só password
 	@PUT
 	@Path("/updateuser/{uid: \\d+}")

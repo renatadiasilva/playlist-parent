@@ -35,6 +35,7 @@ public class PlaylistService {
 	@Inject
 	private SongFacade songmng;
 
+	//6
 	@GET
 	@Path("/totalplaylists")
 	@Produces({MediaType.TEXT_PLAIN})
@@ -42,6 +43,7 @@ public class PlaylistService {
 		return playmng.findAll().size();
 	}
 
+	//7
 	@GET
 	@Path("/allplaylists")
 	@Produces({MediaType.APPLICATION_XML})
@@ -52,6 +54,8 @@ public class PlaylistService {
 	//musicas de uma playlist	
 	//playlist de um dado user
 	//adicionar e remover músicas de playlists
+	
+	
 	//será necessário o playlist by Id?
 	@GET
 	@Path("/id/{pid: \\d+}")
@@ -60,6 +64,7 @@ public class PlaylistService {
 		return playmng.findPlaylistById(id);
 	}	
 	
+	//9
 	@GET
 	@Path("/playlistsofuser/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
@@ -68,6 +73,7 @@ public class PlaylistService {
 		return (List<Playlist>) playmng.playlistsOfUser(u, 1);
 	}
 
+	//17
 	@PUT
 	@Path("/addsongtoplaylist/{sid: \\d+}/{pid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
@@ -84,6 +90,7 @@ public class PlaylistService {
 
 	}
 	
+	//17
 	@PUT
 	@Path("/removesongfromplaylist/{sid: \\d+}/{pid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
