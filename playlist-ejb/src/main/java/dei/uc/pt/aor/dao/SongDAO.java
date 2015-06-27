@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.persistence.Query;
 
+import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.Song;
 import dei.uc.pt.aor.User;
 

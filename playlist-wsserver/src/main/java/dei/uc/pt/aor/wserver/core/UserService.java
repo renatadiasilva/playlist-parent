@@ -4,8 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -31,14 +34,14 @@ import dei.uc.pt.aor.SongFacade;
 import dei.uc.pt.aor.User;
 import dei.uc.pt.aor.UserFacade;
 
-@Stateless
+@Stateful
+@ApplicationScoped
 @Path("/users")
 public class UserService {
 
 	@Inject
 	private UserFacade usermng;
 	
-	//tirar?
 	@Inject
 	private SongFacade songmng;
 	@Inject
@@ -47,24 +50,8 @@ public class UserService {
 	@Inject
 	private EncryptPass epw;
 	
-	/////////////////////////////////////
 	@Inject
 	private LoggedUsers loggedUsers;
-	
-	@GET
-	@Path("/loggedusers")
-	@Produces({MediaType.APPLICATION_XML})
-	public List<User> getLoggedUsers() {
-		return (List<User>) loggedUsers.getLoggedUsersList();
-	}
-	
-	@GET
-	@Path("/totalloggedusers")
-	@Produces({MediaType.TEXT_PLAIN})
-	public int getTotalLoggedUsers() {
-		return loggedUsers.getLoggedUsersList().size();
-	}
-	////////////////////////////////////
 	
 	@GET
 	@Path("/totalusers")
@@ -77,6 +64,7 @@ public class UserService {
 	@Path("/allusers")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<User> getAllUsers() {
+		//if null??
 		return (List<User>) usermng.findAllByOrder();
 	}
 
@@ -94,6 +82,20 @@ public class UserService {
 		return  usermng.findUserById(id);
 	}	
 		
+	@GET
+	@Path("/loggedusers")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<User> getLoggedUsers() {
+		return (List<User>) loggedUsers.getLoggedUsersList();
+	}
+	
+	@GET
+	@Path("/totalloggedusers")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int getTotalLoggedUsers() {
+		return loggedUsers.getLoggedUsersList().size();
+	}
+	
 	@POST
 	@Path("/createuser")
 	@Consumes({MediaType.APPLICATION_XML})
@@ -162,6 +164,7 @@ public class UserService {
 		
 	}
 
+	// só password
 	@PUT
 	@Path("/updateuser/{uid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
@@ -181,5 +184,5 @@ public class UserService {
 		return Response.ok(user).build();
 
 	}
-
+	
 }

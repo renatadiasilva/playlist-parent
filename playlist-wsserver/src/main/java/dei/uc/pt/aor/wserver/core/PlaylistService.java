@@ -12,6 +12,9 @@ import javax.ws.rs.core.MediaType;
 
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
+import dei.uc.pt.aor.Song;
+import dei.uc.pt.aor.User;
+import dei.uc.pt.aor.UserFacade;
 
 @Stateless
 @Path("/playlists")
@@ -19,6 +22,9 @@ public class PlaylistService {
 
 	@Inject
 	private PlaylistFacade playmng;
+
+	@Inject
+	private UserFacade usermng;
 
 	@GET
 	@Path("/totalplaylists")
@@ -44,5 +50,14 @@ public class PlaylistService {
 	public Playlist getPlaylistById(@PathParam("pid") Long id) {
 		return playmng.findPlaylistById(id);
 	}	
+	
+	@GET
+	@Path("/playlistsofuser/{uid: \\d+}")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<Playlist> getPlaylistsOfUser(@PathParam("uid") Long id) {
+		User u = usermng.findUserById(id);
+		return (List<Playlist>) playmng.playlistsOfUser(u, 1);
+	}
+
 		
 }

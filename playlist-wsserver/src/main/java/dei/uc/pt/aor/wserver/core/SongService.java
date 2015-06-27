@@ -17,6 +17,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import dei.uc.pt.aor.Playlist;
+import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
 import dei.uc.pt.aor.SongFacade;
 import dei.uc.pt.aor.User;
@@ -29,9 +31,11 @@ public class SongService {
 	@Inject
 	private SongFacade songmng;
 	
-	//tirar
 	@Inject
 	private UserFacade usermng;
+
+	@Inject
+	private PlaylistFacade playmng;
 
 	@GET
 	@Path("/totalsongs")
@@ -126,6 +130,22 @@ public class SongService {
 		
 		return Response.ok(song).build();
 
+	}
+	
+	@GET
+	@Path("/songsofuser/{uid: \\d+}")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<Song> getSongsOfUser(@PathParam("uid") Long id) {
+		User u = usermng.findUserById(id);
+		return (List<Song>) songmng.songsOfUser(u);
+	}
+
+	@GET
+	@Path("/songsofplaylist/{uid: \\d+}")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<Song> getSongsOfPlaylist(@PathParam("uid") Long id) {
+		Playlist p = playmng.findPlaylistById(id);
+		return (List<Song>) playmng.getSongs(p);
 	}
 
 }
