@@ -138,6 +138,22 @@ public class SongService {
 
 	}
 	
+	@GET
+	@Path("/totalsongsofuser/id/{uid: \\d+}")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int totalSongsOfUserById(@PathParam("uid") Long id) {
+		User u = usermng.findUserById(id);
+		return songmng.songsOfUser(u).size();
+	}
+
+	@GET
+	@Path("/totalsongsofuser/email/{uemail: .+@.+\\.[a-z]+}")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int totalSongsOfUserByEmail(@PathParam("uemail") String email) {
+		User u = usermng.findUserByEmail(email);
+		return songmng.songsOfUser(u).size();
+	}
+
 	//13
 	// se ID não existe?? (n dá erro este e o de cima) chamar findUserById primeiro
 	//Response??
@@ -158,6 +174,14 @@ public class SongService {
 	public List<Song> getSongsOfUserByEmail(@PathParam("uemail") String email) {
 		User u = usermng.findUserByEmail(email);
 		return (List<Song>) songmng.songsOfUser(u);
+	}
+
+	@GET
+	@Path("/totalsongsofplaylist/{pid: \\d+}")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int totalSongsOfPlaylist(@PathParam("pid") Long id) {
+		Playlist p = playmng.findPlaylistById(id);
+		return playmng.getSongsByOrder(p).size();
 	}
 
 	//8
