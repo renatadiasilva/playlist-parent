@@ -28,6 +28,7 @@ import javax.ws.rs.core.Response;
 
 import dei.uc.pt.aor.EncryptPass;
 import dei.uc.pt.aor.LoggedUsers;
+import dei.uc.pt.aor.LoggedUsers1;
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
@@ -46,8 +47,8 @@ public class UserService {
 	@Inject
 	private SongFacade songmng;
 
-//	@Inject
-//	private LoggedUsers loggedlist;
+	@Inject
+	private LoggedUsers1 loggedlist;
 	
 	@Inject
 	private EncryptPass epw;
@@ -85,20 +86,20 @@ public class UserService {
 	}	
 	
 	//4
-//	@GET
-//	@Path("/loggedusers")
-//	@Produces({MediaType.APPLICATION_XML})
-//	public List<User> getLoggedUsers() {
-//		return (List<User>) loggedlist.getLoggedUsersList();
-//	}
+	@GET
+	@Path("/loggedusers")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<User> getLoggedUsers() {
+		return (List<User>) loggedlist.getLoggedUsersList();
+	}
 	
 	//5
-//	@GET
-//	@Path("/totalloggedusers")
-//	@Produces({MediaType.TEXT_PLAIN})
-//	public int getTotalLoggedUsers() {
-//		return loggedUsers.getLoggedUsersList().size();
-//	}
+	@GET
+	@Path("/totalloggedusers")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int getTotalLoggedUsers() {
+		return loggedlist.getLoggedUsersList().size();
+	}
 	
 	//14
 	@POST
@@ -121,10 +122,60 @@ public class UserService {
 	@Path("/deleteuser/{uid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response deleteUser(@PathParam("uid") Long id) {
+	public Response deleteUserById(@PathParam("uid") Long id) {
 
 		Boolean error = false;
 		User user = usermng.findUserById(id);
+
+		if (user != null) {
+			
+			// pôr isto no facade!!
+			List<Song> uSongs = songmng.songsOfUser(user);
+			for (Song s : uSongs) {
+				try {
+//					log.info("Changing ownership of all songs to admin");
+//					log.debug("Changing ownership of all songs of "+uemail+" to admin");
+					User admin = usermng.findUserByEmail("admin@admin.com");
+
+					s.setOwner(admin);
+					songmng.update(s);
+				} catch (EJBException e) {
+		        	String errorMsg = "Error changing the ownership of songs to admin: "+e.getMessage();
+//		        	log.error(errorMsg);
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+					error = true;
+					break;
+				}
+			}
+			
+			if (!error) {
+//				log.info("Deleting all playlists of user");
+//				log.debug("Deleting all playlists of "+uemail);
+				List<Playlist> uPlaylists = playmng.playlistsOfUser(user, 1);
+				for (Playlist p: uPlaylists) playmng.delete(p);
+
+//				log.info("Deleting account of user");
+//				log.debug("Deleting account of "+uemail);
+				usermng.delete(user);
+			}
+			return Response.ok().build();
+		} else {
+			return Response.ok().build();
+			// ver melhor
+//			return Response.notModified().build();
+		}
+		
+	}
+	
+	//14
+	@DELETE
+	@Path("/deleteuser/{uemail: .+@.+\\.[a-z]+}")
+	@Consumes({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	public Response deleteUserByEmail(@PathParam("uemail") String email) {
+
+		Boolean error = false;
+		User user = usermng.findUserByEmail(email);
 
 		if (user != null) {
 			
@@ -171,7 +222,7 @@ public class UserService {
 	@Path("/changepass/{uid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response updateUser(@PathParam("uid") Long id,
+	public Response updateUserById(@PathParam("uid") Long id,
 			@QueryParam("pass") String pass) {
 
 		User user = usermng.findUserById(id);		
@@ -183,4 +234,21 @@ public class UserService {
 
 	}
 	
+	//15
+	@PUT
+	@Path("/changepass/{uemail: .+@.+\\.[a-z]+}")
+	@Consumes({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	public Response updateUserByEmail(@PathParam("uemail") String email,
+			@QueryParam("pass") String pass) {
+
+		User user = usermng.findUserByEmail(email);		
+
+		user.setPassword(epw.encrypt(pass));
+		usermng.update(user);
+		
+		return Response.ok(user).build();
+
+	}
+
 }
