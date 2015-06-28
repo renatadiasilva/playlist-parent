@@ -140,16 +140,29 @@ public class SongService {
 	
 	//13
 	// se ID não existe?? (n dá erro este e o de cima) chamar findUserById primeiro
+	//Response??
 	@GET
-	@Path("/songsofuser/{uid: \\d+}")
+	@Path("/songsofuser/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
-	public List<Song> getSongsOfUser(@PathParam("uid") Long id) {
+	public List<Song> songsOfUserById(@PathParam("uid") Long id) {
 		User u = usermng.findUserById(id);
+		return (List<Song>) songmng.songsOfUser(u);
+	}
+
+	//13
+	// se ID não existe?? (n dá erro este e o de cima) chamar findUserById primeiro
+	//Response??
+	@GET
+	@Path("/songsofuser/email/{uemail: .+@.+\\.[a-z]+}")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<Song> getSongsOfUserByEmail(@PathParam("uemail") String email) {
+		User u = usermng.findUserByEmail(email);
 		return (List<Song>) songmng.songsOfUser(u);
 	}
 
 	//8
 	// se ID não existe?? (n dá erro este e o de cima) chamar findUserById primeiro
+	//Response
 	@GET
 	@Path("/songsofplaylist/{pid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})

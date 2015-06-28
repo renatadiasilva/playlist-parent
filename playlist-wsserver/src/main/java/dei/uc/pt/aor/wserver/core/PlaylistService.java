@@ -61,10 +61,19 @@ public class PlaylistService {
 	
 	//9
 	@GET
-	@Path("/playlistsofuser/{uid: \\d+}")
+	@Path("/playlistsofuser/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
-	public List<Playlist> getPlaylistsOfUser(@PathParam("uid") Long id) {
+	public List<Playlist> playlistsOfUserById(@PathParam("uid") Long id) {
 		User u = usermng.findUserById(id);
+		return (List<Playlist>) playmng.playlistsOfUser(u, 1);
+	}
+
+	//9
+	@GET
+	@Path("/playlistsofuser/email/{uemail: .+@.+\\.[a-z]+}")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<Playlist> playlistsOfUserByEmail(@PathParam("uemail") String email) {
+		User u = usermng.findUserByEmail(email);
 		return (List<Playlist>) playmng.playlistsOfUser(u, 1);
 	}
 

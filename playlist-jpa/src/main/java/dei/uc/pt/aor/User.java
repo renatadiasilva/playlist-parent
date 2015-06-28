@@ -53,7 +53,7 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy = "owner")
 	@OrderBy("name")
-//	@XmlTransient
+	@XmlTransient
 	private List<Playlist> playlists;
 
 	@OneToMany(mappedBy = "owner")
@@ -113,7 +113,7 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	@XmlTransient
+//	@XmlTransient
 	public List<Playlist> getPlaylists() {
 		return playlists;
 	}

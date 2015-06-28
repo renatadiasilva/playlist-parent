@@ -28,7 +28,6 @@ import javax.ws.rs.core.Response;
 
 import dei.uc.pt.aor.EncryptPass;
 import dei.uc.pt.aor.LoggedUsers;
-import dei.uc.pt.aor.LoggedUsers1;
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
@@ -48,7 +47,7 @@ public class UserService {
 	private SongFacade songmng;
 
 	@Inject
-	private LoggedUsers1 loggedlist;
+	private LoggedUsers loggedlist;
 	
 	@Inject
 	private EncryptPass epw;
@@ -119,7 +118,7 @@ public class UserService {
 
 	//14
 	@DELETE
-	@Path("/deleteuser/{uid: \\d+}")
+	@Path("/deleteuser/id/{uid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteUserById(@PathParam("uid") Long id) {
@@ -169,7 +168,7 @@ public class UserService {
 	
 	//14
 	@DELETE
-	@Path("/deleteuser/{uemail: .+@.+\\.[a-z]+}")
+	@Path("/deleteuser/email/{uemail: .+@.+\\.[a-z]+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteUserByEmail(@PathParam("uemail") String email) {
@@ -219,7 +218,7 @@ public class UserService {
 
 	//15
 	@PUT
-	@Path("/changepass/{uid: \\d+}")
+	@Path("/changepass/id/{uid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response updateUserById(@PathParam("uid") Long id,
@@ -236,7 +235,7 @@ public class UserService {
 	
 	//15
 	@PUT
-	@Path("/changepass/{uemail: .+@.+\\.[a-z]+}")
+	@Path("/changepass/email/{uemail: .+@.+\\.[a-z]+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response updateUserByEmail(@PathParam("uemail") String email,
