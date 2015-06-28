@@ -65,13 +65,12 @@ public class UserService {
 	@Path("/allusers")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<User> getAllUsers() {
-		//if null??
 		return (List<User>) usermng.findAllByOrder();
 	}
 
 	//3
 	@GET
-	@Path("/useremail/{uemail: .+@.+\\.[a-z]+}")
+	@Path("/email/{uemail: .+@.+\\.[a-z]+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserByEmail(@PathParam("uemail") String email) {
 		return  usermng.findUserByEmail(email);
@@ -79,7 +78,7 @@ public class UserService {
 
 	//3
 	@GET
-	@Path("/userid/{uid: \\d+}")
+	@Path("/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserById(@PathParam("uid") Long id) {
 		return  usermng.findUserById(id);
@@ -107,8 +106,7 @@ public class UserService {
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response createUser(@QueryParam("name") String name, 
-			//check!!
-			@QueryParam("uemail: .+@.+\\.[a-z]+") String email,
+			@QueryParam("email") String email,
 			@DefaultValue("123") @QueryParam("pass") String pass) {
 
 		User user = new User(name, epw.encrypt(pass), email);

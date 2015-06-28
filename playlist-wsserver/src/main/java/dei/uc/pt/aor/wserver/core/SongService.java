@@ -55,7 +55,7 @@ public class SongService {
 
 	//12
 	@GET
-	@Path("/id/{sid: \\d+}")
+	@Path("/{sid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public Song getSongById(@PathParam("sid") Long id) {
 		return  songmng.findSongById(id);
@@ -90,55 +90,56 @@ public class SongService {
 	}
 
 	// Não é pedido?? -------------------------
-//	@DELETE
-//	@Path("/deletesongforgood/{sid}")
-//	@Consumes({MediaType.APPLICATION_XML})
-//	@Produces({MediaType.APPLICATION_XML})
-//	public Response deleteSongDef(@PathParam("sid") Long id) {
-//
-//		Song song = songmng.findSongById(id);
-//
-//		if (song != null) {
-//			
-//			try {
-//				//remover das playlists (query playlistsOfSong; for p remove song)
-//				songmng.delete(song);
-//			} catch (EJBException e) {
-////	        	String errorMsg = "Error deleting song: "+e.getMessage();
-////	        	log.error(errorMsg);
-////				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-//			}
-//		}
-//		return Response.ok().build();		
-//	}
+	@DELETE
+	@Path("/deletesongforgood/{sid}")
+	@Consumes({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	public Response deleteSongDef(@PathParam("sid") Long id) {
+
+		Song song = songmng.findSongById(id);
+
+		if (song != null) {
+			
+			try {
+				//remover das playlists (query playlistsOfSong; for p remove song)
+				songmng.delete(song);
+			} catch (EJBException e) {
+//	        	String errorMsg = "Error deleting song: "+e.getMessage();
+//	        	log.error(errorMsg);
+//				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+			}
+		}
+		return Response.ok().build();		
+	}
 
 	//NÃO É PEDIDA -----------------
-//	@PUT
-//	@Path("/updatesong/{sid: \\d+}")
-//	@Consumes({MediaType.APPLICATION_XML})
-//	@Produces({MediaType.APPLICATION_XML})
-//	public Response updateSong(@PathParam("sid") Long id, 
-//			@DefaultValue("") @QueryParam("title") String title, 
-//			@DefaultValue("") @QueryParam("artist") String artist,
-//			@DefaultValue("") @QueryParam("album") String album,
-//			@DefaultValue("0") @QueryParam("releaseYear") int year,
-//			@DefaultValue("") @QueryParam("path") String path) {
-//
-//		Song song = songmng.findSongById(id);		
-//
-//		if (!title.equals("")) song.setTitle(title);
-//		if (!artist.equals("")) song.setArtist(artist);
-//		if (!album.equals("")) song.setAlbum(album);
-//		if (year != 0) song.setReleaseYear(year);
-//		if (!path.equals("")) song.setPathFile(path);
-//		
-//		songmng.update(song);
-//		
-//		return Response.ok(song).build();
-//
-//	}
+	@PUT
+	@Path("/updatesong/{sid: \\d+}")
+	@Consumes({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	public Response updateSong(@PathParam("sid") Long id, 
+			@DefaultValue("") @QueryParam("title") String title, 
+			@DefaultValue("") @QueryParam("artist") String artist,
+			@DefaultValue("") @QueryParam("album") String album,
+			@DefaultValue("0") @QueryParam("releaseYear") int year,
+			@DefaultValue("") @QueryParam("path") String path) {
+
+		Song song = songmng.findSongById(id);		
+
+		if (!title.equals("")) song.setTitle(title);
+		if (!artist.equals("")) song.setArtist(artist);
+		if (!album.equals("")) song.setAlbum(album);
+		if (year != 0) song.setReleaseYear(year);
+		if (!path.equals("")) song.setPathFile(path);
+		
+		songmng.update(song);
+		
+		return Response.ok(song).build();
+
+	}
 	
 	//13
+	// se ID não existe??
 	@GET
 	@Path("/songsofuser/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
@@ -148,6 +149,8 @@ public class SongService {
 	}
 
 	//8
+	// se ID não existe?? (n dá erro este e o de cima)
+	//ordenar??
 	@GET
 	@Path("/songsofplaylist/{pid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})

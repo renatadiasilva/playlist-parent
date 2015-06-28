@@ -51,14 +51,9 @@ public class PlaylistService {
 		return (List<Playlist>) playmng.findAllByOrder();
 	}
 
-	//musicas de uma playlist	
-	//playlist de um dado user
-	//adicionar e remover músicas de playlists
-	
-	
-	//será necessário o playlist by Id?
+	//needed??
 	@GET
-	@Path("/id/{pid: \\d+}")
+	@Path("/{pid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public Playlist getPlaylistById(@PathParam("pid") Long id) {
 		return playmng.findPlaylistById(id);
@@ -75,11 +70,11 @@ public class PlaylistService {
 
 	//17
 	@PUT
-	@Path("/addsongtoplaylist/{sid: \\d+}/{pid: \\d+}")
+	@Path("/addsongtoplaylist")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response addSongToPlaylist(@PathParam("sid") Long sid, 
-			@PathParam("pid") Long pid) {
+	public Response addSongToPlaylist(@QueryParam("song") Long sid, 
+			@QueryParam("playlist") Long pid) {
 
 		Playlist p = playmng.findPlaylistById(pid);		
 		Song s = songmng.findSongById(sid);
@@ -92,11 +87,11 @@ public class PlaylistService {
 	
 	//17
 	@PUT
-	@Path("/removesongfromplaylist/{sid: \\d+}/{pid: \\d+}")
+	@Path("/removesongfromplaylist")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response removeSongFromPlaylist(@PathParam("sid") Long sid, 
-			@PathParam("pid") Long pid) {
+	public Response removeSongFromPlaylist(@QueryParam("song") Long sid, 
+			@QueryParam("playlist") Long pid) {
 
 		Playlist p = playmng.findPlaylistById(pid);		
 		Song s = songmng.findSongById(sid);
