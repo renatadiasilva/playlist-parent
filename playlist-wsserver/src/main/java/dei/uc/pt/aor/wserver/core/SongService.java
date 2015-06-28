@@ -139,7 +139,7 @@ public class SongService {
 	}
 	
 	//13
-	// se ID não existe??
+	// se ID não existe?? (n dá erro este e o de cima) chamar findUserById primeiro
 	@GET
 	@Path("/songsofuser/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
@@ -149,14 +149,13 @@ public class SongService {
 	}
 
 	//8
-	// se ID não existe?? (n dá erro este e o de cima)
-	//ordenar??
+	// se ID não existe?? (n dá erro este e o de cima) chamar findUserById primeiro
 	@GET
 	@Path("/songsofplaylist/{pid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<Song> getSongsOfPlaylist(@PathParam("pid") Long id) {
 		Playlist p = playmng.findPlaylistById(id);
-		return (List<Song>) playmng.getSongs(p);
+		return (List<Song>) playmng.getSongsByOrder(p);
 	}
 
 }

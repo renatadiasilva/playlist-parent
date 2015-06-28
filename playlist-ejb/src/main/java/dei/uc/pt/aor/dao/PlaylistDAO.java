@@ -76,6 +76,23 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 	}
 
 	@SuppressWarnings("unchecked")
+	public List<Song> getSongsByOrder(Playlist p) {
+		try {
+			Query cq = em.createQuery("select s from Playlist p join p.songs s where p.id = :id order by s.id");
+			cq.setParameter("id", p.getId());
+			return cq.getResultList();
+		} catch (Exception e) {
+        	String errorMsg = "Error while running query"+
+					"(GETSONGSOFPLAYLIST): "+
+					e.getMessage();
+        	log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
 	public void removeSong(Playlist p, Song s) {
 		try {
 			Query cq = em.createQuery("select p, s from Playlist p join p.songs s where p.id = :idP and s.id = :idS");
