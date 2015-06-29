@@ -2,9 +2,9 @@ package dei.uc.pt.aor.wserver.core;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.DELETE;
@@ -17,6 +17,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
@@ -28,13 +31,15 @@ import dei.uc.pt.aor.UserFacade;
 @Path("/songs")
 public class SongService {
 
-	@Inject
+	private static final Logger log = LoggerFactory.getLogger(PlaylistService.class);	
+
+	@EJB
 	private SongFacade songmng;
 	
-	@Inject
+	@EJB
 	private UserFacade usermng;
 
-	@Inject
+	@EJB
 	private PlaylistFacade playmng;
 
 	//10
@@ -42,6 +47,7 @@ public class SongService {
 	@Path("/totalsongs")
 	@Produces({MediaType.TEXT_PLAIN})
 	public int getTotalSongs() {
+		log.info("Getting total of songs.");
 		return songmng.findAll().size();
 	}
 
@@ -50,6 +56,7 @@ public class SongService {
 	@Path("/allsongs")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<Song> getAllSongs() {
+		log.info("Getting all songs.");
 		return (List<Song>) songmng.findAllByOrder();
 	}
 
@@ -58,6 +65,7 @@ public class SongService {
 	@Path("/{sid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public Song getSongById(@PathParam("sid") Long id) {
+		log.info("Getting song with id "+id);
 		return  songmng.findSongById(id);
 	}	
 
@@ -68,6 +76,7 @@ public class SongService {
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteSong(@PathParam("sid") Long id) {
 
+		log.info("Deleting song with id "+id);
 		Song song = songmng.findSongById(id);
 
 		if (song != null) {
@@ -86,6 +95,7 @@ public class SongService {
 	@Path("/totalsongsofuser/id/{uid: \\d+}")
 	@Produces({MediaType.TEXT_PLAIN})
 	public int totalSongsOfUserById(@PathParam("uid") Long id) {
+		log.info("Getting total songs of user with id "+id);
 		User u = usermng.findUserById(id);
 		return songmng.songsOfUser(u).size();
 	}
@@ -94,6 +104,7 @@ public class SongService {
 	@Path("/totalsongsofuser/email/{uemail: .+@.+\\.[a-z]+}")
 	@Produces({MediaType.TEXT_PLAIN})
 	public int totalSongsOfUserByEmail(@PathParam("uemail") String email) {
+		log.info("Getting total songs of user with email "+email);
 		User u = usermng.findUserByEmail(email);
 		return songmng.songsOfUser(u).size();
 	}
@@ -103,6 +114,7 @@ public class SongService {
 	@Path("/songsofuser/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<Song> songsOfUserById(@PathParam("uid") Long id) {
+		log.info("Getting songs of user with id "+id);
 		User u = usermng.findUserById(id);
 		return (List<Song>) songmng.songsOfUserOrderId(u);
 	}
@@ -112,6 +124,7 @@ public class SongService {
 	@Path("/songsofuser/email/{uemail: .+@.+\\.[a-z]+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<Song> getSongsOfUserByEmail(@PathParam("uemail") String email) {
+		log.info("Getting songs of user with email "+email);
 		User u = usermng.findUserByEmail(email);
 		return (List<Song>) songmng.songsOfUser(u);
 	}
@@ -120,6 +133,7 @@ public class SongService {
 	@Path("/totalsongsofplaylist/{pid: \\d+}")
 	@Produces({MediaType.TEXT_PLAIN})
 	public int totalSongsOfPlaylist(@PathParam("pid") Long id) {
+		log.info("Getting total songs of playlist with id "+id);
 		Playlist p = playmng.findPlaylistById(id);
 		return playmng.getSongsByOrder(p).size();
 	}
@@ -129,6 +143,7 @@ public class SongService {
 	@Path("/songsofplaylist/{pid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<Song> getSongsOfPlaylist(@PathParam("pid") Long id) {
+		log.info("Getting songs of playlist with id "+id);
 		Playlist p = playmng.findPlaylistById(id);
 		return (List<Song>) playmng.getSongsByOrder(p);
 	}
@@ -145,6 +160,7 @@ public class SongService {
 			@DefaultValue("0") @QueryParam("releaseYear") int year,
 			@DefaultValue("") @QueryParam("path") String path) {
 
+		log.info("Updating song with id "+id);
 		Song song = songmng.findSongById(id);		
 
 		if (!title.equals("")) song.setTitle(title);

@@ -2,8 +2,8 @@ package dei.uc.pt.aor.wserver.core;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -28,15 +28,15 @@ import dei.uc.pt.aor.UserFacade;
 @Path("/playlists")
 public class PlaylistService {
 
-	private static final Logger log = LoggerFactory.getLogger(UserService.class);	
+	private static final Logger log = LoggerFactory.getLogger(PlaylistService.class);	
 
-	@Inject
+	@EJB
 	private PlaylistFacade playmng;
 
-	@Inject
+	@EJB
 	private UserFacade usermng;
 
-	@Inject
+	@EJB
 	private SongFacade songmng;
 
 	//6
@@ -61,6 +61,7 @@ public class PlaylistService {
 	@Path("/{pid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public Playlist getPlaylistById(@PathParam("pid") Long id) {
+		log.info("Gettting playlist with id "+id);
 		return playmng.findPlaylistById(id);
 	}	
 	
@@ -69,6 +70,7 @@ public class PlaylistService {
 	@Path("/playlistsofuser/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<Playlist> playlistsOfUserById(@PathParam("uid") Long id) {
+		log.info("Gettting playlists of user with id "+id);
 		User u = usermng.findUserById(id);
 		return (List<Playlist>) playmng.playlistsOfUser(u, 1);
 	}
@@ -78,6 +80,7 @@ public class PlaylistService {
 	@Path("/playlistsofuser/email/{uemail: .+@.+\\.[a-z]+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<Playlist> playlistsOfUserByEmail(@PathParam("uemail") String email) {
+		log.info("Gettting playlists of user with email "+email);
 		User u = usermng.findUserByEmail(email);
 		return (List<Playlist>) playmng.playlistsOfUser(u, 1);
 	}
@@ -90,6 +93,7 @@ public class PlaylistService {
 	public Response addSongToPlaylist(@QueryParam("song") Long sid, 
 			@QueryParam("playlist") Long pid) {
 
+		log.info("Adding song with id "+sid+" to playlists with id "+pid);
 		Playlist p = playmng.findPlaylistById(pid);		
 		Song s = songmng.findSongById(sid);
 
@@ -107,6 +111,7 @@ public class PlaylistService {
 	public Response removeSongFromPlaylist(@QueryParam("song") Long sid, 
 			@QueryParam("playlist") Long pid) {
 
+		log.info("Removing song with id "+sid+" to playlists with id "+pid);
 		Playlist p = playmng.findPlaylistById(pid);		
 		Song s = songmng.findSongById(sid);
 
