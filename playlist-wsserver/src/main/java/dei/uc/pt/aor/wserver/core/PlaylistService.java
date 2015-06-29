@@ -14,6 +14,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
@@ -24,6 +27,8 @@ import dei.uc.pt.aor.UserFacade;
 @Stateless
 @Path("/playlists")
 public class PlaylistService {
+
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);	
 
 	@Inject
 	private PlaylistFacade playmng;
@@ -39,6 +44,7 @@ public class PlaylistService {
 	@Path("/totalplaylists")
 	@Produces({MediaType.TEXT_PLAIN})
 	public int getTotalPlaylists() {
+		log.info("Getting total of playlists.");
 		return playmng.findAll().size();
 	}
 
@@ -47,6 +53,7 @@ public class PlaylistService {
 	@Path("/allplaylists")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<Playlist> getAllPlaylists() {
+		log.info("Gettting all playlists.");
 		return (List<Playlist>) playmng.findAllByOrder();
 	}
 

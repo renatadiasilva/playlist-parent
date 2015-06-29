@@ -2,9 +2,9 @@ package dei.uc.pt.aor.wserver.core;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.DELETE;
@@ -18,8 +18,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dei.uc.pt.aor.EncryptPass;
-import dei.uc.pt.aor.LoggedUsers;
+import dei.uc.pt.aor.LoggedUsersInterface;
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
@@ -30,18 +33,21 @@ import dei.uc.pt.aor.UserFacade;
 @Stateless
 @Path("/users")
 public class UserService {
+	
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);	
 
-	@Inject
+	@EJB
 	private UserFacade usermng;
-	@Inject
+	@EJB
 	private PlaylistFacade playmng;
-	@Inject
+	@EJB
 	private SongFacade songmng;
 
-	@Inject
-	private LoggedUsers loggedlist;
+//	@EJB(lookup="java:global/playlist/playlist-ejb-1/LoggedUsersInterface!dei.uc.pt.aor.LoggedUsersInterface")
+	@EJB
+	private LoggedUsersInterface loggedlist;
 	
-	@Inject
+	@EJB
 	private EncryptPass epw;
 	
 	//1
@@ -49,6 +55,7 @@ public class UserService {
 	@Path("/totalusers")
 	@Produces({MediaType.TEXT_PLAIN})
 	public int getTotalUsers() {
+		log.info("Gettting total of users.");
 		return usermng.getUsers().size();
 	}
 
@@ -57,6 +64,7 @@ public class UserService {
 	@Path("/allusers")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<User> getAllUsers() {
+		log.info("Gettting all users.");
 		return (List<User>) usermng.findAllByOrder();
 	}
 
@@ -65,6 +73,7 @@ public class UserService {
 	@Path("/email/{uemail: .+@.+\\.[a-z]+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserByEmail(@PathParam("uemail") String email) {
+		log.info("Finding user by email.");
 		return usermng.findUserByEmail(email);
 	}	
 
@@ -73,6 +82,7 @@ public class UserService {
 	@Path("/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserById(@PathParam("uid") Long id) {
+		log.info("Finding user by id.");
 		return usermng.findUserById(id);
 	}	
 	
@@ -81,6 +91,7 @@ public class UserService {
 	@Path("/loggedusers")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<User> getLoggedUsers() {
+		log.info("Getting total logged users.");
 		return (List<User>) loggedlist.getLoggedUsersList();
 	}
 	
@@ -89,6 +100,7 @@ public class UserService {
 	@Path("/totalloggedusers")
 	@Produces({MediaType.TEXT_PLAIN})
 	public int getTotalLoggedUsers() {
+		log.info("Getting logged users.");
 		return loggedlist.getLoggedUsersList().size();
 	}
 	
@@ -100,8 +112,9 @@ public class UserService {
 	public Response createUser(@QueryParam("name") String name, 
 			@QueryParam("email") String email,
 			@DefaultValue("123") @QueryParam("pass") String pass) {
-
+		
 		User user = new User(name, epw.encrypt(pass), email);
+		log.info("Creating user "+ user);
 		usermng.addUser(user);
 
 		return Response.ok(user).build();
@@ -115,6 +128,7 @@ public class UserService {
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteUserById(@PathParam("uid") Long id) {
 
+		log.info("Deleting user "+id);
 		Boolean error = false;
 		User user = usermng.findUserById(id);
 
@@ -148,6 +162,7 @@ public class UserService {
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteUserByEmail(@PathParam("uemail") String email) {
 
+		log.info("Deleting user "+email);
 		Boolean error = false;
 		User user = usermng.findUserByEmail(email);
 
@@ -183,6 +198,7 @@ public class UserService {
 	public Response updateUserById(@PathParam("uid") Long id,
 			@QueryParam("pass") String pass) {
 
+		log.info("Changing pass of user "+id);
 		User user = usermng.findUserById(id);		
 
 		user.setPassword(epw.encrypt(pass));
@@ -200,6 +216,7 @@ public class UserService {
 	public Response updateUserByEmail(@PathParam("uemail") String email,
 			@QueryParam("pass") String pass) {
 
+		log.info("Changing pass of user "+email);
 		User user = usermng.findUserByEmail(email);		
 
 		user.setPassword(epw.encrypt(pass));
