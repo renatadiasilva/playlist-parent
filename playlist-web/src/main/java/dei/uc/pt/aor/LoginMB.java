@@ -46,6 +46,7 @@ public class LoginMB implements Serializable {
 	
 	public String login(){
 		
+		System.out.println("Teste login!!!!!!!!!");
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 		try{
@@ -54,6 +55,7 @@ public class LoginMB implements Serializable {
 			context.addMessage(null, new FacesMessage("Login failed."));
 			return "/loginerror?faces-redirect=true";
 		}
+		System.out.println("Teste login 22222222!!!!!!!!!");
 		return doLogin();
 	}
 	
