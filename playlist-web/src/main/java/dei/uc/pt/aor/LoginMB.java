@@ -46,16 +46,16 @@ public class LoginMB implements Serializable {
 	
 	public String login(){
 		
-		System.out.println("Teste login");
+		System.out.println("Teste login!!!!!!!!!");
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 		try{
 			request.login(email, password);
 		}catch (ServletException e){
 			context.addMessage(null, new FacesMessage("Login failed."));
-			return "/loginerror.xhtml";
+			return "/loginerror?faces-redirect=true";
 		}
-		
+		System.out.println("Teste login 22222222!!!!!!!!!");
 		return doLogin();
 	}
 	
