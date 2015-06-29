@@ -47,7 +47,6 @@ public class UserService {
 	@EJB
 	private LoggedUsersInterface loggedlist;
 	
-	//cuidado por causa do login!!!!
 	@EJB
 	private EncryptPass epw;
 	
@@ -74,7 +73,7 @@ public class UserService {
 	@Path("/email/{uemail: .+@.+\\.[a-z]+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserByEmail(@PathParam("uemail") String email) {
-		log.info("Getting user with email "+email);
+		log.info("Finding user by email.");
 		return usermng.findUserByEmail(email);
 	}	
 
@@ -83,7 +82,7 @@ public class UserService {
 	@Path("/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserById(@PathParam("uid") Long id) {
-		log.info("Getting user with id "+ id);
+		log.info("Finding user by id.");
 		return usermng.findUserById(id);
 	}	
 	
@@ -114,8 +113,8 @@ public class UserService {
 			@QueryParam("email") String email,
 			@DefaultValue("123") @QueryParam("pass") String pass) {
 		
-		log.info("Creating user.");
 		User user = new User(name, epw.encrypt(pass), email);
+		log.info("Creating user "+ user);
 		usermng.addUser(user);
 
 		return Response.ok(user).build();
@@ -129,7 +128,7 @@ public class UserService {
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteUserById(@PathParam("uid") Long id) {
 
-		log.info("Deleting user with "+id);
+		log.info("Deleting user "+id);
 		Boolean error = false;
 		User user = usermng.findUserById(id);
 
@@ -163,7 +162,7 @@ public class UserService {
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteUserByEmail(@PathParam("uemail") String email) {
 
-		log.info("Deleting user with email "+email);
+		log.info("Deleting user "+email);
 		Boolean error = false;
 		User user = usermng.findUserByEmail(email);
 
@@ -199,7 +198,7 @@ public class UserService {
 	public Response updateUserById(@PathParam("uid") Long id,
 			@QueryParam("pass") String pass) {
 
-		log.info("Changing pass of user with id "+id);
+		log.info("Changing pass of user "+id);
 		User user = usermng.findUserById(id);		
 
 		user.setPassword(epw.encrypt(pass));
@@ -217,7 +216,7 @@ public class UserService {
 	public Response updateUserByEmail(@PathParam("uemail") String email,
 			@QueryParam("pass") String pass) {
 
-		log.info("Changing pass of user with "+email);
+		log.info("Changing pass of user "+email);
 		User user = usermng.findUserByEmail(email);		
 
 		user.setPassword(epw.encrypt(pass));
