@@ -57,9 +57,10 @@ public class User implements Serializable {
 	@XmlTransient
 	private List<Lyric> lyrics;
 
-	@ManyToMany(mappedBy = "owners")
+	@NotNull
+	@Column(name = "role", nullable = false)
 	@XmlTransient
-	private List<Role> roles;
+	private String role;
 	
 	public User() {
 	}
@@ -68,6 +69,7 @@ public class User implements Serializable {
 		this.name = name;
 		this.password = password;
 		this.email = email;
+		this.role="ADMIN";
 	}
 
 	public String getName() {
@@ -134,12 +136,8 @@ public class User implements Serializable {
 	}
 	
 	@XmlTransient
-	public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public String getRole() {
+		return role;
 	}
 
 	@Override

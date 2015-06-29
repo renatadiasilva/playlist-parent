@@ -27,7 +27,7 @@
 	<!-- Web components Security -->
 	<login-config>
 		<auth-method>FORM</auth-method>
-		<realm-name>Proj6</realm-name>
+		<realm-name>Proj4</realm-name>
 		<form-login-config>
 			<form-login-page>/login.xhtml</form-login-page>
 			<form-error-page>/loginerror.xhtml</form-error-page>

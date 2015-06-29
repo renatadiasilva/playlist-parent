@@ -6,6 +6,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +41,37 @@ public class LoginMB implements Serializable {
 
 	public LoginMB() {
 	}
+	
+	////////////////Security Login////////////////
+	
+	public String login(){
 		
+		System.out.println("Teste login");
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+		try{
+			request.login(email, password);
+		}catch (ServletException e){
+			context.addMessage(null, new FacesMessage("Login failed."));
+			return "/loginerror.xhtml";
+		}
+		
+		return doLogin();
+	}
+	
+	public void logout(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+		try{
+			request.logout();
+			//redirect
+		}catch (ServletException e){	
+			context.addMessage(null, new FacesMessage("Logout failed."));
+		}
+	}
+	
+	//////////////////////////////////////////////
+	
 	public String doLogin() {
 		log.info("Doing login");
 		log.debug("Doing login for "+email);
@@ -77,6 +109,7 @@ public class LoginMB implements Serializable {
 		aUser.endSession();
 		loggedUsers.removeUserFromLoggedUsersList(aUser.getCurrentUser());
 //		System.out.println("logout"+ aUser.getEmail() + "\n" +loggedUsers.getLoggedUsersList());
+		logout();
 		return "/login?faces-redirect=true";
 	}
 	
