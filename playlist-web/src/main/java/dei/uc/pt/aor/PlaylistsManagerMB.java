@@ -14,8 +14,6 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dei.uc.pt.aor.dao.PlaylistDAO;
-
 import java.io.Serializable;
 
 @Named
@@ -24,7 +22,7 @@ public class PlaylistsManagerMB implements Serializable {
 
 	private static final long serialVersionUID = -6930815753145461767L;
 
-	private static final Logger log = LoggerFactory.getLogger(PlaylistDAO.class);
+	private static final Logger log = LoggerFactory.getLogger(PlaylistsManagerMB.class);
 
 	@EJB
 	private EncryptPass epw;

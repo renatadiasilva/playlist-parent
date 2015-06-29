@@ -76,6 +76,11 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 		return playlistDAO.getSongs(p);
 	}
 	
+	public List<Song> getSongsByOrder(Playlist p) {
+		log.info("Getting songs of playlist");
+		return playlistDAO.getSongsByOrder(p);
+	}
+
 	public void removeSongFromPlaylist(Playlist p, Song s) {
 		log.info("Removing song from playlist");
 		playlistDAO.removeSong(p,s);

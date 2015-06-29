@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "playlists")
@@ -32,6 +34,7 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name="Playlist.findPlaylistById",
 		query="SELECT p FROM Playlist p WHERE p.id = :id"),
 })
+@XmlRootElement
 public class Playlist implements Serializable {
 
 	private static final long serialVersionUID = -341288742583267978L;
@@ -62,6 +65,7 @@ public class Playlist implements Serializable {
 	@JoinTable(name = "playlist_contains_songs",
 		joinColumns = @JoinColumn(name = "playlist_id"),
 		inverseJoinColumns = @JoinColumn(name = "song_id"))
+	@XmlTransient
 	private List<Song> songs;
 	
 	public Playlist() {
@@ -113,6 +117,7 @@ public class Playlist implements Serializable {
 		this.size = size;
 	}
 
+	@XmlTransient
 	public List<Song> getSongs() {
 		return songs;
 	}
@@ -158,4 +163,8 @@ public class Playlist implements Serializable {
 		return true;
 	}
 	
+	public String toString() {
+		return name + " -> " + owner.getEmail();
+	}
+
 }

@@ -11,8 +11,6 @@ public class ApplicationConfig extends Application{
 	public Set<Class<?>> getClasses() {
 	    Set<Class<?>> resources = new java.util.HashSet<>();
 	    addRestResourceClasses(resources);
-	    // extra.. for uploading files via form !
-	    //resources.add(MultiPartFeature.class);
 	    return resources;
 	}
 	
@@ -21,8 +19,9 @@ public class ApplicationConfig extends Application{
 	 * Responsible for adding our "service" classes
 	 */
 	private void addRestResourceClasses(Set<Class<?>> resources) {
-	    // resources.add(xpto.class);
 		resources.add(UserService.class);
+		resources.add(PlaylistService.class);
+		resources.add(SongService.class);
 	}
 	
 }

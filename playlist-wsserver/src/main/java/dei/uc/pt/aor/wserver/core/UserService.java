@@ -1,14 +1,10 @@
 package dei.uc.pt.aor.wserver.core;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.DELETE;
@@ -22,8 +18,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dei.uc.pt.aor.EncryptPass;
-import dei.uc.pt.aor.LoggedUsers;
+import dei.uc.pt.aor.LoggedUsersInterface;
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
@@ -34,147 +33,193 @@ import dei.uc.pt.aor.UserFacade;
 @Stateless
 @Path("/users")
 public class UserService {
-
-	@Inject
-	private UserFacade usermng;
 	
-	//tirar?
-	@Inject
-	private SongFacade songmng;
-	@Inject
-	private PlaylistFacade playmng;
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);	
 
-	@Inject
+	@EJB
+	private UserFacade usermng;
+	@EJB
+	private PlaylistFacade playmng;
+	@EJB
+	private SongFacade songmng;
+
+//	@EJB(lookup="java:global/playlist/playlist-ejb-1/LoggedUsersInterface!dei.uc.pt.aor.LoggedUsersInterface")
+	@EJB
+	private LoggedUsersInterface loggedlist;
+	
+	@EJB
 	private EncryptPass epw;
 	
-	/////////////////////////////////////
-	@Inject
-	private LoggedUsers loggedUsers;
-	
-	@GET
-	@Path("/loggedusers")
-	@Produces({MediaType.APPLICATION_XML})
-	public List<User> getLoggedUsers() {
-		return (List<User>) loggedUsers.getLoggedUsersList();
-	}
-	
-	@GET
-	@Path("/totalloggedusers")
-	@Produces({MediaType.TEXT_PLAIN})
-	public int getTotalLoggedUsers() {
-		return loggedUsers.getLoggedUsersList().size();
-	}
-	////////////////////////////////////
-	
+	//1
 	@GET
 	@Path("/totalusers")
 	@Produces({MediaType.TEXT_PLAIN})
 	public int getTotalUsers() {
+		log.info("Gettting total of users.");
 		return usermng.getUsers().size();
 	}
 
+	//2
 	@GET
 	@Path("/allusers")
 	@Produces({MediaType.APPLICATION_XML})
 	public List<User> getAllUsers() {
+		log.info("Gettting all users.");
 		return (List<User>) usermng.findAllByOrder();
 	}
 
+	//3
 	@GET
-	@Path("/email/{uemail}")
+	@Path("/email/{uemail: .+@.+\\.[a-z]+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserByEmail(@PathParam("uemail") String email) {
-		return  usermng.findUserByEmail(email);
+		log.info("Finding user by email.");
+		return usermng.findUserByEmail(email);
 	}	
 
+	//3
 	@GET
 	@Path("/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserById(@PathParam("uid") Long id) {
-		return  usermng.findUserById(id);
+		log.info("Finding user by id.");
+		return usermng.findUserById(id);
 	}	
-		
+	
+	//4
+	@GET
+	@Path("/loggedusers")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<User> getLoggedUsers() {
+		log.info("Getting total logged users.");
+		return (List<User>) loggedlist.getLoggedUsersList();
+	}
+	
+	//5
+	@GET
+	@Path("/totalloggedusers")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int getTotalLoggedUsers() {
+		log.info("Getting logged users.");
+		return loggedlist.getLoggedUsersList().size();
+	}
+	
+	//14
 	@POST
 	@Path("/createuser")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response createUser(@QueryParam("name") String name, 
-			@QueryParam("email") String email, @DefaultValue("123") @QueryParam("pass") String pass)
-			throws NoSuchAlgorithmException, UnsupportedEncodingException{
-
+			@QueryParam("email") String email,
+			@DefaultValue("123") @QueryParam("pass") String pass) {
+		
 		User user = new User(name, epw.encrypt(pass), email);
+		log.info("Creating user "+ user);
 		usermng.addUser(user);
-
-		// precisa?? (verifica se já existe email!!!!!
-//		User newuser = usermng.findUserByEmail(user.getEmail());
-		//Response.notModified();
 
 		return Response.ok(user).build();
 
 	}
 
+	//14
 	@DELETE
-	@Path("/deleteuser/{uid}")
+	@Path("/deleteuser/id/{uid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response deleteUser(@PathParam("uid") Long id) {
+	public Response deleteUserById(@PathParam("uid") Long id) {
 
+		log.info("Deleting user "+id);
 		Boolean error = false;
 		User user = usermng.findUserById(id);
 
-		if (user != null) {
-			
-			// pôr isto no facade!!
+		if (user != null) {			
 			List<Song> uSongs = songmng.songsOfUser(user);
 			for (Song s : uSongs) {
 				try {
-//					log.info("Changing ownership of all songs to admin");
-//					log.debug("Changing ownership of all songs of "+uemail+" to admin");
 					User admin = usermng.findUserByEmail("admin@admin.com");
-
 					s.setOwner(admin);
 					songmng.update(s);
 				} catch (EJBException e) {
-		        	String errorMsg = "Error changing the ownership of songs to admin: "+e.getMessage();
-//		        	log.error(errorMsg);
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		        	System.out.println("Error changing the ownership of songs to admin: "+e.getMessage());
 					error = true;
 					break;
 				}
 			}
 			
 			if (!error) {
-//				log.info("Deleting all playlists of user");
-//				log.debug("Deleting all playlists of "+uemail);
 				List<Playlist> uPlaylists = playmng.playlistsOfUser(user, 1);
 				for (Playlist p: uPlaylists) playmng.delete(p);
-
-//				log.info("Deleting account of user");
-//				log.debug("Deleting account of "+uemail);
 				usermng.delete(user);
 			}
 			return Response.ok().build();
-		} else {
+		} else return Response.notModified().build();		
+	}
+	
+	//14
+	@DELETE
+	@Path("/deleteuser/email/{uemail: .+@.+\\.[a-z]+}")
+	@Consumes({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	public Response deleteUserByEmail(@PathParam("uemail") String email) {
+
+		log.info("Deleting user "+email);
+		Boolean error = false;
+		User user = usermng.findUserByEmail(email);
+
+		if (user != null) {
+			List<Song> uSongs = songmng.songsOfUser(user);
+			for (Song s : uSongs) {
+				try {
+					User admin = usermng.findUserByEmail("admin@admin.com");
+					s.setOwner(admin);
+					songmng.update(s);
+				} catch (EJBException e) {
+		        	System.out.println("Error changing the ownership of songs to admin: "+e.getMessage());
+					error = true;
+					break;
+				}
+			}
+			
+			if (!error) {
+				List<Playlist> uPlaylists = playmng.playlistsOfUser(user, 1);
+				for (Playlist p: uPlaylists) playmng.delete(p);
+				usermng.delete(user);
+			}
 			return Response.ok().build();
-			// ver melhor
-//			return Response.notModified().build();
-		}
+		} else return Response.notModified().build();
 		
 	}
 
+	//15
 	@PUT
-	@Path("/updateuser/{uid: \\d+}")
+	@Path("/changepass/id/{uid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response updateUser(@PathParam("uid") Long id, 
-			@DefaultValue("") @QueryParam("name") String name, 
-			@DefaultValue("") @QueryParam("pass") String pass) {
+	public Response updateUserById(@PathParam("uid") Long id,
+			@QueryParam("pass") String pass) {
 
+		log.info("Changing pass of user "+id);
 		User user = usermng.findUserById(id);		
 
-		if (!name.equals("")) user.setName(name);
-		// encrypt??
-		if (!pass.equals("")) user.setPassword(epw.encrypt(pass));
+		user.setPassword(epw.encrypt(pass));
+		usermng.update(user);
+		
+		return Response.ok(user).build();
+
+	}
+	
+	//15
+	@PUT
+	@Path("/changepass/email/{uemail: .+@.+\\.[a-z]+}")
+	@Consumes({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})
+	public Response updateUserByEmail(@PathParam("uemail") String email,
+			@QueryParam("pass") String pass) {
+
+		log.info("Changing pass of user "+email);
+		User user = usermng.findUserByEmail(email);		
+
+		user.setPassword(epw.encrypt(pass));
 		usermng.update(user);
 		
 		return Response.ok(user).build();

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "songs")
@@ -13,11 +15,14 @@ import javax.validation.constraints.NotNull;
 			query="SELECT s FROM Song s ORDER BY s.id"),
 	@NamedQuery(name="Song.songsOfUser",
 			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title"),
+	@NamedQuery(name="Song.songsOfUserOrderId",
+			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.id"),
 	@NamedQuery(name="Song.songsByArtistTitle",
 			query="SELECT s FROM Song s WHERE UPPER(s.title) LIKE :t AND UPPER(s.artist) LIKE :a ORDER BY s.title"),
 	@NamedQuery(name="Song.findSongById",
 			query="SELECT s FROM Song s WHERE s.id = :id"),
 })
+@XmlRootElement
 public class Song implements Serializable {
 	
 	private static final long serialVersionUID = -846738109409670761L;
@@ -52,6 +57,7 @@ public class Song implements Serializable {
 	private User owner;
 	
 	@ManyToMany(mappedBy="songs")
+	@XmlTransient
 	private List<Playlist> playlists;
 
 	////Boolean para saber se a Song tem lyric
@@ -59,6 +65,7 @@ public class Song implements Serializable {
 	private boolean hasLyric;
 	
 	@OneToMany(mappedBy="music")
+	@XmlTransient
 	private List<Lyric> lyrics;
 	
 	public Song() {
@@ -72,6 +79,7 @@ public class Song implements Serializable {
 		this.releaseYear = releaseYear;
 		this.pathFile = path;
 		this.owner = owner;
+		this.hasLyric = false; // como argumento?
 	}
 
 	public String getTitle() {
@@ -138,6 +146,7 @@ public class Song implements Serializable {
 		this.hasLyric = hasLyric;
 	}
 	
+	@XmlTransient
 	public List<Lyric> getLyrics() {
 		return lyrics;
 	}
@@ -169,6 +178,10 @@ public class Song implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public String toString() {
+		return title + " -> " + owner.getEmail();
 	}
 
 }

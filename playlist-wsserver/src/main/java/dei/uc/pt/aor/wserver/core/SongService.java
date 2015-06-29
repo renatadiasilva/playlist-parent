@@ -1,18 +1,13 @@
 package dei.uc.pt.aor.wserver.core;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,7 +17,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import dei.uc.pt.aor.EncryptPass;
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
@@ -37,10 +31,13 @@ public class SongService {
 	@Inject
 	private SongFacade songmng;
 	
-	//tirar
 	@Inject
 	private UserFacade usermng;
 
+	@Inject
+	private PlaylistFacade playmng;
+
+	//10
 	@GET
 	@Path("/totalsongs")
 	@Produces({MediaType.TEXT_PLAIN})
@@ -48,6 +45,7 @@ public class SongService {
 		return songmng.findAll().size();
 	}
 
+	//11
 	@GET
 	@Path("/allsongs")
 	@Produces({MediaType.APPLICATION_XML})
@@ -55,42 +53,87 @@ public class SongService {
 		return (List<Song>) songmng.findAllByOrder();
 	}
 
+	//12
 	@GET
-	@Path("/id/{sid: \\d+}")
+	@Path("/{sid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public Song getSongById(@PathParam("sid") Long id) {
 		return  songmng.findSongById(id);
 	}	
 
-	//remover mesmo ou passar para admin??
+	//16
 	@DELETE
 	@Path("/deletesong/{sid}")
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
-	public Response deleteUser(@PathParam("sid") Long id) {
+	public Response deleteSong(@PathParam("sid") Long id) {
 
 		Song song = songmng.findSongById(id);
 
 		if (song != null) {
-			
-			// pôr isto no facade!!
-//			log.info("Changing ownership of song to admin");
-//			log.debug("Changing ownership of song "+song.getTitle()+"to admin");
 			try {
 				User admin = usermng.findUserByEmail("admin@admin.com");
-
 				song.setOwner(admin);
 				songmng.update(song);
 			} catch (EJBException e) {
-//	        	String errorMsg = "Error deleting song: "+e.getMessage();
-//	        	log.error(errorMsg);
-//				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+				System.out.println("Error deleting song: "+e.getMessage());
 			}
-		}
-		return Response.ok().build();		
+			return Response.ok().build();		
+		} else return Response.notModified().build();
+	}
+	
+	@GET
+	@Path("/totalsongsofuser/id/{uid: \\d+}")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int totalSongsOfUserById(@PathParam("uid") Long id) {
+		User u = usermng.findUserById(id);
+		return songmng.songsOfUser(u).size();
 	}
 
-	//mais atributos
+	@GET
+	@Path("/totalsongsofuser/email/{uemail: .+@.+\\.[a-z]+}")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int totalSongsOfUserByEmail(@PathParam("uemail") String email) {
+		User u = usermng.findUserByEmail(email);
+		return songmng.songsOfUser(u).size();
+	}
+
+	//13
+	@GET
+	@Path("/songsofuser/id/{uid: \\d+}")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<Song> songsOfUserById(@PathParam("uid") Long id) {
+		User u = usermng.findUserById(id);
+		return (List<Song>) songmng.songsOfUserOrderId(u);
+	}
+
+	//13
+	@GET
+	@Path("/songsofuser/email/{uemail: .+@.+\\.[a-z]+}")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<Song> getSongsOfUserByEmail(@PathParam("uemail") String email) {
+		User u = usermng.findUserByEmail(email);
+		return (List<Song>) songmng.songsOfUser(u);
+	}
+
+	@GET
+	@Path("/totalsongsofplaylist/{pid: \\d+}")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int totalSongsOfPlaylist(@PathParam("pid") Long id) {
+		Playlist p = playmng.findPlaylistById(id);
+		return playmng.getSongsByOrder(p).size();
+	}
+
+	//8
+	@GET
+	@Path("/songsofplaylist/{pid: \\d+}")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<Song> getSongsOfPlaylist(@PathParam("pid") Long id) {
+		Playlist p = playmng.findPlaylistById(id);
+		return (List<Song>) playmng.getSongsByOrder(p);
+	}
+
+	//extra functionalities
 	@PUT
 	@Path("/updatesong/{sid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
@@ -115,5 +158,5 @@ public class SongService {
 		return Response.ok(song).build();
 
 	}
-
+	
 }

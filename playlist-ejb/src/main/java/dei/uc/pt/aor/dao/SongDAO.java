@@ -32,8 +32,14 @@ public class SongDAO extends GenericDAO<Song> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("ownerId", u);
 		return super.findSomeResults("Song.songsOfUser", parameters);
-	}
+	}	
 	
+	public List<Song> songsOfUserOrderId(User u) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("ownerId", u);
+		return super.findSomeResults("Song.songsOfUserOrderId", parameters);
+	}
+
 	public List<Song> songsByArtistTitle(String expt, String expa) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("t", expt);

@@ -1,25 +1,19 @@
 package dei.uc.pt.aor;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-
-
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.faces.bean.ApplicationScoped;
 
-@Stateless
+@Stateful
 @ApplicationScoped
-public class LoggedUsers implements Serializable{
+public class LoggedUsers implements LoggedUsersInterface {
 
-	private static final long serialVersionUID = 3670108325049183451L;
-
-	private ArrayList<User>loggedUsersList = new ArrayList<User>();
+	private ArrayList<User> loggedUsersList = new ArrayList<User>();
 
 	public LoggedUsers() {
 		super();
 	}
-
 
 	public void addUserToLoggedUsersList(User loggedUser) {
 		loggedUsersList.add(loggedUser);
@@ -34,5 +28,4 @@ public class LoggedUsers implements Serializable{
 		return loggedUsersList;
 	}
 
-	
 }

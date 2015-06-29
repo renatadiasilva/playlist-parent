@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
 	@NamedQuery(name="User.findUserByEmail", 
 			query="SELECT u FROM User u WHERE u.email = :email"),
 	@NamedQuery(name="User.findUserStartingBy",
-			query="SELECT u FROM User u WHERE u.name like :exp"),
+			query="SELECT u FROM User u WHERE u.name like :exp ORDER BY u.name"),
 	@NamedQuery(name="User.findUserById", 
 		query="SELECT u FROM User u WHERE u.id = :id"),
 	@NamedQuery(name="User.findAllByIdOrder", 
