@@ -1,18 +1,10 @@
 package dei.uc.pt.aor.wserver.core;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
-import javax.enterprise.context.ApplicationScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.DELETE;
@@ -73,7 +65,7 @@ public class UserService {
 	@Path("/email/{uemail: .+@.+\\.[a-z]+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserByEmail(@PathParam("uemail") String email) {
-		return  usermng.findUserByEmail(email);
+		return usermng.findUserByEmail(email);
 	}	
 
 	//3
@@ -81,7 +73,7 @@ public class UserService {
 	@Path("/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
 	public User getUserById(@PathParam("uid") Long id) {
-		return  usermng.findUserById(id);
+		return usermng.findUserById(id);
 	}	
 	
 	//4
@@ -126,44 +118,27 @@ public class UserService {
 		Boolean error = false;
 		User user = usermng.findUserById(id);
 
-		if (user != null) {
-			
-			// pôr isto no facade!!
+		if (user != null) {			
 			List<Song> uSongs = songmng.songsOfUser(user);
 			for (Song s : uSongs) {
 				try {
-//					log.info("Changing ownership of all songs to admin");
-//					log.debug("Changing ownership of all songs of "+uemail+" to admin");
 					User admin = usermng.findUserByEmail("admin@admin.com");
-
 					s.setOwner(admin);
 					songmng.update(s);
 				} catch (EJBException e) {
-		        	String errorMsg = "Error changing the ownership of songs to admin: "+e.getMessage();
-//		        	log.error(errorMsg);
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		        	System.out.println("Error changing the ownership of songs to admin: "+e.getMessage());
 					error = true;
 					break;
 				}
 			}
 			
 			if (!error) {
-//				log.info("Deleting all playlists of user");
-//				log.debug("Deleting all playlists of "+uemail);
 				List<Playlist> uPlaylists = playmng.playlistsOfUser(user, 1);
 				for (Playlist p: uPlaylists) playmng.delete(p);
-
-//				log.info("Deleting account of user");
-//				log.debug("Deleting account of "+uemail);
 				usermng.delete(user);
 			}
 			return Response.ok().build();
-		} else {
-			return Response.ok().build();
-			// ver melhor
-//			return Response.notModified().build();
-		}
-		
+		} else return Response.notModified().build();		
 	}
 	
 	//14
@@ -177,42 +152,26 @@ public class UserService {
 		User user = usermng.findUserByEmail(email);
 
 		if (user != null) {
-			
-			// pôr isto no facade!!
 			List<Song> uSongs = songmng.songsOfUser(user);
 			for (Song s : uSongs) {
 				try {
-//					log.info("Changing ownership of all songs to admin");
-//					log.debug("Changing ownership of all songs of "+uemail+" to admin");
 					User admin = usermng.findUserByEmail("admin@admin.com");
-
 					s.setOwner(admin);
 					songmng.update(s);
 				} catch (EJBException e) {
-		        	String errorMsg = "Error changing the ownership of songs to admin: "+e.getMessage();
-//		        	log.error(errorMsg);
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		        	System.out.println("Error changing the ownership of songs to admin: "+e.getMessage());
 					error = true;
 					break;
 				}
 			}
 			
 			if (!error) {
-//				log.info("Deleting all playlists of user");
-//				log.debug("Deleting all playlists of "+uemail);
 				List<Playlist> uPlaylists = playmng.playlistsOfUser(user, 1);
 				for (Playlist p: uPlaylists) playmng.delete(p);
-
-//				log.info("Deleting account of user");
-//				log.debug("Deleting account of "+uemail);
 				usermng.delete(user);
 			}
 			return Response.ok().build();
-		} else {
-			return Response.ok().build();
-			// ver melhor
-//			return Response.notModified().build();
-		}
+		} else return Response.notModified().build();
 		
 	}
 

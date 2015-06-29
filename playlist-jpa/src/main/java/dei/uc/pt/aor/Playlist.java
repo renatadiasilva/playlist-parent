@@ -9,7 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 @Entity
 @Table(name = "playlists")
@@ -35,13 +34,6 @@ import javax.xml.bind.annotation.XmlType;
 	@NamedQuery(name="Playlist.findPlaylistById",
 		query="SELECT p FROM Playlist p WHERE p.id = :id"),
 })
-@XmlType(propOrder = {
-	    "id",
-	    "name",
-	    "dateOfCriation",
-	    "size",
-	    "owner"
-	})
 @XmlRootElement
 public class Playlist implements Serializable {
 
@@ -171,4 +163,8 @@ public class Playlist implements Serializable {
 		return true;
 	}
 	
+	public String toString() {
+		return name + " -> " + owner.getEmail();
+	}
+
 }

@@ -18,7 +18,7 @@ import dei.uc.pt.aor.User;
 
 @Stateless
 public class PlaylistDAO extends GenericDAO<Playlist> {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(PlaylistDAO.class);
 
 	public PlaylistDAO() {
@@ -28,7 +28,7 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 	public void delete(Playlist playlist) {
 		super.delete(playlist.getId(), Playlist.class);
 	}
-	
+
 	public Playlist findPlaylistById(Long id) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("id", id);
@@ -36,7 +36,7 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 		if (list.size() == 1) return list.get(0);
 		else return null;
 	}
-	
+
 	public List<Playlist> playlistsOfUser(User u, int order) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("ownerId", u);
@@ -50,7 +50,7 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 		default: return null;
 		}
 	}
-	
+
 	public List<Playlist> playlistSameName(User u, String name) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("ownerId", u);
@@ -65,13 +65,13 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 			cq.setParameter("id", p.getId());
 			return cq.getResultList();
 		} catch (Exception e) {
-        	String errorMsg = "Error while running query"+
+			String errorMsg = "Error while running query"+
 					"(GETSONGSOFPLAYLIST): "+
 					e.getMessage();
-        	log.error(errorMsg);
+			log.error(errorMsg);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
-		
+
 		return null;
 	}
 
@@ -82,13 +82,13 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 			cq.setParameter("id", p.getId());
 			return cq.getResultList();
 		} catch (Exception e) {
-        	String errorMsg = "Error while running query"+
+			String errorMsg = "Error while running query"+
 					"(GETSONGSOFPLAYLIST): "+
 					e.getMessage();
-        	log.error(errorMsg);
+			log.error(errorMsg);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
-		
+
 		return null;
 	}
 
@@ -99,15 +99,17 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 			cq.setParameter("idP", p.getId());
 			cq.setParameter("idS", s.getId());
 			List<Object[]> listobjs = cq.getResultList();
-			Playlist playlist = (Playlist) listobjs.get(0)[0];
-			Song song = (Song) listobjs.get(0)[1];
-			playlist.removeSong(song);
-			p.setSize(playlist.getSize());
+			if (listobjs != null) {
+				Playlist playlist = (Playlist) listobjs.get(0)[0];
+				Song song = (Song) listobjs.get(0)[1];
+				playlist.removeSong(song);
+				p.setSize(playlist.getSize());
+			}
 		} catch (Exception e) {
-        	String errorMsg = "Error while running query"+
+			String errorMsg = "Error while running query"+
 					"(REMOVESONGFROMPLAYLIST): "+
 					e.getMessage();
-        	log.error(errorMsg);
+			log.error(errorMsg);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
 	}
@@ -129,10 +131,10 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 			}
 
 		} catch (Exception e){
-        	String errorMsg = "Error while running query"+
+			String errorMsg = "Error while running query"+
 					"(ADDSONGTOPLAYLIST): "+
 					e.getMessage();
-        	log.error(errorMsg);
+			log.error(errorMsg);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
 
@@ -146,7 +148,7 @@ public class PlaylistDAO extends GenericDAO<Playlist> {
 		return super.findSomeResults("Playlist.playlistsOfUserContainingSong", parameters);
 
 	}
-	
+
 	public List<Playlist> findAllByOrder() {
 		return super.findAllByOrder("Playlist.allPlaylistsById");
 	}

@@ -5,7 +5,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -51,7 +50,6 @@ public class PlaylistService {
 		return (List<Playlist>) playmng.findAllByOrder();
 	}
 
-	//needed??
 	@GET
 	@Path("/{pid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})

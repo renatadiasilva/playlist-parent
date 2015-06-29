@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 @Entity
 @Table(name = "songs")
@@ -16,21 +15,13 @@ import javax.xml.bind.annotation.XmlType;
 			query="SELECT s FROM Song s ORDER BY s.id"),
 	@NamedQuery(name="Song.songsOfUser",
 			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title"),
+	@NamedQuery(name="Song.songsOfUserOrderId",
+			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.id"),
 	@NamedQuery(name="Song.songsByArtistTitle",
 			query="SELECT s FROM Song s WHERE UPPER(s.title) LIKE :t AND UPPER(s.artist) LIKE :a ORDER BY s.title"),
 	@NamedQuery(name="Song.findSongById",
 			query="SELECT s FROM Song s WHERE s.id = :id"),
 })
-@XmlType(propOrder = {
-	    "id",
-	    "title",
-	    "artist",
-	    "album",
-	    "releaseYear",
-	    "hasLyric",
-	    "pathFile",
-	    "owner"
-	})
 @XmlRootElement
 public class Song implements Serializable {
 	
@@ -187,6 +178,10 @@ public class Song implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public String toString() {
+		return title + " -> " + owner.getEmail();
 	}
 
 }

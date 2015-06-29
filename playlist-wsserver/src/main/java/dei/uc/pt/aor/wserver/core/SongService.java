@@ -71,48 +71,69 @@ public class SongService {
 		Song song = songmng.findSongById(id);
 
 		if (song != null) {
-			
-			// pôr isto no facade!!
-//			log.info("Changing ownership of song to admin");
-//			log.debug("Changing ownership of song "+song.getTitle()+"to admin");
 			try {
 				User admin = usermng.findUserByEmail("admin@admin.com");
-
 				song.setOwner(admin);
 				songmng.update(song);
 			} catch (EJBException e) {
-//	        	String errorMsg = "Error deleting song: "+e.getMessage();
-//	        	log.error(errorMsg);
-//				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+				System.out.println("Error deleting song: "+e.getMessage());
 			}
-		}
-		return Response.ok().build();		
+			return Response.ok().build();		
+		} else return Response.notModified().build();
+	}
+	
+	@GET
+	@Path("/totalsongsofuser/id/{uid: \\d+}")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int totalSongsOfUserById(@PathParam("uid") Long id) {
+		User u = usermng.findUserById(id);
+		return songmng.songsOfUser(u).size();
 	}
 
-	// Não é pedido?? -------------------------
-	@DELETE
-	@Path("/deletesongforgood/{sid}")
-	@Consumes({MediaType.APPLICATION_XML})
+	@GET
+	@Path("/totalsongsofuser/email/{uemail: .+@.+\\.[a-z]+}")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int totalSongsOfUserByEmail(@PathParam("uemail") String email) {
+		User u = usermng.findUserByEmail(email);
+		return songmng.songsOfUser(u).size();
+	}
+
+	//13
+	@GET
+	@Path("/songsofuser/id/{uid: \\d+}")
 	@Produces({MediaType.APPLICATION_XML})
-	public Response deleteSongDef(@PathParam("sid") Long id) {
-
-		Song song = songmng.findSongById(id);
-
-		if (song != null) {
-			
-			try {
-				//remover das playlists (query playlistsOfSong; for p remove song)
-				songmng.delete(song);
-			} catch (EJBException e) {
-//	        	String errorMsg = "Error deleting song: "+e.getMessage();
-//	        	log.error(errorMsg);
-//				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-			}
-		}
-		return Response.ok().build();		
+	public List<Song> songsOfUserById(@PathParam("uid") Long id) {
+		User u = usermng.findUserById(id);
+		return (List<Song>) songmng.songsOfUserOrderId(u);
 	}
 
-	//NÃO É PEDIDA -----------------
+	//13
+	@GET
+	@Path("/songsofuser/email/{uemail: .+@.+\\.[a-z]+}")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<Song> getSongsOfUserByEmail(@PathParam("uemail") String email) {
+		User u = usermng.findUserByEmail(email);
+		return (List<Song>) songmng.songsOfUser(u);
+	}
+
+	@GET
+	@Path("/totalsongsofplaylist/{pid: \\d+}")
+	@Produces({MediaType.TEXT_PLAIN})
+	public int totalSongsOfPlaylist(@PathParam("pid") Long id) {
+		Playlist p = playmng.findPlaylistById(id);
+		return playmng.getSongsByOrder(p).size();
+	}
+
+	//8
+	@GET
+	@Path("/songsofplaylist/{pid: \\d+}")
+	@Produces({MediaType.APPLICATION_XML})
+	public List<Song> getSongsOfPlaylist(@PathParam("pid") Long id) {
+		Playlist p = playmng.findPlaylistById(id);
+		return (List<Song>) playmng.getSongsByOrder(p);
+	}
+
+	//extra functionalities
 	@PUT
 	@Path("/updatesong/{sid: \\d+}")
 	@Consumes({MediaType.APPLICATION_XML})
@@ -138,61 +159,4 @@ public class SongService {
 
 	}
 	
-	@GET
-	@Path("/totalsongsofuser/id/{uid: \\d+}")
-	@Produces({MediaType.TEXT_PLAIN})
-	public int totalSongsOfUserById(@PathParam("uid") Long id) {
-		User u = usermng.findUserById(id);
-		return songmng.songsOfUser(u).size();
-	}
-
-	@GET
-	@Path("/totalsongsofuser/email/{uemail: .+@.+\\.[a-z]+}")
-	@Produces({MediaType.TEXT_PLAIN})
-	public int totalSongsOfUserByEmail(@PathParam("uemail") String email) {
-		User u = usermng.findUserByEmail(email);
-		return songmng.songsOfUser(u).size();
-	}
-
-	//13
-	// se ID não existe?? (n dá erro este e o de cima) chamar findUserById primeiro
-	//Response??
-	@GET
-	@Path("/songsofuser/id/{uid: \\d+}")
-	@Produces({MediaType.APPLICATION_XML})
-	public List<Song> songsOfUserById(@PathParam("uid") Long id) {
-		User u = usermng.findUserById(id);
-		return (List<Song>) songmng.songsOfUser(u);
-	}
-
-	//13
-	// se ID não existe?? (n dá erro este e o de cima) chamar findUserById primeiro
-	//Response??
-	@GET
-	@Path("/songsofuser/email/{uemail: .+@.+\\.[a-z]+}")
-	@Produces({MediaType.APPLICATION_XML})
-	public List<Song> getSongsOfUserByEmail(@PathParam("uemail") String email) {
-		User u = usermng.findUserByEmail(email);
-		return (List<Song>) songmng.songsOfUser(u);
-	}
-
-	@GET
-	@Path("/totalsongsofplaylist/{pid: \\d+}")
-	@Produces({MediaType.TEXT_PLAIN})
-	public int totalSongsOfPlaylist(@PathParam("pid") Long id) {
-		Playlist p = playmng.findPlaylistById(id);
-		return playmng.getSongsByOrder(p).size();
-	}
-
-	//8
-	// se ID não existe?? (n dá erro este e o de cima) chamar findUserById primeiro
-	//Response
-	@GET
-	@Path("/songsofplaylist/{pid: \\d+}")
-	@Produces({MediaType.APPLICATION_XML})
-	public List<Song> getSongsOfPlaylist(@PathParam("pid") Long id) {
-		Playlist p = playmng.findPlaylistById(id);
-		return (List<Song>) playmng.getSongsByOrder(p);
-	}
-
 }

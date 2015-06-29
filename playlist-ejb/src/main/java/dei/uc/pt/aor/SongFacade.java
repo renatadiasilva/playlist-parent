@@ -12,6 +12,7 @@ public interface SongFacade {
 	public abstract List<Song> findAll();
 	public abstract List<Song> findAllByOrder();
 	public abstract List<Song> songsOfUser(User u);
+	public abstract List<Song> songsOfUserOrderId(User u);
 	public abstract List<Song> songsByArtistTitle(String expt, String expa);
 
 }

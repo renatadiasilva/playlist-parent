@@ -61,6 +61,11 @@ public class SongFacadeImp implements SongFacade {
 		return songDAO.songsOfUser(u);
 	}
 	
+	public List<Song> songsOfUserOrderId(User u) {
+		log.info("Finding all songs of user");
+		return songDAO.songsOfUserOrderId(u);
+	}
+
 	public List<Song> songsByArtistTitle(String expt, String expa) {
 		log.info("Finding songs by artist and/or title");
 		return songDAO.songsByArtistTitle(expt, expa);
