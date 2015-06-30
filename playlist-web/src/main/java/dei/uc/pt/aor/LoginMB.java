@@ -52,7 +52,7 @@ public class LoginMB implements Serializable {
 			request.login(email, password);
 		}catch (ServletException e){
 			context.addMessage(null, new FacesMessage("Login failed."));
-			return "/loginerror?faces-redirect=true";
+			return "login";
 		}
 		return doLogin();
 	}
@@ -104,7 +104,7 @@ public class LoginMB implements Serializable {
 	public String doLogout() {
 		log.info("Doing logout");
 		log.debug("Doing logout for user "+ aUser.getEmail());
-		aUser.endSession();
+		//aUser.endSession();
 		loggedUsers.removeUserFromLoggedUsersList(aUser.getCurrentUser());
 //		System.out.println("logout"+ aUser.getEmail() + "\n" +loggedUsers.getLoggedUsersList());
 		logout();

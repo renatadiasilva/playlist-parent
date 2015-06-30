@@ -52,14 +52,14 @@ public class ActiveUserMB implements Serializable {
 	public void startSession() {
 		if (email.equals("admin@admin.com")) setAdmin(true);
 		else setAdmin(false);
-		uSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-		uSession.setAttribute("email", email);
+		//uSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		//uSession.setAttribute("email", email);
 	}
 	
-	public void endSession(){
-		if (uSession != null) uSession.invalidate();
-		email = null;
-	}
+//	public void endSession(){
+//		if (uSession != null) uSession.invalidate();
+//		email = null;
+//	}
 	
 	public String greetingName() {
 		String[] a = name.split(" ");

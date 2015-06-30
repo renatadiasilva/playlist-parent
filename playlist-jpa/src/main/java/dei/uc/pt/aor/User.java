@@ -69,7 +69,7 @@ public class User implements Serializable {
 		this.name = name;
 		this.password = password;
 		this.email = email;
-		this.role="ADMIN";
+		this.role="CLIENT";
 	}
 
 	public String getName() {

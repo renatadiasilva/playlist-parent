@@ -30,7 +30,7 @@
 		<realm-name>Proj4</realm-name>
 		<form-login-config>
 			<form-login-page>/login.xhtml</form-login-page>
-			<form-error-page>/loginerror.xhtml</form-error-page>
+			<form-error-page>/login.xhtml</form-error-page>
 		</form-login-config>
 	</login-config>
 
@@ -39,7 +39,7 @@
 		<web-resource-collection>
 			<web-resource-name>Protected Admin Area</web-resource-name>
 			<description></description>
-			<url-pattern>/playlist-web/pages/*</url-pattern>
+			<url-pattern>/pages/*</url-pattern>
 			<http-method>GET</http-method>
 			<http-method>POST</http-method>
 			<http-method>HEAD</http-method>
@@ -50,7 +50,7 @@
 		</web-resource-collection>
 		<auth-constraint>
 			<description />
-			<role-name>ADMIN</role-name>
+			<role-name>CLIENT</role-name>
 		</auth-constraint>
 		<user-data-constraint>
 			<transport-guarantee>NONE</transport-guarantee>       <!-- CONFIDENTIAL? -->
@@ -58,7 +58,7 @@
 	</security-constraint>
 
 	<security-role>
-		<role-name>ADMIN</role-name>
+		<role-name>CLIENT</role-name>
 	</security-role>
 
 </web-app>

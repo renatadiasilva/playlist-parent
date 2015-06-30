@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class GenericDAO<T> {
 	
-	@PersistenceContext(unitName = "Entities")
+	@PersistenceContext(unitName = "Proj4")
 	protected EntityManager em;
 
 	private Class<T> entityClass;
