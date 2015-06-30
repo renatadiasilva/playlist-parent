@@ -30,7 +30,7 @@ import dei.uc.pt.aor.UserFacade;
 @Path("/songs")
 public class SongService {
 
-	private static final Logger log = LoggerFactory.getLogger(PlaylistService.class);	
+	private static final Logger log = LoggerFactory.getLogger(SongService.class);	
 
 	@EJB
 	private SongFacade songmng;
