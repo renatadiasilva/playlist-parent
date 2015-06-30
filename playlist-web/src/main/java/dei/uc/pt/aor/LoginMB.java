@@ -52,7 +52,7 @@ public class LoginMB implements Serializable {
 			request.login(email, password);
 		}catch (ServletException e){
 			context.addMessage(null, new FacesMessage("Login failed."));
-			return "login";
+			return "login?faces-redirect=true";
 		}
 		return doLogin();
 	}
@@ -89,14 +89,14 @@ public class LoginMB implements Serializable {
 	        	String errorMsg = "Login failure: Wrong password.";
 	        	log.error(errorMsg);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-				return "login";
+				return "login?faces-redirect=true";
 			}
 
 		} else {
         	String errorMsg = "Login failure: Wrong email.";
         	log.error(errorMsg);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-			return "login";
+			return "login?faces-redirect=true";
 		}
 
 	}
