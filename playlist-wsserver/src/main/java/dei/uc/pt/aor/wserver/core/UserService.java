@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.DELETE;
@@ -22,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dei.uc.pt.aor.EncryptPass;
-import dei.uc.pt.aor.LoggedUsersInterface;
+import dei.uc.pt.aor.LoggedUsers;
 import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
 import dei.uc.pt.aor.Song;
@@ -43,11 +44,9 @@ public class UserService {
 	@EJB
 	private SongFacade songmng;
 
-//	@EJB(lookup="java:global/playlist/playlist-ejb-1/LoggedUsersInterface!dei.uc.pt.aor.LoggedUsersInterface")
-	@EJB
-	private LoggedUsersInterface loggedlist;
+	@Inject
+	private LoggedUsers loggedlist;
 	
-	//cuidado por causa do login!!!!
 	@EJB
 	private EncryptPass epw;
 	

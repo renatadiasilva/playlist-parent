@@ -36,8 +36,8 @@ public class LoginMB implements Serializable {
 	@Inject
 	private ActiveUserMB aUser;
 	
-	@EJB
-	private LoggedUsersInterface loggedUsers;
+	@Inject
+	private LoggedUsers loggedUsers;
 
 	public LoginMB() {
 	}

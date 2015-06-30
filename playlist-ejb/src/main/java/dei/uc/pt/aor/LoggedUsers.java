@@ -2,12 +2,10 @@ package dei.uc.pt.aor;
 
 import java.util.ArrayList;
 
-import javax.ejb.Stateful;
-import javax.faces.bean.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
 
-@Stateful
 @ApplicationScoped
-public class LoggedUsers implements LoggedUsersInterface {
+public class LoggedUsers{
 
 	private ArrayList<User> loggedUsersList = new ArrayList<User>();
 
@@ -22,7 +20,6 @@ public class LoggedUsers implements LoggedUsersInterface {
 	public void removeUserFromLoggedUsersList(User loggedUser) {
 		loggedUsersList.remove(loggedUser);
 	}
-
 
 	public ArrayList<User> getLoggedUsersList() {
 		return loggedUsersList;
