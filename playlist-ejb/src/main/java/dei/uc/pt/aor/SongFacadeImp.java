@@ -3,12 +3,14 @@ package dei.uc.pt.aor;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dei.uc.pt.aor.dao.SongDAO;
+import dei.uc.pt.aor.dao.UserDAO;
 
 @Stateless
 public class SongFacadeImp implements SongFacade {
@@ -17,6 +19,9 @@ public class SongFacadeImp implements SongFacade {
 
 	@EJB
 	private SongDAO songDAO;
+	
+	@EJB
+	private UserDAO userDAO; 
 	
 	public void save(Song song) {
 		log.info("Saving song in DB");
@@ -35,6 +40,33 @@ public class SongFacadeImp implements SongFacade {
 		songDAO.delete(song);
 	}
 	
+	public boolean deleteSongOfUser(Long sid, Long uid) {
+		log.info("Deleting song of a particular user from DB");
+		User user = userDAO.findUserById(uid);
+
+		Song song = songDAO.songsOfUserId(sid, user);
+		
+		if (song != null) {
+			User admin = userDAO.findUserByEmail("admin@admin.com");
+			song.setOwner(admin);
+			update(song);
+			return true;
+		} else return false;
+	}
+
+	public boolean deleteSongOfUserEmail(Long sid, String uemail) {
+		log.info("Deleting song of a particular user from DB");
+		User user = userDAO.findUserByEmail(uemail);
+		Song song = songDAO.songsOfUserId(sid, user);
+		
+		if (song != null) {
+			User admin = userDAO.findUserByEmail("admin@admin.com");
+			song.setOwner(admin);
+			update(song);
+			return true;
+		} else return false;
+	}
+
 	public Song find(int entityID) {
 		log.info("Finding song with ID");
 		return songDAO.find(entityID);
