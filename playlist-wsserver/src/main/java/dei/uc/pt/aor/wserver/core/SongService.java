@@ -74,7 +74,7 @@ public class SongService {
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteSongByUserId(@QueryParam("sid") Long sid,
-			@QueryParam("uid") Long uid) {
+			@QueryParam("uidemail") Long uid) {
 
 		log.info("Deleting song with id "+sid+" of user "+uid);
 		
@@ -90,7 +90,7 @@ public class SongService {
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
 	public Response deleteSongByUserEmail(@QueryParam("sid") Long sid,
-			@QueryParam("uemail") String email) {
+			@QueryParam("uidemail") String email) {
 
 		log.info("Deleting song with id "+sid+" of user "+email);
 		
