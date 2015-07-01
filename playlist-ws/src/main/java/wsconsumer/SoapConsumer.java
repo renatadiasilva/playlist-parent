@@ -11,17 +11,21 @@ public class SoapConsumer {
 		
 		Apiv1SoapProxy soap = new Apiv1SoapProxy();
 		GetLyricResult result = null;
-		boolean search = false;
+		int count = 1;
 		
-		//Ir Buscar a lyric de uma musica por artista e titulo
-		while(!search){
+		//Ir Buscar a lyric de uma musica por artista e titulo - chartlyrics
+		while(count<=5){
 			try {
 				result = soap.searchLyricDirect(artist, title);
-				search = true;
+				count=6;
 				
 			} catch (RemoteException e) {
 //				e.printStackTrace();
 				System.out.println("Connecting...");
+				count++;
+				if(count==6){
+					return null;
+				}
 			}
 			
 		}

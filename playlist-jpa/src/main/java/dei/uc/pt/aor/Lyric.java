@@ -20,7 +20,7 @@ public class Lyric implements Serializable {
 	private Long id;
 	
 	@NotNull
-	@Column(name = "lyric", nullable = false)
+	@Column(name = "lyric", nullable = false, length=3000)
 	private String lyric;
 		
 	@ManyToOne
