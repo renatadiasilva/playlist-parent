@@ -1,9 +1,9 @@
 package dei.uc.pt.aor;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 
 import org.slf4j.Logger;
@@ -35,36 +35,64 @@ public class SongFacadeImp implements SongFacade {
 		return songDAO.update(song);
 	}
 	
+	public boolean updateSongData(Song song, String releaseY) {
+		log.info("Updating song of DB (with validation)");
+		if (releaseY.matches("^\\d+$")) {
+			int y = Integer.parseInt(releaseY);
+			if ( (y >= 1900) && (y <= Calendar.getInstance().get(Calendar.YEAR))) {
+				song.setReleaseYear(y);	
+				songDAO.update(song);
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean songToAdmin(Song song) {
+		log.info("Changing ownership of song to ADMIN");
+		User admin = userDAO.findUserByEmail("admin@admin.com");
+		if (admin != null) {
+			song.setOwner(admin);
+			songDAO.update(song);
+			return true;
+		}
+		return false;
+	}
+	
 	public void delete(Song song) {
 		log.info("Deleting song from DB");
 		songDAO.delete(song);
 	}
 	
 	public boolean deleteSongOfUser(Long sid, Long uid) {
-		log.info("Deleting song of a particular user from DB");
+		log.info("Deleting song of a particular user (id) from DB");
 		User user = userDAO.findUserById(uid);
-
 		Song song = songDAO.songsOfUserId(sid, user);
 		
 		if (song != null) {
 			User admin = userDAO.findUserByEmail("admin@admin.com");
-			song.setOwner(admin);
-			update(song);
-			return true;
-		} else return false;
+			if (admin != null) {
+				song.setOwner(admin);
+				update(song);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean deleteSongOfUserEmail(Long sid, String uemail) {
-		log.info("Deleting song of a particular user from DB");
+		log.info("Deleting song of a particular user (email) from DB");
 		User user = userDAO.findUserByEmail(uemail);
 		Song song = songDAO.songsOfUserId(sid, user);
 		
 		if (song != null) {
 			User admin = userDAO.findUserByEmail("admin@admin.com");
-			song.setOwner(admin);
-			update(song);
-			return true;
-		} else return false;
+			if (admin != null) {
+				song.setOwner(admin);
+				update(song);
+				return true;
+			}
+		} 
+		return false;
 	}
 
 	public Song find(int entityID) {

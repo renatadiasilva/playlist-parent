@@ -1,7 +1,6 @@
 package dei.uc.pt.aor;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -133,7 +132,8 @@ public class PlaylistsManagerMB implements Serializable {
 					User admin = findUserByEmail("admin@admin.com");
 
 					s.setOwner(admin);
-					songFacade.update(s);
+					//
+					songFacade.songToAdmin(s);
 				} catch (EJBException e) {
 					String errorMsg = "Error changing the ownership of songs to admin: "+e.getMessage();
 					log.error(errorMsg);
@@ -183,11 +183,9 @@ public class PlaylistsManagerMB implements Serializable {
 
 	}
 
-	// alterar (ok)
 	public String updatePlaylistEnd(ActiveUserMB auser) {
-		String pname = playlist.getName();
 		log.info("Updating playlist");
-		log.debug("Updating playlist "+pname);
+		log.debug("Updating playlist "+playlist.getName());
 		if (playlistFacade.updatePlaylistName(playlist, playlistName, auser.getCurrentUser())) {
 				return "listMyPlaylists?faces-redirect=true";
 		} else {
@@ -212,7 +210,6 @@ public class PlaylistsManagerMB implements Serializable {
 		delP = false;
 		return "delete?faces-redirect=true";
 	}
-
 
 	public String deletePlaylistEnd() {
 
@@ -367,38 +364,16 @@ public class PlaylistsManagerMB implements Serializable {
 
 	}
 
-	// alterar
 	public String updateSongEnd() {
 		log.info("Updating song");
 		log.debug("Updating song "+song.getTitle());
-		if (releaseY.matches("^\\d+$")) {
-
-			int y = Integer.parseInt(releaseY);
-
-			if ( (y >= 1900) && (y <= Calendar.getInstance().get(Calendar.YEAR))) {
-
-				try {
-					song.setReleaseYear(y);
-					songFacade.update(song);
-					return "listMySongs?faces-redirect=true";
-				} catch (EJBException e) {
-					String errorMsg = "Error updating song: "+e.getMessage();
-					log.error(errorMsg);
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-				}
-
-			} else {
-				String errorMsg = "Release Year non valid!";
-				log.error(errorMsg);
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-			}
-
+		if (songFacade.updateSongData(song, releaseY)) {
+			return "listMySongs?faces-redirect=true";
 		} else {
-			String errorMsg = "Release Year is not an integer number!";
+			String errorMsg = "Release Year non valid!";
 			log.error(errorMsg);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
-
 		return null;
 	}
 
@@ -414,15 +389,11 @@ public class PlaylistsManagerMB implements Serializable {
 		return null;
 	}
 
-	//alterar
-	public String deleteSongEnd(ActiveUserMB auser) {
+	public String deleteSongEnd() {
 		log.info("Changing ownership of song to admin");
 		log.debug("Changing ownership of song "+song.getTitle()+"to admin");
 		try {
-			User admin = findUserByEmail("admin@admin.com");
-
-			song.setOwner(admin);
-			songFacade.update(song);
+			songFacade.songToAdmin(song);
 			return "listMySongs";
 		} catch (EJBException e) {
 			String errorMsg = "Error deleting song: "+e.getMessage();
