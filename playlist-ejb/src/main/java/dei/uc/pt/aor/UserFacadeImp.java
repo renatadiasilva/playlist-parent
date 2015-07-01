@@ -12,15 +12,15 @@ import dei.uc.pt.aor.dao.UserDAO;
 
 @Stateless
 public class UserFacadeImp implements UserFacade {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(UserFacadeImp.class);
 
 	@EJB
 	private UserDAO userDAO;
-	
+
 	@EJB
 	private EncryptPass epw;
-	
+
 	public void delete(User u) {
 		log.info("Removing user from DB");
 		userDAO.delete(u);
@@ -50,7 +50,7 @@ public class UserFacadeImp implements UserFacade {
 		}
 		return null;
 	}
-	
+
 	public List<User> getUsers() {
 		log.info("Creating Query for all users");
 		return userDAO.findAll();
@@ -61,12 +61,41 @@ public class UserFacadeImp implements UserFacade {
 		return userDAO.usersWithNameStartingBy(exp);
 	}
 	
-	public User update(User u) {
-		log.info("Updating user of DB");
-		isUserWithAllData(u);
-		return userDAO.update(u);
+	public boolean updateUserPass(User u, String oldpass, String newpass) {
+		log.info("Updating user password of DB");
+		if (u != null) {
+			if (u.checkPassword(epw.encrypt(oldpass))) {
+				u.setPassword(epw.encrypt(newpass));
+				isUserWithAllData(u);
+				userDAO.update(u);
+				return true;
+			}
+		}
+		return false;
 	}
-	
+
+	public boolean updateUserPassAdmin(User u, String pass) {
+		log.info("Updating user password of DB");
+		if (u != null) {
+			u.setPassword(epw.encrypt(pass));
+			isUserWithAllData(u);
+			userDAO.update(u);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean updateUserName(User u, String name) {
+		log.info("Updating user password of DB");
+		if (u != null) {
+			u.setName(name);
+			isUserWithAllData(u);
+			userDAO.update(u);
+			return true;
+		}
+		return false;
+	}
+
 	private void isUserWithAllData(User u) {
 		boolean hasError = false;
 
@@ -82,6 +111,6 @@ public class UserFacadeImp implements UserFacade {
 			throw new IllegalArgumentException("The user is missing data. Check the name and password, they should have value.");
 		}
 	}
-	
+
 
 }

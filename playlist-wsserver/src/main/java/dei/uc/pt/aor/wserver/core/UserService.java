@@ -199,11 +199,10 @@ public class UserService {
 
 		log.info("Changing pass of user with id "+id);
 		User user = usermng.findUserById(id);		
-
-		user.setPassword(epw.encrypt(pass));
-		usermng.update(user);
-		
-		return Response.ok(user).build();
+		if (user != null) {
+			usermng.updateUserPassAdmin(user, pass);		
+			return Response.ok(user).build();
+		} else return Response.status(598).build(); // no user
 
 	}
 	
@@ -217,11 +216,10 @@ public class UserService {
 
 		log.info("Changing pass of user with "+email);
 		User user = usermng.findUserByEmail(email);		
-
-		user.setPassword(epw.encrypt(pass));
-		usermng.update(user);
-		
-		return Response.ok(user).build();
+		if (user != null) {
+			usermng.updateUserPassAdmin(user, pass);
+			return Response.ok(user).build();
+		} else return Response.status(598).build();	// no user
 
 	}
 

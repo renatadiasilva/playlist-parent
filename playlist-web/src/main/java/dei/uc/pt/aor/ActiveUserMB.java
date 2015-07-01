@@ -3,9 +3,7 @@ package dei.uc.pt.aor;
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 
 @Named
 @SessionScoped
@@ -18,13 +16,10 @@ public class ActiveUserMB implements Serializable {
 	private User currentUser;
 	private String repeatedPassword;
 	private boolean newUser;
-	private boolean admin;
-	private HttpSession uSession;
 
 	public ActiveUserMB() {
 		email = null;
 		newUser = false;
-		setAdmin(false);
 	}
 	
 	public void changeToLogin() {
@@ -48,18 +43,6 @@ public class ActiveUserMB implements Serializable {
 	public void setNewUser(boolean newUser) {
 		this.newUser = newUser;
 	}
-	
-	public void startSession() {
-		if (email.equals("admin@admin.com")) setAdmin(true);
-		else setAdmin(false);
-		//uSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-		//uSession.setAttribute("email", email);
-	}
-	
-//	public void endSession(){
-//		if (uSession != null) uSession.invalidate();
-//		email = null;
-//	}
 	
 	public String greetingName() {
 		String[] a = name.split(" ");
@@ -96,14 +79,6 @@ public class ActiveUserMB implements Serializable {
 
 	public void setCurrentUser(User currentUser) {
 		this.currentUser = currentUser;
-	}
-
-	public boolean isAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
 	}
 
 }
