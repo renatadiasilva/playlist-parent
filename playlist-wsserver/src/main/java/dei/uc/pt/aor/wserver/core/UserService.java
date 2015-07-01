@@ -3,7 +3,6 @@ package dei.uc.pt.aor.wserver.core;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
@@ -24,9 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import dei.uc.pt.aor.EncryptPass;
 import dei.uc.pt.aor.LoggedUsers;
-import dei.uc.pt.aor.Playlist;
 import dei.uc.pt.aor.PlaylistFacade;
-import dei.uc.pt.aor.Song;
 import dei.uc.pt.aor.SongFacade;
 import dei.uc.pt.aor.User;
 import dei.uc.pt.aor.UserFacade;
@@ -128,30 +125,10 @@ public class UserService {
 	public Response deleteUserById(@PathParam("uid") Long id) {
 
 		log.info("Deleting user with "+id);
-		Boolean error = false;
-		User user = usermng.findUserById(id);
-
-		if (user != null) {			
-			List<Song> uSongs = songmng.songsOfUser(user);
-			for (Song s : uSongs) {
-				try {
-					User admin = usermng.findUserByEmail("admin@admin.com");
-					s.setOwner(admin);
-					songmng.update(s);
-				} catch (EJBException e) {
-		        	System.out.println("Error changing the ownership of songs to admin: "+e.getMessage());
-					error = true;
-					break;
-				}
-			}
-			
-			if (!error) {
-				List<Playlist> uPlaylists = playmng.playlistsOfUser(user, 1);
-				for (Playlist p: uPlaylists) playmng.delete(p);
-				usermng.delete(user);
-			}
+		if (usermng.removeUserById(id)) 
 			return Response.ok().build();
-		} else return Response.notModified().build();		
+		// user don't exist
+		else return Response.notModified().build();		
 	}
 	
 	//14
@@ -162,30 +139,10 @@ public class UserService {
 	public Response deleteUserByEmail(@PathParam("uemail") String email) {
 
 		log.info("Deleting user with email "+email);
-		Boolean error = false;
-		User user = usermng.findUserByEmail(email);
-
-		if (user != null) {
-			List<Song> uSongs = songmng.songsOfUser(user);
-			for (Song s : uSongs) {
-				try {
-					User admin = usermng.findUserByEmail("admin@admin.com");
-					s.setOwner(admin);
-					songmng.update(s);
-				} catch (EJBException e) {
-		        	System.out.println("Error changing the ownership of songs to admin: "+e.getMessage());
-					error = true;
-					break;
-				}
-			}
-			
-			if (!error) {
-				List<Playlist> uPlaylists = playmng.playlistsOfUser(user, 1);
-				for (Playlist p: uPlaylists) playmng.delete(p);
-				usermng.delete(user);
-			}
+		if (usermng.removeUserByEmail(email))
 			return Response.ok().build();
-		} else return Response.notModified().build();
+		// user don't exist
+		else return Response.notModified().build();
 		
 	}
 
@@ -202,7 +159,8 @@ public class UserService {
 		if (user != null) {
 			usermng.updateUserPassAdmin(user, pass);		
 			return Response.ok(user).build();
-		} else return Response.status(598).build(); // no user
+		// user don't exist
+		} else return Response.status(598).build();
 
 	}
 	
@@ -219,7 +177,8 @@ public class UserService {
 		if (user != null) {
 			usermng.updateUserPassAdmin(user, pass);
 			return Response.ok(user).build();
-		} else return Response.status(598).build();	// no user
+		// user don't exist
+		} else return Response.status(598).build();	
 
 	}
 

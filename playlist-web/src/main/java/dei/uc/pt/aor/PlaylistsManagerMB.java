@@ -115,47 +115,13 @@ public class PlaylistsManagerMB implements Serializable {
 
 	}
 
-	// alterar
 	public boolean removeUser(ActiveUserMB auser) {
 		User u = auser.getCurrentUser();
 		String uemail = u.getEmail();
 		log.info("Removing completely user account ");
 		log.debug("Removing completely user account "+uemail);
-		try {
-			u = auser.getCurrentUser();
-			List<Song> uSongs = songFacade.songsOfUser(u);
-			for (Song s : uSongs) {
-				try {
-					log.info("Changing ownership of all songs to admin");
-					log.debug("Changing ownership of all songs of "+uemail+" to admin");
-					User admin = findUserByEmail("admin@admin.com");
-
-					s.setOwner(admin);
-					//
-					songFacade.songToAdmin(s);
-				} catch (EJBException e) {
-					String errorMsg = "Error changing the ownership of songs to admin: "+e.getMessage();
-					log.error(errorMsg);
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-					return false;
-				}
-			}
-			log.info("Deleting all playlists of user");
-			log.debug("Deleting all playlists of "+uemail);
-			List<Playlist> uPlaylists = playlistFacade.playlistsOfUser(u, order);
-			for (Playlist p: uPlaylists) playlistFacade.delete(p);
-
-			log.info("Deleting account of user");
-			log.debug("Deleting account of "+uemail);
-			userFacade.delete(auser.getCurrentUser());
-			return true;
-		} catch (EJBException e) {
-			String errorMsg = "Error deleting user: "+e.getMessage();
-			log.error(errorMsg);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-			return false;
-		}
-
+		userFacade.removeUser(u);
+		return true;
 	}
 
 	public String updatePass(ActiveUserMB auser) {

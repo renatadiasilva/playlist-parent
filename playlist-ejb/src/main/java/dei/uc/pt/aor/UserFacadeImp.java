@@ -8,6 +8,8 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dei.uc.pt.aor.dao.PlaylistDAO;
+import dei.uc.pt.aor.dao.SongDAO;
 import dei.uc.pt.aor.dao.UserDAO;
 
 @Stateless
@@ -19,13 +21,52 @@ public class UserFacadeImp implements UserFacade {
 	private UserDAO userDAO;
 
 	@EJB
+	private SongDAO songDAO;
+	
+	@EJB
+	private PlaylistDAO playDAO;
+
+	@EJB
 	private EncryptPass epw;
 
 	public void delete(User u) {
 		log.info("Removing user from DB");
 		userDAO.delete(u);
 	}
+	
+	public boolean removeUser(User user) {
+		if (user != null) { //user exists
+			List<Song> uSongs = songDAO.songsOfUser(user);
+			if (uSongs.size() != 0) {
+				User admin = userDAO.findUserByEmail("admin@admin.com");
+				//remove user songs (ownership to ADMIN)
+				for (Song s : uSongs) {
+					s.setOwner(admin);
+					songDAO.update(s);
+				}
+			}
+			
+			//remove playlists of user
+			List<Playlist> uPlaylists = playDAO.playlistsOfUser(user, 1);
+			for (Playlist p: uPlaylists) playDAO.delete(p);
+			
+			//finally, remove user
+			userDAO.delete(user);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeUserById(Long id) {
+		User user = userDAO.findUserById(id);
+		return removeUser(user);
+	}
 
+	public boolean removeUserByEmail(String email) {
+		User user = userDAO.findUserByEmail(email);
+		return removeUser(user);
+	}
+	
 	public User findUserById(Long id) {
 		log.info("Finding user by id");
 		return userDAO.findUserById(id);

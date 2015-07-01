@@ -15,5 +15,7 @@ public interface UserFacade {
 	public abstract boolean updateUserPassAdmin(User u, String pass);
 	public abstract boolean updateUserName(User u, String name);
 	public abstract void delete(User u);
-
+	public boolean removeUserById(Long id);
+	public boolean removeUserByEmail(String email);
+	public boolean removeUser(User user);
 }
