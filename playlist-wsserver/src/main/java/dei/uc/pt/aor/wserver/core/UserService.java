@@ -114,9 +114,10 @@ public class UserService {
 			@DefaultValue("123") @QueryParam("pass") String pass) {
 		
 		log.info("Creating user.");
-		usermng.addUser(name, pass, email);
-
-		return Response.ok().build();
+		User user = usermng.addUser(name, pass, email);
+		if (user != null) return Response.ok(user).build();
+		 // email already exists
+		else return Response.status(598).build();
 	}
 
 	//14

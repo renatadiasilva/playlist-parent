@@ -41,10 +41,14 @@ public class UserFacadeImp implements UserFacade {
 		return userDAO.findAllByOrder();
 	}
 
-	public void addUser(String name, String pass, String email) {
+	public User addUser(String name, String pass, String email) {
 		log.info("Saving user in DB");
-		User u = new User(name, epw.encrypt(pass),email);
-		userDAO.save(u);
+		if (userDAO.findUserByEmail(email) == null) {
+			User u = new User(name, epw.encrypt(pass),email);
+			userDAO.save(u);
+			return u;
+		}
+		return null;
 	}
 	
 	public List<User> getUsers() {
