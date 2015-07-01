@@ -1,5 +1,6 @@
 package dei.uc.pt.aor;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -48,7 +49,8 @@ public class RegisterMB implements Serializable {
 				+ "(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
 			if (password.equals(repeatedPassword)) {
 
-				if (manager.addUser(name, password, email)) {
+				if (manager.findUserByEmail(email) == null) {
+					manager.addUser(name, password, email); 
 					aUser.changeToLogin();
 				} else {
 		        	String errorMsg = "This email already exists!";

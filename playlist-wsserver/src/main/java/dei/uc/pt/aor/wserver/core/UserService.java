@@ -114,11 +114,9 @@ public class UserService {
 			@DefaultValue("123") @QueryParam("pass") String pass) {
 		
 		log.info("Creating user.");
-		boolean ok = usermng.addUser(name, pass, email);
-		
-		if (ok) return Response.ok().build();		
-		else return Response.notModified().build();
+		usermng.addUser(name, pass, email);
 
+		return Response.ok().build();
 	}
 
 	//14

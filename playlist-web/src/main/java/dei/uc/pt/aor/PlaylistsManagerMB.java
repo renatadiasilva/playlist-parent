@@ -520,16 +520,14 @@ public class PlaylistsManagerMB implements Serializable {
 		return "listMySongs?faces-redirect=true";
 	}
 	
-	public boolean addUser(String n, String p, String e) {
+	public void addUser(String n, String p, String e) {
 		try {
-			boolean ok = userFacade.addUser(n, p, e);
-			return ok;
+			userFacade.addUser(n, p, e);
 		} catch (EJBException ejbe) {
         	String errorMsg = "Error adding user"
 					+ejbe.getMessage();
         	log.error(errorMsg);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-			return false;
 		}
 	}
 	
