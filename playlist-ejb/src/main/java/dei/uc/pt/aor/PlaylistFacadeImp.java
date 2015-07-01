@@ -1,5 +1,6 @@
 package dei.uc.pt.aor;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -22,6 +23,16 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 		log.info("Saving playlist in DB");
 		isPlaylistWithAllData(playlist);
 		playlistDAO.save(playlist);
+	}
+	
+	public boolean addPlaylist(User u, String name, List<Song> tracks) {
+		if (playlistSameName(u, name).size() == 0) {
+			Playlist p = new Playlist(name, new Date(), u);
+			for (Song s : tracks) p.addSong(s);
+			playlistDAO.save(p);
+			return true;
+		}
+		return false;
 	}
 	
 	public Playlist update(Playlist playlist) {

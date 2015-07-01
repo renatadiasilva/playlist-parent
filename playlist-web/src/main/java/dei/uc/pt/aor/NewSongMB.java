@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.Calendar;
 
 @Named
 @RequestScoped
@@ -28,6 +27,9 @@ public class NewSongMB implements Serializable {
 	@Inject
 	private PlaylistsManagerMB manager;
 	
+	@Inject
+	private SongFacade songFacade;
+	
 	public NewSongMB() {
 
 	}
@@ -35,32 +37,20 @@ public class NewSongMB implements Serializable {
 	public String addSong(ActiveUserMB auser, UploadFile uf) {
 		log.info("Adding new song");
 		log.debug("Adding new song with"+title);
-		if (releaseYear.matches("^\\d+$")) {
-			
-			int y = Integer.parseInt(releaseYear);
-			
-			if ( (y >= 1900) && (y <= Calendar.getInstance().get(Calendar.YEAR))) {
-			
-				Song song = new Song(title, artist, album, Integer.parseInt(releaseYear), "C", auser.getCurrentUser());
-				manager.addSong(song);
 
-				if (uf.upload(song.getId())) {
-					song.setPathFile(uf.getPath());
-					return manager.updateFilePath(song);
-				} else return manager.deleteNewSong(song);
-				
-			} else {
-	        	String errorMsg = "Release Year non valid!";
-	        	log.error(errorMsg);
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-			}
+		Song s = songFacade.addSong(title, artist, album, releaseYear,
+				auser.getCurrentUser());
 
+		if (s != null) {
+			if (uf.upload(s.getId())) {
+				s.setPathFile(uf.getPath());
+				return manager.updateFilePath(s);
+			} else return manager.deleteNewSong(s);
 		} else {
-        	String errorMsg = "Release Year is not an integer number!";
-        	log.error(errorMsg);
+	        String errorMsg = "Release Year non valid!";
+	        log.error(errorMsg);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
-		
 		return null;
 
 	}

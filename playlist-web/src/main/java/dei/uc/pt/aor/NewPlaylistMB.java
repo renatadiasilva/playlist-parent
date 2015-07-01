@@ -30,6 +30,9 @@ public class NewPlaylistMB implements Serializable {
 	private PlaylistsManagerMB manager;
 	
 	@Inject
+	private PlaylistFacade playlistFacade;
+	
+	@Inject
 	ActiveUserMB aUser;
 
 	public NewPlaylistMB() {
@@ -39,7 +42,7 @@ public class NewPlaylistMB implements Serializable {
 	public String addPlaylist(ActiveUserMB auser) {
 		log.info("Creating Playlist");
 		log.debug("Creating Playlist "+name);
-		if (manager.addPlaylist(auser.getCurrentUser(), name, tracks)) {
+		if (playlistFacade.addPlaylist(auser.getCurrentUser(), name, tracks)) {
 			return "listMyPlaylists?faces-redirect=true";
 		} else {
         	String errorMsg = "There is already a playlist with that name!";

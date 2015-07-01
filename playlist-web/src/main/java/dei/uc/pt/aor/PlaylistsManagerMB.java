@@ -1,7 +1,6 @@
 package dei.uc.pt.aor;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -229,19 +228,6 @@ public class PlaylistsManagerMB implements Serializable {
 		return "listMyPlaylists?faces-redirect=true";
 	}
 
-	public boolean addPlaylist(User u, String playlistName, 
-		List<Song> tracks) {
-		if (playlistFacade.playlistSameName(u, playlistName).size() == 0 ) {
-			Playlist p = new Playlist(playlistName, new Date(), u);
-			for (Song s : tracks) {
-				p.addSong(s);
-			}
-			playlistFacade.save(p);
-			return true;
-		}
-		return false;
-	}
-
 	public void setPlaylist(Playlist playlist) {
 		this.playlist = playlist;
 	}
@@ -305,18 +291,6 @@ public class PlaylistsManagerMB implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
 		return null;
-	}
-
-	public void addSong(Song s) {
-		try {
-			songFacade.save(s);
-		} catch (EJBException e) {
-			String errorMsg = "Error adding song: "
-					+e.getMessage();
-			log.error(errorMsg);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-		}
-
 	}
 
 	public List<Song> getAllSongs() {

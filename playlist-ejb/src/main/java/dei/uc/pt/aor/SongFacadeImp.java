@@ -29,6 +29,20 @@ public class SongFacadeImp implements SongFacade {
 		songDAO.save(song);
 	}
 	
+	public Song addSong(String title, String artist, String album, 
+			String releaseYear, User u) {
+		if (releaseYear.matches("^\\d+$")) {
+			int y = Integer.parseInt(releaseYear);
+			if ( (y >= 1900) && (y <= Calendar.getInstance().get(Calendar.YEAR))) {
+				Song song = new Song(title, artist, album, Integer.parseInt(releaseYear), "C", u);
+				isSongWithAllData(song);
+				songDAO.save(song);
+				return song;
+			}
+		}
+		return null;
+	}
+	
 	public Song update(Song song) {
 		log.info("Updating song of DB");
 		isSongWithAllData(song);
@@ -47,6 +61,7 @@ public class SongFacadeImp implements SongFacade {
 		}
 		return false;
 	}
+	
 	public boolean songToAdmin(Song song) {
 		log.info("Changing ownership of song to ADMIN");
 		User admin = userDAO.findUserByEmail("admin@admin.com");

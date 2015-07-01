@@ -5,6 +5,7 @@ import java.util.List;
 public interface PlaylistFacade {
 
 	public abstract void save(Playlist playlist);
+	public abstract boolean addPlaylist(User u, String name, List<Song> tracks);
 	public abstract Playlist update(Playlist playlist);
 	public abstract boolean updatePlaylistName(Playlist playlist, String playlistName, User u);
 	public abstract void delete(Playlist playlist);

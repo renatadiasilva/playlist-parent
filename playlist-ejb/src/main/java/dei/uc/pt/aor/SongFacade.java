@@ -5,6 +5,8 @@ import java.util.List;
 public interface SongFacade {
 
 	public abstract void save(Song song);
+	public abstract Song addSong(String title, String artist, String album, 
+			String releaseYear, User u);
 	public abstract Song update(Song song);
 	public abstract boolean updateSongData(Song song, String releaseY);
 	public abstract void delete(Song song);
