@@ -1,6 +1,5 @@
 package dei.uc.pt.aor;
 
-import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -25,9 +24,6 @@ public class LoginMB implements Serializable {
 	private String email;
 	private String name;
 	private String password;
-
-	@EJB
-	private EncryptPass epw;
 
 	@Inject
 	private PlaylistsManagerMB manager;

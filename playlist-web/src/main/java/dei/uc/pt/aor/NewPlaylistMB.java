@@ -40,13 +40,7 @@ public class NewPlaylistMB implements Serializable {
 	public String addPlaylist(ActiveUserMB auser) {
 		log.info("Creating Playlist");
 		log.debug("Creating Playlist "+name);
-		if (manager.playlistSameName(auser, name).size() == 0) {
-
-			Playlist playlist = new Playlist(name, new Date(), auser.getCurrentUser());
-			for (Song s : tracks) {
-				playlist.addSong(s);
-			}
-			manager.addPlaylist(playlist);
+		if (manager.addPlaylist(auser.getCurrentUser(), name, tracks)) {
 			return "listMyPlaylists?faces-redirect=true";
 		} else {
         	String errorMsg = "There is already a playlist with that name!";

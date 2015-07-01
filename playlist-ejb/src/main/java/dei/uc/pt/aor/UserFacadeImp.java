@@ -61,6 +61,13 @@ public class UserFacadeImp implements UserFacade {
 		return userDAO.usersWithNameStartingBy(exp);
 	}
 	
+	public User update(User u) {
+		log.info("Updating user of DB");
+		isUserWithAllData(u);
+		return userDAO.update(u);
+	}
+
+	
 	public boolean updateUserPass(User u, String oldpass, String newpass) {
 		log.info("Updating user password of DB");
 		if (u != null) {
@@ -75,7 +82,7 @@ public class UserFacadeImp implements UserFacade {
 	}
 
 	public boolean updateUserPassAdmin(User u, String pass) {
-		log.info("Updating user password of DB");
+		log.info("Updating user password of DB (admin mode)");
 		if (u != null) {
 			u.setPassword(epw.encrypt(pass));
 			isUserWithAllData(u);
@@ -86,7 +93,7 @@ public class UserFacadeImp implements UserFacade {
 	}
 
 	public boolean updateUserName(User u, String name) {
-		log.info("Updating user password of DB");
+		log.info("Updating user name of DB");
 		if (u != null) {
 			u.setName(name);
 			isUserWithAllData(u);

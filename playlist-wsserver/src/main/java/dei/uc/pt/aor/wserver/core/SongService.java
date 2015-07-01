@@ -77,9 +77,7 @@ public class SongService {
 			@QueryParam("uidemail") Long uid) {
 
 		log.info("Deleting song with id "+sid+" of user "+uid);
-		
 		boolean ok = songmng.deleteSongOfUser(sid, uid);
-		
 		if (ok) return Response.ok().build();		
 		else return Response.notModified().build();
 	}
@@ -93,9 +91,7 @@ public class SongService {
 			@QueryParam("uidemail") String email) {
 
 		log.info("Deleting song with id "+sid+" of user "+email);
-		
 		boolean ok = songmng.deleteSongOfUserEmail(sid, email);
-		
 		if (ok) return Response.ok().build();		
 		else return Response.notModified().build();
 	}

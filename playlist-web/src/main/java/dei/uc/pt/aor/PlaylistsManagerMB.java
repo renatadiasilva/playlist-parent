@@ -2,6 +2,7 @@ package dei.uc.pt.aor;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -23,9 +24,6 @@ public class PlaylistsManagerMB implements Serializable {
 	private static final long serialVersionUID = -6930815753145461767L;
 
 	private static final Logger log = LoggerFactory.getLogger(PlaylistsManagerMB.class);
-
-	@EJB
-	private EncryptPass epw;
 
 	@EJB
 	private PlaylistFacade playlistFacade;
@@ -119,6 +117,7 @@ public class PlaylistsManagerMB implements Serializable {
 
 	}
 
+	// alterar
 	public boolean removeUser(ActiveUserMB auser) {
 		User u = auser.getCurrentUser();
 		String uemail = u.getEmail();
@@ -184,24 +183,13 @@ public class PlaylistsManagerMB implements Serializable {
 
 	}
 
+	// alterar (ok)
 	public String updatePlaylistEnd(ActiveUserMB auser) {
 		String pname = playlist.getName();
 		log.info("Updating playlist");
 		log.debug("Updating playlist "+pname);
-		if ( (playlistName.equals(pname)) || 
-				(playlistSameName(auser, playlistName).size() == 0) ) {
-
-			try {
-				playlist.setName(playlistName);
-				playlistFacade.update(playlist);
+		if (playlistFacade.updatePlaylistName(playlist, playlistName, auser.getCurrentUser())) {
 				return "listMyPlaylists?faces-redirect=true";
-			} catch (EJBException e) {
-				String errorMsg = "Error updating playlist: "+e.getMessage();
-				log.error(errorMsg);
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-				return null;
-			}
-
 		} else {
 			String errorMsg = "There is already a playlist with that name!";
 			log.error(errorMsg);
@@ -244,12 +232,17 @@ public class PlaylistsManagerMB implements Serializable {
 		return "listMyPlaylists?faces-redirect=true";
 	}
 
-	public List<Playlist> playlistSameName(ActiveUserMB auser, String name) {
-		return playlistFacade.playlistSameName(auser.getCurrentUser(), name);
-	}
-
-	public void addPlaylist(Playlist p) {
-		playlistFacade.save(p);
+	public boolean addPlaylist(User u, String playlistName, 
+		List<Song> tracks) {
+		if (playlistFacade.playlistSameName(u, playlistName).size() == 0 ) {
+			Playlist p = new Playlist(playlistName, new Date(), u);
+			for (Song s : tracks) {
+				p.addSong(s);
+			}
+			playlistFacade.save(p);
+			return true;
+		}
+		return false;
 	}
 
 	public void setPlaylist(Playlist playlist) {
@@ -374,6 +367,7 @@ public class PlaylistsManagerMB implements Serializable {
 
 	}
 
+	// alterar
 	public String updateSongEnd() {
 		log.info("Updating song");
 		log.debug("Updating song "+song.getTitle());
@@ -420,6 +414,7 @@ public class PlaylistsManagerMB implements Serializable {
 		return null;
 	}
 
+	//alterar
 	public String deleteSongEnd(ActiveUserMB auser) {
 		log.info("Changing ownership of song to admin");
 		log.debug("Changing ownership of song "+song.getTitle()+"to admin");

@@ -30,6 +30,18 @@ public class PlaylistFacadeImp implements PlaylistFacade {
 		return playlistDAO.update(playlist);
 	}
 	
+	public boolean updatePlaylistName(Playlist playlist, String playlistName, User u) {
+		log.info("Updating playlist of DB (with validation)");
+		if ( (playlistName.equals(playlist.getName())) || 
+				(playlistDAO.playlistSameName(u, playlistName).size() == 0) ) {
+			playlist.setName(playlistName);
+			isPlaylistWithAllData(playlist);
+			playlistDAO.update(playlist);
+			return true;
+		}
+		return false;
+	}
+	
 	public void delete(Playlist playlist) {
 		log.info("Deleting playlist from DB");
 		playlistDAO.delete(playlist);

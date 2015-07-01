@@ -96,9 +96,7 @@ public class PlaylistService {
 		log.info("Adding song with id "+sid+" to playlists with id "+pid);
 		Playlist p = playmng.findPlaylistById(pid);		
 		Song s = songmng.findSongById(sid);
-
 		playmng.addSongToPlaylist(p, s);
-		
 		return Response.ok(p).build();
 
 	}
@@ -114,9 +112,7 @@ public class PlaylistService {
 		log.info("Removing song with id "+sid+" to playlists with id "+pid);
 		Playlist p = playmng.findPlaylistById(pid);		
 		Song s = songmng.findSongById(sid);
-
 		playmng.removeSongFromPlaylist(p, s);;
-		
 		return Response.ok(p).build();
 
 	}

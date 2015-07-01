@@ -10,6 +10,7 @@ public interface UserFacade {
 	public abstract List<User> getUsers();
 	public abstract List<User> findAllByOrder();
 	public abstract List<User> usersWithNameStartingBy(String exp);
+	public abstract User update(User u);
 	public abstract boolean updateUserPass(User u, String oldpass, String newpass);
 	public abstract boolean updateUserPassAdmin(User u, String pass);
 	public abstract boolean updateUserName(User u, String name);
