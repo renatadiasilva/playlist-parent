@@ -1,7 +1,7 @@
 package dei.uc.pt.aor;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -15,8 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 
 @Named
-//verificar dp da segurança
-@ApplicationScoped
+@RequestScoped
 public class LoginMB implements Serializable {
 	
 	private static final long serialVersionUID = -5381236051617076780L;

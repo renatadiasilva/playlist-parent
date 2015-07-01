@@ -1,11 +1,10 @@
 package dei.uc.pt.aor;
 
 import java.util.ArrayList;
-
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class LoggedUsers{
+public class LoggedUsers {
 
 	private ArrayList<User> loggedUsersList = new ArrayList<User>();
 
@@ -21,7 +20,7 @@ public class LoggedUsers{
 		loggedUsersList.remove(loggedUser);
 	}
 
-	public ArrayList<User> getLoggedUsersList() {
+	public ArrayList<User> getLoggedUsersList() {		
 		return loggedUsersList;
 	}
 
