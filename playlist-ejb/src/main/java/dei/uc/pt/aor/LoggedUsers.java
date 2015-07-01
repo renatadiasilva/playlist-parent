@@ -13,7 +13,8 @@ public class LoggedUsers {
 	}
 
 	public void addUserToLoggedUsersList(User loggedUser) {
-		loggedUsersList.add(loggedUser);
+		if (!loggedUsersList.contains(loggedUser))
+			loggedUsersList.add(loggedUser);
 	}
 	
 	public void removeUserFromLoggedUsersList(User loggedUser) {
