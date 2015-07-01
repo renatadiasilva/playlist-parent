@@ -18,6 +18,9 @@ public class UserFacadeImp implements UserFacade {
 	@EJB
 	private UserDAO userDAO;
 	
+	@EJB
+	private EncryptPass epw;
+	
 	public void delete(User u) {
 		log.info("Removing user from DB");
 		userDAO.delete(u);
@@ -38,8 +41,9 @@ public class UserFacadeImp implements UserFacade {
 		return userDAO.findAllByOrder();
 	}
 
-	public void addUser(User u) {
+	public void addUser(String name, String pass, String email) {
 		log.info("Saving user in DB");
+		User u = new User(name, epw.encrypt(pass),email);
 		userDAO.save(u);
 	}
 	

@@ -114,11 +114,9 @@ public class UserService {
 			@DefaultValue("123") @QueryParam("pass") String pass) {
 		
 		log.info("Creating user.");
-		User user = new User(name, epw.encrypt(pass), email);
-		usermng.addUser(user);
+		usermng.addUser(name, pass, email);
 
-		return Response.ok(user).build();
-
+		return Response.ok().build();
 	}
 
 	//14

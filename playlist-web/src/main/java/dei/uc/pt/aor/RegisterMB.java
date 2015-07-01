@@ -25,9 +25,6 @@ public class RegisterMB implements Serializable {
 	private String repeatedPassword;
 	private String name;
 	
-	@EJB
-	private EncryptPass epw;
-	
 	@Inject
 	private PlaylistsManagerMB manager;
 	
@@ -53,8 +50,7 @@ public class RegisterMB implements Serializable {
 			if (password.equals(repeatedPassword)) {
 
 				if (manager.findUserByEmail(email) == null) {
-					User u = new User(name, epw.encrypt(password), email);
-					manager.addUser(u); 
+					manager.addUser(name, password, email); 
 					aUser.changeToLogin();
 				} else {
 		        	String errorMsg = "This email already exists!";
