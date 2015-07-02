@@ -113,7 +113,7 @@ public class UserService {
 		log.info("Creating user.");
 		User user = usermng.addUser(name, pass, email);
 		if (user != null) return Response.ok(user).build();
-		// email already exists
+		// email already exists (check code later)
 		else return Response.status(598).build();
 	}
 
@@ -132,7 +132,7 @@ public class UserService {
 				return Response.ok().build();
 			// user don't exist
 			else return Response.notModified().build();
-			// user not logged
+			// user is logged (check code later)
 		} else return Response.status(598).build();
 	}
 
@@ -151,7 +151,7 @@ public class UserService {
 				return Response.ok().build();
 			// user don't exist
 			else return Response.notModified().build();
-			// user not logged
+			// user is logged (check code later)
 		} else return Response.status(598).build();
 	}
 
@@ -168,7 +168,7 @@ public class UserService {
 		if (user != null) {
 			usermng.updateUserPassAdmin(user, pass);		
 			return Response.ok(user).build();
-			// user don't exist
+			// user don't exist (check code later)
 		} else return Response.status(598).build();
 
 	}
@@ -186,7 +186,7 @@ public class UserService {
 		if (user != null) {
 			usermng.updateUserPassAdmin(user, pass);
 			return Response.ok(user).build();
-			// user don't exist
+			// user don't exist  (check code later)
 		} else return Response.status(598).build();	
 
 	}
