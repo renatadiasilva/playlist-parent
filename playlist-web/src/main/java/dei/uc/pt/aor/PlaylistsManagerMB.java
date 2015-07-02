@@ -13,6 +13,8 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import wsconsumer.SearchLyric;
+
 import java.io.Serializable;
 
 @Named
@@ -467,8 +469,16 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String searchLyrics() {
-		//SOAP REST
-		//addLyric (igual newsong)
+		
+		SearchLyric searchlyric = new SearchLyric();
+		String text = searchlyric.getLyric(song.getArtist(), song.getTitle());
+		
+		if (!text.equals("")){
+			song.setHasLyric(true);
+			lyrFacade.addLyric(text,song);
+			songFacade.update(song);
+		}
+		
 		return "listMySongs";
 	}
 	
