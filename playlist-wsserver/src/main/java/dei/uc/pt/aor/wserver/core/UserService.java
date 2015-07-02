@@ -31,7 +31,7 @@ import dei.uc.pt.aor.UserFacade;
 @Stateless
 @Path("/users")
 public class UserService {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(UserService.class);	
 
 	@EJB
@@ -43,10 +43,10 @@ public class UserService {
 
 	@Inject
 	private LoggedUsers loggedlist;
-	
+
 	@EJB
 	private EncryptPass epw;
-	
+
 	//1
 	@GET
 	@Path("/totalusers")
@@ -82,7 +82,7 @@ public class UserService {
 		log.info("Getting user with id "+ id);
 		return usermng.findUserById(id);
 	}	
-	
+
 	//4
 	@GET
 	@Path("/loggedusers")
@@ -91,7 +91,7 @@ public class UserService {
 		log.info("Getting total logged users.");
 		return (List<User>) loggedlist.getLoggedUsersList();
 	}
-	
+
 	//5
 	@GET
 	@Path("/totalloggedusers")
@@ -100,7 +100,7 @@ public class UserService {
 		log.info("Getting logged users.");
 		return loggedlist.getLoggedUsersList().size();
 	}
-	
+
 	//14
 	@POST
 	@Path("/createuser")
@@ -109,11 +109,11 @@ public class UserService {
 	public Response createUser(@QueryParam("name") String name, 
 			@QueryParam("email") String email,
 			@DefaultValue("123") @QueryParam("pass") String pass) {
-		
+
 		log.info("Creating user.");
 		User user = usermng.addUser(name, pass, email);
 		if (user != null) return Response.ok(user).build();
-		 // email already exists
+		// email already exists
 		else return Response.status(598).build();
 	}
 
@@ -125,12 +125,17 @@ public class UserService {
 	public Response deleteUserById(@PathParam("uid") Long id) {
 
 		log.info("Deleting user with "+id);
-		if (usermng.removeUserById(id)) 
-			return Response.ok().build();
-		// user don't exist
-		else return Response.notModified().build();		
+		List<User> lu = loggedlist.getLoggedUsersList();
+		User u = usermng.findUserById(id);
+		if (!lu.contains(u)) { 
+			if (usermng.removeUserById(id)) 
+				return Response.ok().build();
+			// user don't exist
+			else return Response.notModified().build();
+			// user not logged
+		} else return Response.status(598).build();
 	}
-	
+
 	//14
 	@DELETE
 	@Path("/deleteuser/email/{uemail: .+@.+\\.[a-z]+}")
@@ -139,11 +144,15 @@ public class UserService {
 	public Response deleteUserByEmail(@PathParam("uemail") String email) {
 
 		log.info("Deleting user with email "+email);
-		if (usermng.removeUserByEmail(email))
-			return Response.ok().build();
-		// user don't exist
-		else return Response.notModified().build();
-		
+		List<User> lu = loggedlist.getLoggedUsersList();
+		User u = usermng.findUserByEmail(email);
+		if (!lu.contains(u)) {
+			if (usermng.removeUserByEmail(email))
+				return Response.ok().build();
+			// user don't exist
+			else return Response.notModified().build();
+			// user not logged
+		} else return Response.status(598).build();
 	}
 
 	//15
@@ -159,11 +168,11 @@ public class UserService {
 		if (user != null) {
 			usermng.updateUserPassAdmin(user, pass);		
 			return Response.ok(user).build();
-		// user don't exist
+			// user don't exist
 		} else return Response.status(598).build();
 
 	}
-	
+
 	//15
 	@PUT
 	@Path("/changepass/email/{uemail: .+@.+\\.[a-z]+}")
@@ -177,7 +186,7 @@ public class UserService {
 		if (user != null) {
 			usermng.updateUserPassAdmin(user, pass);
 			return Response.ok(user).build();
-		// user don't exist
+			// user don't exist
 		} else return Response.status(598).build();	
 
 	}

@@ -32,6 +32,9 @@ public class PlaylistsManagerMB implements Serializable {
 	@EJB
 	private UserFacade userFacade;
 
+	@EJB
+	private LyricFacade lyrFacade;
+
 	private String name;
 	private String password;
 	private String repeatedPassword;
@@ -46,6 +49,7 @@ public class PlaylistsManagerMB implements Serializable {
 	private boolean delP;
 	private boolean search;
 	private int order;
+	private boolean show;
 
 	private List<Song> searchList;
 
@@ -54,10 +58,13 @@ public class PlaylistsManagerMB implements Serializable {
 	private Playlist playlist;
 
 	private Song song;
+	
+	private Lyric lyrics;
 
 	public PlaylistsManagerMB() {
 		play = false;
 		order = 1;
+		setShow(false);
 	}
 
 	public Playlist getPlaylist() {
@@ -441,6 +448,31 @@ public class PlaylistsManagerMB implements Serializable {
 
 		return null;
 	}
+	
+	/////// SHOW/EDIT LYRICS
+	
+	// por show a false
+	
+	//has Lyrics then show it
+	public String showLyrics(ActiveUserMB auser, Song s) {
+		Lyric l = lyrFacade.getLyricSongUser(auser.getCurrentUser(), s);
+		lyrics = l;
+		show = true;
+		return "listMySongs";
+	}
+	
+	public String updateLyrics(ActiveUserMB auser) {
+		lyrFacade.editLyric(auser.getCurrentUser(), lyrics);
+		return "listMySongs";
+	}
+	
+	public String searchLyrics() {
+		//SOAP REST
+		//addLyric (igual newsong)
+		return "listMySongs";
+	}
+	
+	///////////////////////////
 
 	public String getName() {
 		return name;
@@ -585,6 +617,22 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public void setSearch(boolean search) {
 		this.search = search;
+	}
+
+	public boolean isShow() {
+		return show;
+	}
+
+	public void setShow(boolean show) {
+		this.show = show;
+	}
+
+	public Lyric getLyrics() {
+		return lyrics;
+	}
+
+	public void setLyrics(Lyric lyrics) {
+		this.lyrics = lyrics;
 	}
 
 }

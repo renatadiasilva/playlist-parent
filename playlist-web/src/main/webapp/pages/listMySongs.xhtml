@@ -66,9 +66,30 @@
 								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
 									value="#{song}" />
 							</h:commandButton>
+							<h:commandButton
+								rendered="#{song.hasLyric}"
+								action="#{playlistsManagerMB.showLyrics()}"
+								value="Lyrics" class="buttonList">
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
+									value="#{song}" />
+							</h:commandButton>
+							<h:commandButton
+								rendered="#{!song.hasLyric}"
+								action="#{playlistsManagerMB.searchLyrics()}"
+								value="Get Lyrics" class="buttonList">
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
+									value="#{song}" />
+							</h:commandButton>
 						</h:panelGrid>
 					</h:column>
 				</h:dataTable>
+<!-- 				Lyrics -->
+<!-- 				<h:inputTextarea rendered="#{playlisManagerMB.show}" value="#{playlistsManagerMB.lyrics.lyric}" /> -->
+<!-- 				<h:commandButton -->
+<!-- 						rendered="#{playlistsManagerMB.show}" -->
+<!-- 						action="#{playlistsManagerMB.updateLyrics()}" -->
+<!-- 						value="Update Lyrics" class="buttonList"> -->
+<!-- 				</h:commandButton>		 -->
 			</h:form>
 			<br />
 			<br />
