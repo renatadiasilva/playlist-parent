@@ -44,28 +44,23 @@ public class NewSongMB implements Serializable {
 		log.info("Adding new song");
 		log.debug("Adding new song with"+title);
 
-		/////////////
-		// 
-		// Change hasLyrics (constructor)
 		User u = auser.getCurrentUser();
 		Song s = songFacade.addSong(title, artist, album, releaseYear, u);
-		
-		// try to get lyrics
-		// String text = ....(title,artist)
-		boolean hasLyrics = false;
+
 		searchlyric = new SearchLyric();
 		String text = searchlyric.getLyric(artist, title);
 		
 		if (!text.equals("")){
-			hasLyrics = true; 
 			s.setHasLyric(true);
 			songFacade.update(s);
 		}
 
 		if (s != null) {
+			log.info("Uploading song file");		
 			if (uf.upload(s.getId())) {
 				s.setPathFile(uf.getPath());
-				if (hasLyrics) lyrFacade.addLyric(text,s);
+				log.info("Searching song lyrics");		
+				if (s.isHasLyric()) lyrFacade.addLyric(text,s);
 				return manager.updateFilePath(s);
 			} else return manager.deleteNewSong(s);
 		} else {
@@ -74,8 +69,6 @@ public class NewSongMB implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
 		}
 		return null;
-
-		/////////////
 
 	}
 	

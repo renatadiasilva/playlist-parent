@@ -21,7 +21,7 @@ public class SearchLyric {
 		//First: try to search the lyric by Soap Web Service - chartlyrics.com
 		log.info("Searching song lyrics (SOAP - chartlyrics)");
 		lyric = soap.getLyricFromSoap(artist, title);
-		if(!lyric.equals(null)){
+		if(lyric != null){
 			return lyric;
 		}else{
 			//Second: try to search the lyric by Rest Web Service - chartlyrics.com
