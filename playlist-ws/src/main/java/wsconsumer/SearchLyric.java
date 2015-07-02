@@ -5,10 +5,11 @@ import javax.xml.bind.JAXBException;
 //This class searches the lyric of a song on the web
 public class SearchLyric {
 
-	private SoapConsumer soap;
-	private RestConsumer rest;
-	private String lyric;
-
+	private SoapConsumer soap = new SoapConsumer();
+	private RestConsumer rest = new RestConsumer();
+	private String lyric = null;
+	
+	
 	public String getLyric(String artist, String title){
 
 		//First: try to search the lyric by Soap Web Service - chartlyrics.com

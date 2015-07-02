@@ -20,8 +20,6 @@ public class SoapConsumer {
 				count=6;
 				
 			} catch (RemoteException e) {
-//				e.printStackTrace();
-				System.out.println("Connecting...");
 				count++;
 				if(count==6){
 					return null;
