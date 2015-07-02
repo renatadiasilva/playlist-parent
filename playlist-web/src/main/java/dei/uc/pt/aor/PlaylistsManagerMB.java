@@ -51,7 +51,7 @@ public class PlaylistsManagerMB implements Serializable {
 	private boolean delP;
 	private boolean search;
 	private int order;
-	private boolean show;
+	private boolean show = false;
 
 	private List<Song> searchList;
 
@@ -66,7 +66,6 @@ public class PlaylistsManagerMB implements Serializable {
 	public PlaylistsManagerMB() {
 		play = false;
 		order = 1;
-		setShow(false);
 	}
 
 	public Playlist getPlaylist() {
@@ -457,19 +456,27 @@ public class PlaylistsManagerMB implements Serializable {
 	
 	//has Lyrics then show it
 	public String showLyrics(ActiveUserMB auser, Song s) {
+		log.info("Opening pop-up with lyrics");
 		Lyric l = lyrFacade.getLyricSongUser(auser.getCurrentUser(), s);
 		lyrics = l;
 		show = true;
 		return "listMySongs";
 	}
 	
+	public String closeShowLyrics() {
+		log.info("Closing pop-up with lyrics");
+		show = false;
+		return "listMySongs";
+	}
+
 	public String updateLyrics(ActiveUserMB auser) {
+		log.info("Updating song lyrics");
 		lyrFacade.editLyric(auser.getCurrentUser(), lyrics);
 		return "listMySongs";
 	}
 	
 	public String searchLyrics() {
-		
+		log.info("Searching song lyrics");		
 		SearchLyric searchlyric = new SearchLyric();
 		String text = searchlyric.getLyric(song.getArtist(), song.getTitle());
 		
@@ -644,5 +651,5 @@ public class PlaylistsManagerMB implements Serializable {
 	public void setLyrics(Lyric lyrics) {
 		this.lyrics = lyrics;
 	}
-
+	
 }
