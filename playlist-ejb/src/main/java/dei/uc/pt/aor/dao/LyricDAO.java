@@ -21,7 +21,7 @@ public class LyricDAO extends GenericDAO<Lyric> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("owner", u);
 		parameters.put("music", s);
-		List<Lyric> list = super.findSomeResults("lyricByUserAndSong", parameters);
+		List<Lyric> list = super.findSomeResults("Lyric.lyricByUserAndSong", parameters);
 		if (list.size() == 1) return list.get(0);
 		return null;
 	}
