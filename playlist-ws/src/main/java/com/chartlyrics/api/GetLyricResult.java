@@ -8,9 +8,6 @@
 package com.chartlyrics.api;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
-import com.sun.xml.txw2.annotation.XmlElement;
 
 @XmlRootElement
 public class GetLyricResult  implements java.io.Serializable {
