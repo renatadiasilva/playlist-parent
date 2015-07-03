@@ -11,12 +11,9 @@ import javax.ws.rs.core.MediaType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import dei.uc.pt.aor.User;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -24,12 +21,6 @@ public class UserServiceTest {
 	
 	final String WSurl = "http://localhost:8080/playlist-wsserver/rest/users";
 
-	@InjectMocks
-	private UserService wsuser;
-	
-	@Mock
-	private User user;
-	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -150,7 +141,6 @@ public class UserServiceTest {
 
 	}
 
-	
 	@Test
 	public void testUserByEmail() {
 	    String responseBody = "";
@@ -351,7 +341,7 @@ public class UserServiceTest {
 	    Boolean expResult = true;
 	 
 	    try {
-	    	URL url = new URL(WSurl+"/changepass/email/a@a.a");
+	    	URL url = new URL(WSurl+"/changepass/email/x@x.x");
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	        conn.setRequestMethod("PUT");
 	        conn.setRequestProperty("Accept", MediaType.APPLICATION_XML);	  
@@ -366,7 +356,46 @@ public class UserServiceTest {
 	    
 	    assertEquals(expResult, result);
 	    
-		System.out.println("Checked successfully false call to web service changeUserPassById (using non existent email)");
+		System.out.println("Checked successfully error call to web service changeUserPassById (using non existent email)");
+
+	}
+		
+	@Test
+	public void testCreateDeleteUser() {
+	    Boolean result = true;
+	    Boolean expResult = true;
+	 
+	    try {
+	    	URL url = new URL(WSurl+"/createuser?name=teste&email=teste@teste.com");
+	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	        conn.setRequestMethod("POST");
+	        conn.setRequestProperty("Accept", MediaType.APPLICATION_XML);	  
+	 
+	        assertEquals(conn.getResponseCode(), 200);
+	        
+	        conn.disconnect();
+	    } catch (IOException e) {
+	        // if MalformedURLException, ConnectException, etc. then fail test
+	        result = false;
+	    }
+	    
+	    assertEquals(expResult, result);
+	    
+	    try {
+	    	URL url = new URL(WSurl+"/deleteuser/email/teste@teste.com");
+	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	        conn.setRequestMethod("DELETE");
+	        conn.setRequestProperty("Accept", MediaType.APPLICATION_XML);	  
+	 
+	        assertEquals(conn.getResponseCode(), 200);
+	        
+	        conn.disconnect();
+	    } catch (IOException e) {
+	        // if MalformedURLException, ConnectException, etc. then fail test
+	        result = false;
+	    }
+
+	    System.out.println("Checked successfully createUser followed by deleteUser");
 
 	}
 
