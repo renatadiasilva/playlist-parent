@@ -99,7 +99,7 @@
 												action="#{playlistsManagerMB.updateLyrics(activeUserMB)}" />
 
 											<h:commandButton class="buttonList" value="Close"
-												action="#{playlistsManagerMB.closePopup()}" immediate="true"/>
+												action="#{playlistsManagerMB.closePopup()}" immediate="true" />
 
 											<h:message for="lyricpopup" errorClass="loginerror" />
 										</div>
@@ -110,6 +110,7 @@
 						</h:panelGrid>
 					</h:column>
 				</h:dataTable>
+				
 				<h:messages globalOnly="true" class="generalError" />
 			</h:form>
 			<br />

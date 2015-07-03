@@ -81,7 +81,7 @@ public class Song implements Serializable {
 		this.releaseYear = releaseYear;
 		this.pathFile = path;
 		this.owner = owner;
-		this.hasLyric = false; // como argumento?
+		this.hasLyric = false;
 	}
 
 	public String getTitle() {

@@ -12,7 +12,7 @@ public class RestConsumer {
 
 	
 	//Method to get the lyric by artist & title using REST WS - chartlyrics.com
-	public String getChartLyric(String artist, String title) throws JAXBException {
+	public String getChartLyric(String artist, String title) throws Exception  {
 
 		ResteasyClient client = new ResteasyClientBuilder().build();
 

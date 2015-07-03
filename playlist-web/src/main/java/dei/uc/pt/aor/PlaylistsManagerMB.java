@@ -60,7 +60,7 @@ public class PlaylistsManagerMB implements Serializable {
 	private Playlist playlist;
 
 	private Song song;
-	
+
 	private Lyric lyrics;
 
 	public PlaylistsManagerMB() {
@@ -161,7 +161,7 @@ public class PlaylistsManagerMB implements Serializable {
 		log.info("Updating playlist");
 		log.debug("Updating playlist "+playlist.getName());
 		if (playlistFacade.updatePlaylistName(playlist, playlistName, auser.getCurrentUser())) {
-				return "listMyPlaylists?faces-redirect=true";
+			return "listMyPlaylists?faces-redirect=true";
 		} else {
 			String errorMsg = "There is already a playlist with that name!";
 			log.error(errorMsg);
@@ -450,7 +450,7 @@ public class PlaylistsManagerMB implements Serializable {
 
 		return null;
 	}
-	
+
 	public String showLyrics(ActiveUserMB auser, Song s) {
 		log.info("Opening pop-up of lyrics");
 		Lyric l = lyrFacade.getLyricSongUser(auser.getCurrentUser(), s);
@@ -458,35 +458,35 @@ public class PlaylistsManagerMB implements Serializable {
 		show = true;
 		return null;
 	}
-	
+
 	public String updateLyrics(ActiveUserMB auser) {
 		log.info("Updating lyrics");
 		lyrFacade.editLyric(auser.getCurrentUser(), lyrics);
 		return null;
 	}
-	
+
 	public String searchLyrics() {
 		log.info("Searching for lyrics");
 		SearchLyric searchlyric = new SearchLyric();
 		String text = searchlyric.getLyric(song.getArtist(), song.getTitle());
-		
-		if (!text.equals("") && text!=null){
+
+		if (!text.equals("") && text!=null && text.compareTo("Not found")!=0){
 			song.setHasLyric(true);
 			lyrFacade.addLyric(text,song);
 			songFacade.update(song);
 		}else{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No search results for lyric!"));
 		}
-		
+
 		return null;
 	}
-	
+
 	public String closePopup(){
 		log.info("Closing pop-up of lyrics");
 		show = false;
 		return null;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

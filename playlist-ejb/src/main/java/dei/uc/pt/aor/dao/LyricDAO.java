@@ -16,6 +16,10 @@ public class LyricDAO extends GenericDAO<Lyric> {
 	public LyricDAO() {
 		super(Lyric.class);
 	}
+	
+	public void delete(Lyric lyric) {
+		super.delete(lyric.getId(), Lyric.class);
+	}
 
 	public Lyric findLyricByUserAndSong(User u, Song s) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
@@ -32,6 +36,13 @@ public class LyricDAO extends GenericDAO<Lyric> {
 		List<Lyric> list = super.findSomeResults("Lyric.lyricById", parameters);
 		if (list.size() == 1) return list.get(0);
 		return null;
+	}
+	
+	public List<Lyric> findLyricsByUser(User u) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("owner", u);
+		List<Lyric> list = super.findSomeResults("Lyric.lyricsByUser", parameters);
+		return list;
 	}
 	
 }

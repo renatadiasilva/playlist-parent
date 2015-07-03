@@ -9,8 +9,6 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import wsconsumer.SearchLyric;
-
 import java.io.Serializable;
 
 @Named
@@ -25,16 +23,12 @@ public class NewSongMB implements Serializable {
 	private String artist;
 	private String album;
 	private String releaseYear;
-	private SearchLyric searchlyric;
 	
 	@Inject
 	private PlaylistsManagerMB manager;
 	
 	@Inject
 	private SongFacade songFacade;
-	
-	@Inject
-	private LyricFacade lyrFacade;
 
 	public NewSongMB() {
 
@@ -47,20 +41,10 @@ public class NewSongMB implements Serializable {
 		User u = auser.getCurrentUser();
 		Song s = songFacade.addSong(title, artist, album, releaseYear, u);
 
-		searchlyric = new SearchLyric();
-		String text = searchlyric.getLyric(artist, title);
-		
-		if (!text.equals("")){
-			s.setHasLyric(true);
-			songFacade.update(s);
-		}
-
 		if (s != null) {
 			log.info("Uploading song file");		
 			if (uf.upload(s.getId())) {
 				s.setPathFile(uf.getPath());
-				log.info("Searching song lyrics");		
-				if (s.isHasLyric()) lyrFacade.addLyric(text,s);
 				return manager.updateFilePath(s);
 			} else return manager.deleteNewSong(s);
 		} else {

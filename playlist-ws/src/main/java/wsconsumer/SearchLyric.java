@@ -21,17 +21,18 @@ public class SearchLyric {
 		//First: try to search the lyric by Soap Web Service - chartlyrics.com
 		log.info("Searching song lyrics (SOAP - chartlyrics)");
 		lyric = soap.getLyricFromSoap(artist, title);
-		if(lyric != null || !lyric.equals("")){
+		if(lyric != null && (lyric.compareTo("")!=0)){
 			return lyric;
 		}else{
 			//Second: try to search the lyric by Rest Web Service - chartlyrics.com
 			try {
 				log.info("Searching song lyrics (REST - chartlyrics)");
 				lyric = rest.getChartLyric(artist, title);
-				if (lyric.equals(null) || lyric.equals("")){
+				if (lyric==null || lyric.compareTo("")==0){
 					lyric = rest.getWikiaLyric(artist, title);
 				}
-			} catch (JAXBException e) {
+			} catch (Exception e) {
+				log.error("crashing : "+e);
 				//Third: try to search the lyric by Rest Web Service - api.wikia.com
 				try {
 					log.info("Searching song lyrics (REST - Wikilyrics)");

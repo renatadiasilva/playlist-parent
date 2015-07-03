@@ -14,30 +14,34 @@ public class SoapConsumer {
 	
 	public String getLyricFromSoap(String artist, String title) {
 		
-		
-		Apiv1SoapProxy soap = new Apiv1SoapProxy();
-		GetLyricResult result = null;
-		int count = 1;
-		
-		//Ir Buscar a lyric de uma musica por artista e titulo - chartlyrics
-		while(count<=5){
-			try {
-				result = soap.searchLyricDirect(artist, title);
-				count=6;
-				log.info("Find the lyric by Soap in "+count+" times");
-				log.info("Lyric:"+result.getLyric()+"#");
-				
-			} catch (RemoteException e) {
-				count++;
-				log.info("Remote exception: "+count);
-				if(count==6){
-					return null;
+		try {
+			Apiv1SoapProxy soap = new Apiv1SoapProxy();
+			GetLyricResult result = null;
+			int count = 1;
+			
+			//Ir Buscar a lyric de uma musica por artista e titulo - chartlyrics
+			while(count<=5){
+				try {
+					result = soap.searchLyricDirect(artist, title);
+					count=6;
+					log.info("Find the lyric by Soap in "+count+" times");
+					log.info("Lyric:"+result.getLyric()+"#");
+					
+				} catch (RemoteException e) {
+					count++;
+					log.info("Remote exception: "+count);
+					if(count==6){
+						return null;
+					}
 				}
+				
 			}
 			
+			return result.getLyric();
+			
+		} catch (Exception e2) {
+			return null;
 		}
-		
-		return result.getLyric();
 		
 	}
 

@@ -225,12 +225,14 @@ color:white;
 	color: red;
 	font-weight: bold;
 	font-size: 15px;
+	background:black;
 }
 
 .generalError {
 	color: red;
 	font-size: 15px;
 	font-weight: bold;
+	background:black;
 }
 
 .fontNewUser {

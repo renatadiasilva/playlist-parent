@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dei.uc.pt.aor.dao.LyricDAO;
 import dei.uc.pt.aor.dao.PlaylistDAO;
 import dei.uc.pt.aor.dao.SongDAO;
 import dei.uc.pt.aor.dao.UserDAO;
@@ -25,6 +26,9 @@ public class UserFacadeImp implements UserFacade {
 	
 	@EJB
 	private PlaylistDAO playDAO;
+	
+	@EJB
+	private LyricDAO lyricDAO;
 
 	@EJB
 	private EncryptPass epw;
@@ -49,6 +53,11 @@ public class UserFacadeImp implements UserFacade {
 			//remove playlists of user
 			List<Playlist> uPlaylists = playDAO.playlistsOfUser(user, 1);
 			for (Playlist p: uPlaylists) playDAO.delete(p);
+			
+			//remove lyrics of user
+			List<Lyric> uLyrics = lyricDAO.findLyricsByUser(user);
+			for (Lyric l : uLyrics) lyricDAO.delete(l);
+			
 			
 			//finally, remove user
 			userDAO.delete(user);
