@@ -21,19 +21,17 @@ import java.io.Serializable;
 @SessionScoped
 public class PlaylistsManagerMB implements Serializable {
 
+	// Attributes
+	
 	private static final long serialVersionUID = -6930815753145461767L;
-
 	private static final Logger log = LoggerFactory.getLogger(PlaylistsManagerMB.class);
 
 	@EJB
 	private PlaylistFacade playlistFacade;
-
 	@EJB
 	private SongFacade songFacade;
-
 	@EJB
 	private UserFacade userFacade;
-
 	@EJB
 	private LyricFacade lyrFacade;
 
@@ -44,7 +42,6 @@ public class PlaylistsManagerMB implements Serializable {
 	private String releaseY;
 	private String searchTitle;
 	private String searchArtist;
-
 	private boolean play;
 	private boolean newP;
 	private boolean newS;
@@ -52,63 +49,22 @@ public class PlaylistsManagerMB implements Serializable {
 	private boolean search;
 	private int order;
 	private boolean show;
-
 	private List<Song> searchList;
-
 	private String operation; 
-
 	private Playlist playlist;
-
 	private Song song;
-
 	private Lyric lyrics;
+	
+	// Constructor
 
 	public PlaylistsManagerMB() {
 		play = false;
 		order = 1;
-		setShow(false);
+		show = false;
 	}
-
-	public Playlist getPlaylist() {
-		if(playlist == null) playlist = new Playlist();
-		return playlist;
-	}
-
-	public void setSong(Song song) {
-		this.song = song;
-	}
-
-	public String getRepeatedPassword() {
-		return repeatedPassword;
-	}
-
-	public void setRepeatedPassword(String repeatedPassword) {
-		this.repeatedPassword = repeatedPassword;
-	}
-
-	public List<Playlist> getAllPlaylists() {
-		return playlistFacade.findAll();
-	}
-
-	public List<Playlist> playlistsOfUser(ActiveUserMB auser) {
-		return playlistFacade.playlistsOfUser(auser.getCurrentUser(), order);
-	}
-
-	public List<Playlist> playlistsOfUserContainingSong(ActiveUserMB auser) {
-		return playlistFacade.playlistsOfUserContainingSong(auser.getCurrentUser(), song);
-	}
-
-	public String updatePlaylistStart() {
-		playlistName = playlist.getName();
-		newP = false;
-		return "playlist?faces-redirect=true";
-	}
-
-	public String viewPlaylistStart() {
-		play = false;
-		return "viewPlaylist?faces-redirect=true";
-	}	
-
+	
+	// USER //
+	
 	public String goToProfile() {
 		return "profile?faces-redirect=true";
 	}
@@ -157,11 +113,94 @@ public class PlaylistsManagerMB implements Serializable {
 
 	}
 
+	public String changePass() {
+		return "changePass?faces-redirect=true";
+	}
+
+	public String remove() {
+		return "confirmRemoval?faces-redirect=true";
+	}
+
+	public User addUser(String n, String p, String e) {
+		try {
+			User u = userFacade.addUser(n, p, e);
+			return u;
+		} catch (EJBException ejbe) {
+			String errorMsg = "Error adding user"
+					+ejbe.getMessage();
+			log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+			return null;
+		}
+	}
+
+	public User findUserByEmail(String email) {
+		try {
+			return userFacade.findUserByEmail(email);
+		} catch (EJBException e) {
+			String errorMsg = "Error finding user "
+					+ "by email: "+e.getMessage();
+			log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
+	}
+
+	public List<User> getUsers() {
+		try {
+			return userFacade.getUsers();
+		} catch (EJBException e) {
+			String errorMsg = "Error getting users"
+					+e.getMessage();
+			log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
+	}
+
+	public List<User> getUsersStartingBy(String exp) {
+		try {
+			return userFacade.usersWithNameStartingBy(exp);
+		} catch (EJBException e) {
+			String errorMsg = "Error getting users"
+					+ "with name starting by: "+e.getMessage();
+			log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+
+		return null;
+	}
+	
+	// PLAYLIST //
+	
+	public List<Playlist> getAllPlaylists() {
+		return playlistFacade.findAll();
+	}
+
+	public List<Playlist> playlistsOfUser(ActiveUserMB auser) {
+		return playlistFacade.playlistsOfUser(auser.getCurrentUser(), order);
+	}
+
+	public List<Playlist> playlistsOfUserContainingSong(ActiveUserMB auser) {
+		return playlistFacade.playlistsOfUserContainingSong(auser.getCurrentUser(), song);
+	}
+	
+	public String updatePlaylistStart() {
+		playlistName = playlist.getName();
+		newP = false;
+		return "playlist?faces-redirect=true";
+	}
+
+	public String viewPlaylistStart() {
+		play = false;
+		return "viewPlaylist?faces-redirect=true";
+	}	
+
 	public String updatePlaylistEnd(ActiveUserMB auser) {
 		log.info("Updating playlist");
 		log.debug("Updating playlist "+playlist.getName());
 		if (playlistFacade.updatePlaylistName(playlist, playlistName, auser.getCurrentUser())) {
-			return "listMyPlaylists?faces-redirect=true";
+				return "listMyPlaylists?faces-redirect=true";
 		} else {
 			String errorMsg = "There is already a playlist with that name!";
 			log.error(errorMsg);
@@ -171,17 +210,8 @@ public class PlaylistsManagerMB implements Serializable {
 
 	}
 
-	public Song getSong() {
-		return song;
-	}
-
 	public String deletePlaylistStart() {
 		delP = true;
-		return "delete?faces-redirect=true";
-	}
-
-	public String deleteSongStart() {
-		delP = false;
 		return "delete?faces-redirect=true";
 	}
 
@@ -202,9 +232,44 @@ public class PlaylistsManagerMB implements Serializable {
 	public String listMyPlaylists(){
 		return "listMyPlaylists?faces-redirect=true";
 	}
+	
+	public void start() {
+		play = true;
+	}	
+	
+	public String chooseOrder(int order) {
+		this.order = order;
+		return "listMyPlaylists";
+	}
 
-	public void setPlaylist(Playlist playlist) {
-		this.playlist = playlist;
+	// SONG //
+	
+	public String deleteSongStart() {
+		delP = false;
+		return "delete?faces-redirect=true";
+	}
+
+	public List<Song> getSongs() {
+		try {
+			searchList = playlistFacade.getSongs(playlist);
+			return searchList;
+		} catch (EJBException e) {
+			String errorMsg = "Error getting songs"
+					+e.getMessage();
+			log.error(errorMsg);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
+		}
+		return null;
+	}
+
+	public int index(Song s) {
+		return searchList.indexOf(s)+1;
+	}
+
+	// change to loop
+	public String path() {
+		if (song != null) return song.getPathFile();
+		return "";
 	}
 
 	public String removeSongFromPlaylist() {
@@ -389,68 +454,12 @@ public class PlaylistsManagerMB implements Serializable {
 		return null;
 	}
 
-	public String changePass() {
-		return "changePass?faces-redirect=true";
-	}
-
-	public String remove() {
-		return "confirmRemoval?faces-redirect=true";
-	}
-
 	public String listMySongs(){
 		return "listMySongs?faces-redirect=true";
 	}
-
-	public User addUser(String n, String p, String e) {
-		try {
-			User u = userFacade.addUser(n, p, e);
-			return u;
-		} catch (EJBException ejbe) {
-			String errorMsg = "Error adding user"
-					+ejbe.getMessage();
-			log.error(errorMsg);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-			return null;
-		}
-	}
-
-	public User findUserByEmail(String email) {
-		try {
-			return userFacade.findUserByEmail(email);
-		} catch (EJBException e) {
-			String errorMsg = "Error finding user "
-					+ "by email: "+e.getMessage();
-			log.error(errorMsg);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-		}
-		return null;
-	}
-
-	public List<User> getUsers() {
-		try {
-			return userFacade.getUsers();
-		} catch (EJBException e) {
-			String errorMsg = "Error getting users"
-					+e.getMessage();
-			log.error(errorMsg);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-		}
-		return null;
-	}
-
-	public List<User> getUsersStartingBy(String exp) {
-		try {
-			return userFacade.usersWithNameStartingBy(exp);
-		} catch (EJBException e) {
-			String errorMsg = "Error getting users"
-					+ "with name starting by: "+e.getMessage();
-			log.error(errorMsg);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-		}
-
-		return null;
-	}
-
+	
+	// LYRICS //
+	
 	public String showLyrics(ActiveUserMB auser, Song s) {
 		log.info("Opening pop-up of lyrics");
 		Lyric l = lyrFacade.getLyricSongUser(auser.getCurrentUser(), s);
@@ -458,13 +467,13 @@ public class PlaylistsManagerMB implements Serializable {
 		show = true;
 		return null;
 	}
-
+	
 	public String updateLyrics(ActiveUserMB auser) {
 		log.info("Updating lyrics");
 		lyrFacade.editLyric(auser.getCurrentUser(), lyrics);
 		return null;
 	}
-
+	
 	public String searchLyrics() {
 		log.info("Searching for lyrics");
 		SearchLyric searchlyric = new SearchLyric();
@@ -481,12 +490,19 @@ public class PlaylistsManagerMB implements Serializable {
 		
 		return null;
 	}
-
+	
 	public String closePopup(){
 		log.info("Closing pop-up of lyrics");
 		show = false;
 		return null;
 	}
+
+	public List<Song> getSearchList() {
+		if (searchList == null) searchList = new ArrayList<>();
+		return searchList;
+	}
+
+	// GETTERS e SETTERS //
 
 	public String getName() {
 		return name;
@@ -520,33 +536,10 @@ public class PlaylistsManagerMB implements Serializable {
 		this.play = play;
 	}
 
-	public void start() {
-		play = true;
+	public void setPlaylist(Playlist playlist) {
+		this.playlist = playlist;
 	}
-
-	public List<Song> getSongs() {
-		try {
-			searchList = playlistFacade.getSongs(playlist);
-			return searchList;
-		} catch (EJBException e) {
-			String errorMsg = "Error getting songs"
-					+e.getMessage();
-			log.error(errorMsg);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
-		}
-		return null;
-	}
-
-	public int index(Song s) {
-		return searchList.indexOf(s)+1;
-	}
-
-	// change to loop
-	public String path() {
-		if (song != null) return song.getPathFile();
-		return "";
-	}
-
+	
 	public String getPlaylistName() {
 		return playlistName;
 	}
@@ -587,11 +580,6 @@ public class PlaylistsManagerMB implements Serializable {
 		this.releaseY = releaseY;
 	}
 
-	public List<Song> getSearchList() {
-		if (searchList == null) searchList = new ArrayList<>();
-		return searchList;
-	}
-
 	public void setSearchList(List<Song> searchList) {
 		this.searchList = searchList;
 	}
@@ -602,6 +590,10 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public void setSearchTitle(String searchTitle) {
 		this.searchTitle = searchTitle;
+	}
+	
+	public Song getSong() {
+		return song;
 	}
 
 	public String getSearchArtist() {
@@ -618,11 +610,6 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public void setOrder(int order) {
 		this.order = order;
-	}
-
-	public String chooseOrder(int order) {
-		this.order = order;
-		return "listMyPlaylists";
 	}
 
 	public boolean isSearch() {
@@ -646,9 +633,25 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public void setLyrics(String text) {
-		lyrics = lyrFacade.getLyricById(lyrics.getId());
+//		lyrics = lyrFacade.getLyricById(lyrics.getId());
 		lyrics.setLyric(text);
 	}
 
+	public Playlist getPlaylist() {
+		if(playlist == null) playlist = new Playlist();
+		return playlist;
+	}
+
+	public void setSong(Song song) {
+		this.song = song;
+	}
+
+	public String getRepeatedPassword() {
+		return repeatedPassword;
+	}
+
+	public void setRepeatedPassword(String repeatedPassword) {
+		this.repeatedPassword = repeatedPassword;
+	}
 
 }
