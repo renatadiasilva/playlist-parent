@@ -469,15 +469,16 @@ public class PlaylistsManagerMB implements Serializable {
 		log.info("Searching for lyrics");
 		SearchLyric searchlyric = new SearchLyric();
 		String text = searchlyric.getLyric(song.getArtist(), song.getTitle());
-
-		if (!text.equals("") && text!=null && text.compareTo("Not found")!=0){
+		
+		if (text!=null && !text.isEmpty() && text.compareTo("Not found")!=0){
 			song.setHasLyric(true);
-			lyrFacade.addLyric(text,song);
+			lyrFacade.addLyric(text, song);
 			songFacade.update(song);
 		}else{
+			log.error("No search results for lyric!");
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No search results for lyric!"));
 		}
-
+		
 		return null;
 	}
 
