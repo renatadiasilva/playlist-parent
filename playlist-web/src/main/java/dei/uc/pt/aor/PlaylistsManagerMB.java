@@ -462,15 +462,20 @@ public class PlaylistsManagerMB implements Serializable {
 	
 	public String showLyrics(ActiveUserMB auser, Song s) {
 		log.info("Opening pop-up of lyrics");
-		Lyric l = lyrFacade.getLyricSongUser(auser.getCurrentUser(), s);
-		lyrics = l;
-		show = true;
+		lyrics = lyrFacade.getLyricSongUser(auser.getCurrentUser(), s);
+		if (lyrics != null) {
+			show = true;
+		}else{
+			log.error("Error in the DB (song.hasLyrics=true but there are no Lyrics for song");
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No search results for lyric!"));
+			show = false;
+		}
 		return null;
 	}
 	
 	public String updateLyrics(ActiveUserMB auser) {
 		log.info("Updating lyrics");
-		lyrFacade.editLyric(auser.getCurrentUser(), lyrics);
+		lyrics = lyrFacade.editLyric(auser.getCurrentUser(), lyrics);
 		return null;
 	}
 	
@@ -495,11 +500,6 @@ public class PlaylistsManagerMB implements Serializable {
 		log.info("Closing pop-up of lyrics");
 		show = false;
 		return null;
-	}
-
-	public List<Song> getSearchList() {
-		if (searchList == null) searchList = new ArrayList<>();
-		return searchList;
 	}
 
 	// GETTERS e SETTERS //
@@ -633,7 +633,6 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 
 	public void setLyrics(String text) {
-//		lyrics = lyrFacade.getLyricById(lyrics.getId());
 		lyrics.setLyric(text);
 	}
 
@@ -652,6 +651,11 @@ public class PlaylistsManagerMB implements Serializable {
 
 	public void setRepeatedPassword(String repeatedPassword) {
 		this.repeatedPassword = repeatedPassword;
+	}
+	
+	public List<Song> getSearchList() {
+		if (searchList == null) searchList = new ArrayList<>();
+		return searchList;
 	}
 
 }
