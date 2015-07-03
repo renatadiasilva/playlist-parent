@@ -51,7 +51,7 @@ public class PlaylistsManagerMB implements Serializable {
 	private boolean delP;
 	private boolean search;
 	private int order;
-	private boolean show = false;
+	private boolean show;
 
 	private List<Song> searchList;
 
@@ -66,6 +66,7 @@ public class PlaylistsManagerMB implements Serializable {
 	public PlaylistsManagerMB() {
 		play = false;
 		order = 1;
+		setShow(false);
 	}
 
 	public Playlist getPlaylist() {
@@ -456,37 +457,36 @@ public class PlaylistsManagerMB implements Serializable {
 	
 	//has Lyrics then show it
 	public String showLyrics(ActiveUserMB auser, Song s) {
-		log.info("Opening pop-up with lyrics");
 		Lyric l = lyrFacade.getLyricSongUser(auser.getCurrentUser(), s);
 		lyrics = l;
 		show = true;
-		return "listMySongs";
+		return null;
 	}
 	
-	public String closeShowLyrics() {
-		log.info("Closing pop-up with lyrics");
-		show = false;
-		return "listMySongs";
-	}
-
 	public String updateLyrics(ActiveUserMB auser) {
-		log.info("Updating song lyrics");
 		lyrFacade.editLyric(auser.getCurrentUser(), lyrics);
-		return "listMySongs";
+		return null;
 	}
 	
 	public String searchLyrics() {
-		log.info("Searching song lyrics");		
+		
 		SearchLyric searchlyric = new SearchLyric();
 		String text = searchlyric.getLyric(song.getArtist(), song.getTitle());
 		
-		if (!text.equals("")){
+		if (!text.equals("") && text!=null){
 			song.setHasLyric(true);
 			lyrFacade.addLyric(text,song);
 			songFacade.update(song);
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No search results for lyric!"));
 		}
 		
-		return "listMySongs";
+		return null;
+	}
+	
+	public String closePopup(){
+		show = false;
+		return null;
 	}
 	
 	///////////////////////////
@@ -644,12 +644,14 @@ public class PlaylistsManagerMB implements Serializable {
 		this.show = show;
 	}
 
-	public Lyric getLyrics() {
-		return lyrics;
+	public String getLyrics() {
+		return lyrics.getLyric();
 	}
 
-	public void setLyrics(Lyric lyrics) {
-		this.lyrics = lyrics;
+	public void setLyrics(String text) {
+		lyrics = lyrFacade.getLyricById(lyrics.getId());
+		lyrics.setLyric(text);
 	}
-	
+
+
 }

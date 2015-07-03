@@ -16,15 +16,15 @@
 			</div>
 
 			<h:form class="my">
-				<h:panelGrid  class="my">
-					<h:commandButton action="#{newSongMB.newSong()}"
-						value="New Song" class="buttonList">
+				<h:panelGrid class="my">
+					<h:commandButton action="#{newSongMB.newSong()}" value="New Song"
+						class="buttonList">
 					</h:commandButton>
-				</h:panelGrid >
-				<h:dataTable style="width:1000px" value="#{playlistsManagerMB.songsOfUser(activeUserMB)}"
-					var="song" styleClass="order-table"
-					captionClass="order-table-caption" headerClass="order-table-header"
-					rowClasses="order-table-row" >
+				</h:panelGrid>
+				<h:dataTable style="width:1000px"
+					value="#{playlistsManagerMB.songsOfUser(activeUserMB)}" var="song"
+					styleClass="order-table" captionClass="order-table-caption"
+					headerClass="order-table-header" rowClasses="order-table-row">
 					<h:column>
 						<f:facet name="header">
 							Title
@@ -60,29 +60,57 @@
 								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
 									value="#{song}" />
 							</h:commandButton>
-							<h:commandButton
-								action="#{playlistsManagerMB.deleteSongStart()}"
+							<h:commandButton action="#{playlistsManagerMB.deleteSongStart()}"
 								value="Delete" class="buttonList">
 								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
 									value="#{song}" />
 							</h:commandButton>
-							<h:commandButton
-								rendered="#{song.hasLyric}"
+							<h:commandButton rendered="#{song.hasLyric}"
 								action="#{playlistsManagerMB.showLyrics(activeUserMB, song)}"
-								value="Lyrics" class="buttonList">
+								value="    Lyric   " class="buttonList">
 								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
 									value="#{song}" />
 							</h:commandButton>
-							<h:commandButton
-								rendered="#{!song.hasLyric}"
-								action="#{playlistsManagerMB.searchLyrics()}"
-								value="Get Lyrics" class="buttonList">
+							<h:commandButton rendered="#{!song.hasLyric}"
+								action="#{playlistsManagerMB.searchLyrics()}" value="Get Lyric"
+								class="buttonList">
 								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
 									value="#{song}" />
 							</h:commandButton>
+
+
+
+
+							<div id="allPop" style="margin-top: 20px; width: 30%;">
+								<h:panelGroup rendered="#{playlistsManagerMB.show}">
+									<div id="popup1">
+										<div class="popup">
+											<div class="contentPop">
+												<h:outputText class="titlePopup"
+													value="#{playlistsManagerMB.song.artist} - #{playlistsManagerMB.song.title}" />
+												<h:inputTextarea disabled="false"
+													value="#{playlistsManagerMB.lyrics}"
+													style="width:90%;height:100%;background:#F3F5F7;"
+													title="#{playlistsManagerMB.song.artist}" required="true"
+													requiredMessage="    Empty Lyric!" id="lyricpopup" />
+											</div>
+
+											<h:commandButton class="buttonList" value="Save"
+												action="#{playlistsManagerMB.updateLyrics(activeUserMB)}" />
+
+											<h:commandButton class="buttonList" value="Close"
+												action="#{playlistsManagerMB.closePopup()}" immediate="true"/>
+
+											<h:message for="lyricpopup" errorClass="loginerror" />
+										</div>
+									</div>
+								</h:panelGroup>
+							</div>
+
 						</h:panelGrid>
 					</h:column>
 				</h:dataTable>
+				<h:messages globalOnly="true" class="generalError" />
 			</h:form>
 			<br />
 			<br />

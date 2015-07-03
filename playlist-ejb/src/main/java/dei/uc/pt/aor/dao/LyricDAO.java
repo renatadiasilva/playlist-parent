@@ -26,4 +26,12 @@ public class LyricDAO extends GenericDAO<Lyric> {
 		return null;
 	}
 	
+	public Lyric findLyricById(Long id) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("id", id);
+		List<Lyric> list = super.findSomeResults("Lyric.lyricById", parameters);
+		if (list.size() == 1) return list.get(0);
+		return null;
+	}
+	
 }

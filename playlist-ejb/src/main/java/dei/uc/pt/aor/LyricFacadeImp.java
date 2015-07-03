@@ -26,7 +26,7 @@ public class LyricFacadeImp implements LyricFacade {
 	// if hasLyrics!!! (to pop-up)
 	public Lyric getLyricSongUser(User u, Song s) {
 		Lyric l = lyrDAO.findLyricByUserAndSong(u, s);
-		if (l != null) {
+		if (l == null) {
 			User admin = userDAO.findUserByEmail("admin@admin.com");
 			l = lyrDAO.findLyricByUserAndSong(admin, s);
 		}
@@ -41,6 +41,11 @@ public class LyricFacadeImp implements LyricFacade {
 			Lyric l = new Lyric(lyric.getLyric(), u, lyric.getMusic());
 			lyrDAO.save(l);
 		} else lyrDAO.update(lyric);
+	}
+	
+	public Lyric getLyricById(Long id) {
+		Lyric l = lyrDAO.findLyricById(id);
+		return l;
 	}
 	
 }

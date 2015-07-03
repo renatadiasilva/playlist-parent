@@ -8,7 +8,9 @@ import javax.validation.constraints.NotNull;
 @Table(name = "lyrics")
 @NamedQueries({
 	@NamedQuery(name="Lyric.lyricByUserAndSong",
-			query="SELECT l FROM Lyric l WHERE l.owner = :owner AND l.music = :music ")
+			query="SELECT l FROM Lyric l WHERE l.owner = :owner AND l.music = :music "),
+	@NamedQuery(name="Lyric.lyricById",
+			query="SELECT l FROM Lyric l WHERE l.id = :id ")
 })
 public class Lyric implements Serializable {
 	

@@ -14,11 +14,12 @@
 			<div>
 				<h3 class="titleMenu">All Songs</h3>
 			</div>
-			<h:form class="tabelaPlaylists" >
+			<h:form class="tabelaPlaylists">
 
-					<h:dataTable style="width:1000px" value="#{playlistsManagerMB.allSongs}" var="song"
-						styleClass="order-table" captionClass="order-table-caption"
-						headerClass="order-table-header" rowClasses="order-table-row">
+				<h:dataTable style="width:1000px"
+					value="#{playlistsManagerMB.allSongs}" var="song"
+					styleClass="order-table" captionClass="order-table-caption"
+					headerClass="order-table-header" rowClasses="order-table-row">
 					<h:column>
 						<f:facet name="header">
 							Title
@@ -26,45 +27,84 @@
 				
 						#{song.title}
 					</h:column>
-						<h:column>
-							<f:facet name="header">
+					<h:column>
+						<f:facet name="header">
 							Artist
 						</f:facet>
 				
 						#{song.artist}
 					</h:column>
-						<h:column>
-							<f:facet name="header">
+					<h:column>
+						<f:facet name="header">
 							Album
 						</f:facet>
 				
 						#{song.album}
 					</h:column>
-						<h:column>
-							<f:facet name="header">
+					<h:column>
+						<f:facet name="header">
 							Release Year
 						</f:facet>
 				
 						#{song.releaseYear}
 					</h:column>
-						<h:column>
-							<f:facet name="header">
+					<h:column>
+						<f:facet name="header">
 							Added by
 						</f:facet>
 				
 						#{song.owner.name}
 					</h:column>
-						<h:column>
-							<h:panelGrid columns="2" class="allsongs">
-								<h:inputHidden value="#{song.id}" />
-								<h:commandButton action="#{playlistsManagerMB.addToPlaylist()}"
-									value="Add to Playlist" class="buttonList">
-									<f:setPropertyActionListener
-										target="#{playlistsManagerMB.song}" value="#{song}" />
-								</h:commandButton>
-							</h:panelGrid>
-						</h:column>
-					</h:dataTable>
+					<h:column>
+						<h:panelGrid columns="4" class="allsongs">
+							<h:inputHidden value="#{song.id}" />
+							<h:commandButton action="#{playlistsManagerMB.addToPlaylist()}"
+								value="Add to Playlist" class="buttonList">
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
+									value="#{song}" />
+							</h:commandButton>
+							<h:commandButton rendered="#{song.hasLyric}"
+								action="#{playlistsManagerMB.showLyrics(activeUserMB, song)}"
+								value="    Lyric   " class="buttonList">
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
+									value="#{song}" />
+							</h:commandButton>
+							<h:commandButton rendered="#{!song.hasLyric}"
+								action="#{playlistsManagerMB.searchLyrics()}" value="Get Lyric"
+								class="buttonList">
+								<f:setPropertyActionListener target="#{playlistsManagerMB.song}"
+									value="#{song}" />
+							</h:commandButton>
+
+							<div id="allPop" style="margin-top: 20px; width: 30%;">
+								<h:panelGroup rendered="#{playlistsManagerMB.show}">
+									<div id="popup1">
+										<div class="popup">
+											<div class="contentPop">
+												<h:outputText class="titlePopup"
+													value="#{playlistsManagerMB.song.artist} - #{playlistsManagerMB.song.title}" />
+												<h:inputTextarea disabled="false"
+													value="#{playlistsManagerMB.lyrics}"
+													style="width:90%;height:100%;background:#F3F5F7;"
+													title="#{playlistsManagerMB.song.artist}" required="true"
+													requiredMessage="    Empty Lyric!" id="lyricpopup" />
+											</div>
+
+											<h:commandButton class="buttonList" value="Save"
+												action="#{playlistsManagerMB.updateLyrics(activeUserMB)}" />
+
+											<h:commandButton class="buttonList" value="Close"
+												action="#{playlistsManagerMB.closePopup()}" immediate="true" />
+
+											<h:message for="lyricpopup" errorClass="loginerror" />
+										</div>
+									</div>
+								</h:panelGroup>
+							</div>
+
+						</h:panelGrid>
+					</h:column>
+				</h:dataTable>
 			</h:form>
 			<br />
 			<br />

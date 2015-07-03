@@ -1,0 +1,74 @@
+@charset "UTF-8";
+
+#popup1 {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: inline;
+	transition: opacity 500ms;
+	/*visibility: visible;
+  opacity: 0;*/
+}
+/* div#popup1.overlay:target {
+  visibility: visible;
+  opacity: 1;
+} */
+.popup {
+	margin: 70px auto;
+	padding: 20px;
+	background: #F3F5F7;
+	border-radius: 5px;
+	width: 50%;
+	position: absolute;
+	transition: all 5s ease-in-out;
+}
+
+.closebtn {
+	font-size: 100%;
+	background-color: #3A4856;
+	color: #ffffff;
+	padding: 5px;
+	border-radius: 6px;
+	min-width: 51px;
+	bottom: 10%;
+}
+
+.popup, .closebtn {
+	/*transition: all 200ms;*/
+	text-decoration: none;
+	text-align: justify;
+	z-index: 505;
+}
+
+.popup {
+	left: 30%;
+	height: 80%;
+	background: #F3F5F7;
+	/*overflow-y: auto;*/
+}
+
+.contentPop {
+	left: 30%;
+	background: #F3F5F7;
+	/*width: 95%;*/
+	height: 80%;
+	margin-bottom: 10%
+}
+
+#popup1>div>div>textarea {
+	padding: 8px;
+	width: 90%;
+	height: 100%;
+	background: #F3F5F7;
+}
+
+.titlePopup{
+	text-align: left;
+	color:black;
+ 	font-size: 23px;
+ 	font-weight: bold;
+ 	display: inherit;
+ 	
+ }
