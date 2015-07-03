@@ -451,12 +451,8 @@ public class PlaylistsManagerMB implements Serializable {
 		return null;
 	}
 	
-	/////// SHOW/EDIT LYRICS
-	
-	// por show a false
-	
-	//has Lyrics then show it
 	public String showLyrics(ActiveUserMB auser, Song s) {
+		log.info("Opening pop-up of lyrics");
 		Lyric l = lyrFacade.getLyricSongUser(auser.getCurrentUser(), s);
 		lyrics = l;
 		show = true;
@@ -464,12 +460,13 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String updateLyrics(ActiveUserMB auser) {
+		log.info("Updating lyrics");
 		lyrFacade.editLyric(auser.getCurrentUser(), lyrics);
 		return null;
 	}
 	
 	public String searchLyrics() {
-		
+		log.info("Searching for lyrics");
 		SearchLyric searchlyric = new SearchLyric();
 		String text = searchlyric.getLyric(song.getArtist(), song.getTitle());
 		
@@ -485,12 +482,11 @@ public class PlaylistsManagerMB implements Serializable {
 	}
 	
 	public String closePopup(){
+		log.info("Closing pop-up of lyrics");
 		show = false;
 		return null;
 	}
 	
-	///////////////////////////
-
 	public String getName() {
 		return name;
 	}
