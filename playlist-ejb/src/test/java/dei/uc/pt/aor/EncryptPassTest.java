@@ -23,9 +23,6 @@ public class EncryptPassTest {
 	@Test
 	public void TestPassword() {
 		
-//		String pass = "123";
-//		String epass = "202cb962ac59075b964b07152d234b70";
-
 		String pass = "admin";
 		String epass = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=";
 		

@@ -37,8 +37,6 @@ public class LoginMB implements Serializable {
 	public LoginMB() {
 	}
 
-	////////////////Security Login////////////////
-
 	public String login(){
 
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -62,8 +60,6 @@ public class LoginMB implements Serializable {
 			context.addMessage(null, new FacesMessage("Logout failed."));
 		}
 	}
-
-	//////////////////////////////////////////////
 
 	public String doLogin() {
 		log.info("Doing login");
