@@ -29,6 +29,7 @@ public class SearchLyric {
 				log.info("Searching song lyrics (REST - chartlyrics)");
 				lyric = rest.getChartLyric(artist, title);
 				if (lyric==null || lyric.compareTo("")==0){
+					log.info("Searching song lyrics (REST - Wikilyrics)");
 					lyric = rest.getWikiaLyric(artist, title);
 				}
 			} catch (Exception e) {

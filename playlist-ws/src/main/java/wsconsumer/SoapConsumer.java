@@ -23,25 +23,21 @@ public class SoapConsumer {
 			while(count<=5){
 				try {
 					result = soap.searchLyricDirect(artist, title);
-					count=6;
 					log.info("Find the lyric by Soap in "+count+" times");
 					log.info("Lyric:"+result.getLyric()+"#");
-					
+					if (result != null) return result.getLyric();
 				} catch (RemoteException e) {
 					count++;
 					log.info("Remote exception: "+count);
-					if(count==6){
-						return null;
-					}
 				}
 				
 			}
 			
-			return result.getLyric();
-			
 		} catch (Exception e2) {
 			return null;
 		}
+		
+		return null;
 		
 	}
 
