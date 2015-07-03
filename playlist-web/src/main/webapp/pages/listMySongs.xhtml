@@ -20,6 +20,7 @@
 					<h:commandButton action="#{newSongMB.newSong()}" value="New Song"
 						class="buttonList">
 					</h:commandButton>
+				<h:messages globalOnly="true" class="generalError" />
 				</h:panelGrid>
 				<h:dataTable style="width:1000px"
 					value="#{playlistsManagerMB.songsOfUser(activeUserMB)}" var="song"
@@ -101,7 +102,7 @@
 											<h:commandButton class="buttonList" value="Close"
 												action="#{playlistsManagerMB.closePopup()}" immediate="true" />
 
-											<h:message for="lyricpopup" errorClass="loginerror" />
+											<h:message for="lyricpopup" errorClass="loginerrorpop" />
 										</div>
 									</div>
 								</h:panelGroup>
@@ -110,8 +111,6 @@
 						</h:panelGrid>
 					</h:column>
 				</h:dataTable>
-				
-				<h:messages globalOnly="true" class="generalError" />
 			</h:form>
 			<br />
 			<br />

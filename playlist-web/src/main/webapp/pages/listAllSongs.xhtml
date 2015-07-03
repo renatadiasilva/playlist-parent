@@ -15,7 +15,7 @@
 				<h3 class="titleMenu">All Songs</h3>
 			</div>
 			<h:form class="tabelaPlaylists">
-
+				<h:messages globalOnly="true" class="generalError" />
 				<h:dataTable style="width:1000px"
 					value="#{playlistsManagerMB.allSongs}" var="song"
 					styleClass="order-table" captionClass="order-table-caption"
@@ -96,7 +96,7 @@
 											<h:commandButton class="buttonList" value="Close"
 												action="#{playlistsManagerMB.closePopup()}" immediate="true" />
 
-											<h:message for="lyricpopup" errorClass="loginerror" />
+											<h:message for="lyricpopup" errorClass="loginerrorpop" />
 										</div>
 									</div>
 								</h:panelGroup>
@@ -105,7 +105,6 @@
 						</h:panelGrid>
 					</h:column>
 				</h:dataTable>
-				<h:messages globalOnly="true" class="generalError" />
 			</h:form>
 			<br />
 			<br />

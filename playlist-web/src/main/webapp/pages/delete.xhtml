@@ -15,11 +15,11 @@
 			<h:form class="loginForm">
 			<h:panelGrid rendered="#{playlistsManagerMB.delP}" columns="1">
 			<h:column><h4 class="textInfo" >Are you sure you want to remove the playlist 
-											#{playlistsManagerMB.playlist.name}?</h4></h:column>
+											'#{playlistsManagerMB.playlist.name}'?</h4></h:column>
 			</h:panelGrid>
 			<h:panelGrid rendered="#{!playlistsManagerMB.delP}" columns="1">
 			<h:column><h4 class="textInfo" >Are you sure you want to give to ADMIN the ownership of song
-											#{playlistsManagerMB.song.title}? </h4></h:column>
+											'#{playlistsManagerMB.song.title}'? </h4></h:column>
 			</h:panelGrid>
 			<h:panelGrid class="menuPrinc" columns="2">
 				<h:commandButton rendered="#{playlistsManagerMB.delP}" action="#{playlistsManagerMB.deletePlaylistEnd()}"

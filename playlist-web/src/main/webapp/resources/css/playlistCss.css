@@ -221,6 +221,12 @@ color:white;
 	font-size: 20px;
 }
 
+.loginerrorpop {
+	color: red;
+	font-weight: bold;
+	font-size: 15px;
+}
+
 .loginerror {
 	color: red;
 	font-weight: bold;
