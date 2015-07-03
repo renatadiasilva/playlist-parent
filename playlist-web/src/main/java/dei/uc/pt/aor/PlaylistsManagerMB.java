@@ -476,7 +476,6 @@ public class PlaylistsManagerMB implements Serializable {
 	public String updateLyrics(ActiveUserMB auser) {
 		log.info("Updating lyrics");
 		lyrics = lyrFacade.editLyric(auser.getCurrentUser(), lyrics);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Lyric saved!"));
 		return null;
 	}
 	

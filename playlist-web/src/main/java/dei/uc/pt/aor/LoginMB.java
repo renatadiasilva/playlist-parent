@@ -65,13 +65,16 @@ public class LoginMB implements Serializable {
 		log.info("Doing login");
 		log.debug("Doing login for "+email);
 		User u = manager.findUserByEmail(email);
-		manager.setName(u.getName());
-		aUser.setName(u.getName());
-		aUser.setEmail(email);
-		aUser.setCurrentUser(u);
-		loggedUsers.addUserToLoggedUsersList(u);
-		email = "";
-		return "/pages/listMyPlaylists?faces-redirect=true";
+		if (u != null) {
+			manager.setName(u.getName());
+			aUser.setName(u.getName());
+			aUser.setEmail(email);
+			aUser.setCurrentUser(u);
+			loggedUsers.addUserToLoggedUsersList(u);
+			email = "";
+			return "/pages/listMyPlaylists?faces-redirect=true";
+		}
+		return "/login?faces-redirect=true";
 	}
 
 	public String doLogout() {
